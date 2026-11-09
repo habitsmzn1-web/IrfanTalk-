@@ -90,12 +90,16 @@ input{
 .empty{color:#aaa;text-align:center;padding:20px}
 .logout{margin-top:25px}
 .homeBack{color:#15d9ef;cursor:pointer;margin:15px 0;display:inline-block}
+.invite-option{
+ display:block;width:100%;padding:16px;margin:12px 0;
+ border:1px solid #514477;border-radius:13px;
+ background:#25203f;color:white;font-weight:bold;text-align:center
+}
 </style>
 </head>
 
 <body>
 
-<!-- OFFICIAL IRFANTALK WELCOME SCREEN -->
 <main class="screen" id="welcomeScreen">
  <div class="brand">
   <div class="logo">
@@ -121,7 +125,6 @@ input{
  </div>
 </main>
 
-<!-- EMAIL LOGIN / SIGNUP -->
 <section class="panel" id="authScreen">
  <h2 id="authHeading">Create Account</h2>
  <input id="nameInput" placeholder="Your name">
@@ -134,7 +137,6 @@ input{
  <p id="status"></p>
 </section>
 
-<!-- DASHBOARD -->
 <section class="dashboard" id="dashboard">
  <div class="dashboard-logo">
   <div class="logo">
@@ -160,18 +162,30 @@ input{
   <h3>🎙️ Walkie-Talkie</h3>
   <p>Live voice communication is coming in the next phase.</p>
  </div>
+
  <div class="grid">
   <button onclick="openSection('friendsSection')">👥 Friends</button>
-  <button onclick="openSection('searchSection')">➕ Add Friends</button>
+  <button onclick="openSection('inviteSection')">📨 Invite Friends</button>
   <button onclick="openSection('requestsSection')">🔔 Requests</button>
   <button onclick="openSection('profileSection')">👤 Profile</button>
  </div>
+
  <div class="tile">
   <h3>Welcome to IrfanTalk!</h3>
   <p>Your friends and conversations will appear inside the app.</p>
  </div>
 
- <!-- FRIEND SEARCH -->
+ <div class="section tile" id="inviteSection">
+  <span class="homeBack" onclick="showHome()">← Home</span>
+  <h2 class="section-title">Invite Friends</h2>
+  <p>Invite your friends to join IrfanTalk!</p>
+  <button class="invite-option" onclick="shareInvite()">📤 Share Invite</button>
+  <button class="invite-option" onclick="whatsappInvite()">🟢 Invite with WhatsApp</button>
+  <button class="invite-option" onclick="smsInvite()">💬 Invite with SMS</button>
+  <button class="invite-option" onclick="copyInvite()">📋 Copy Invite Link</button>
+  <p id="inviteStatus" class="message"></p>
+ </div>
+
  <div class="section tile" id="searchSection">
   <span class="homeBack" onclick="showHome()">← Home</span>
   <h2 class="section-title">Find Friends</h2>
@@ -180,21 +194,18 @@ input{
   <div id="searchResult"></div>
  </div>
 
- <!-- FRIEND REQUESTS -->
  <div class="section tile" id="requestsSection">
   <span class="homeBack" onclick="showHome()">← Home</span>
   <h2 class="section-title">Friend Requests</h2>
   <div id="requestsList"><p class="empty">Loading requests...</p></div>
  </div>
 
- <!-- FRIENDS LIST -->
  <div class="section tile" id="friendsSection">
   <span class="homeBack" onclick="showHome()">← Home</span>
   <h2 class="section-title">My Friends</h2>
   <div id="friendsList"><p class="empty">Loading friends...</p></div>
  </div>
 
- <!-- PROFILE -->
  <div class="section tile" id="profileSection">
   <span class="homeBack" onclick="showHome()">← Home</span>
   <h2 class="section-title">My Profile</h2>
@@ -216,10 +227,10 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-let mode = "signup";
-let currentUser = null;
+const auth=firebase.auth();
+const db=firebase.database();
+let mode="signup";
+let currentUser=null;
 
 function showAuth(type){
  mode=type;
@@ -269,6 +280,7 @@ async function forgotPassword(){
   status.textContent="Password reset email sent. Check your inbox.";
  }catch(error){status.textContent=error.message}
 }
+
 function openSection(id){
  document.querySelectorAll(".section").forEach(el=>el.style.display="none");
  document.getElementById(id).style.display="block";
@@ -282,12 +294,52 @@ function showHome(){
 function safeText(value){
  return String(value||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
+
+/* INVITE FRIENDS */
+function inviteUrl(){
+ return window.location.origin;
+}
+function inviteMessage(){
+ return "Join me on IrfanTalk! Let's chat and talk together. Open IrfanTalk here: "+inviteUrl();
+}
+async function shareInvite(){
+ const status=document.getElementById("inviteStatus");
+ try{
+  if(navigator.share){
+   await navigator.share({title:"Join IrfanTalk",text:inviteMessage(),url:inviteUrl()});
+   status.textContent="Invite shared!";
+  }else{
+   await copyInvite();
+  }
+ }catch(error){
+  if(error.name!=="AbortError")status.textContent="Sharing was not completed. Try WhatsApp or Copy Link.";
+ }
+}
+function whatsappInvite(){
+ const url="https://wa.me/?text="+encodeURIComponent(inviteMessage());
+ window.open(url,"_blank");
+}
+function smsInvite(){
+ const body=encodeURIComponent(inviteMessage());
+ window.location.href="sms:?body="+body;
+}
+async function copyInvite(){
+ const status=document.getElementById("inviteStatus");
+ try{
+  await navigator.clipboard.writeText(inviteUrl());
+  status.textContent="Invite link copied! Now share it with your friends.";
+ }catch(error){
+  status.textContent="Please copy this link: "+inviteUrl();
+ }
+}
+
+/* FRIEND SEARCH */
 async function searchFriend(){
  const email=document.getElementById("searchEmail").value.trim().toLowerCase();
  const result=document.getElementById("searchResult");
  result.innerHTML="";
  if(!email||!email.includes("@")){result.textContent="Please enter a valid email address.";return}
- if(email===currentUser.email.toLowerCase()){result.textContent="This is your own email address.";return}
+ if(!currentUser||email===currentUser.email.toLowerCase()){result.textContent="This is your own email address.";return}
  result.textContent="Searching...";
  try{
   const snapshot=await db.ref("publicUsers").orderByChild("email").equalTo(email).limitToFirst(1).once("value");
@@ -298,10 +350,27 @@ async function searchFriend(){
   if(already.exists()){result.textContent="You are already friends.";return}
   const pending=await db.ref("friendRequests/"+uid+"/"+currentUser.uid).once("value");
   if(pending.exists()){result.textContent="Friend request already sent.";return}
-  result.innerHTML="<div class='row'><div class='avatar'>"+safeText((person.name||"F").charAt(0).toUpperCase())+"</div><div class='person'><strong>"+safeText(person.name)+"</strong><small>"+safeText(person.email)+"</small></div><button class='small-btn' onclick=\"sendRequest('"+uid+"','"+safeText(person.name).replace(/'/g,"&#39;")+"','"+safeText(person.email)+"')\">Add</button></div>";
+  const row=document.createElement("div");
+  row.className="row";
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent=(person.name||"F").charAt(0).toUpperCase();
+  const personBox=document.createElement("div");
+  personBox.className="person";
+  const strong=document.createElement("strong");
+  strong.textContent=person.name||"Friend";
+  const small=document.createElement("small");
+  small.textContent=person.email||"";
+  const add=document.createElement("button");
+  add.className="small-btn";
+  add.textContent="Add";
+  add.onclick=()=>sendRequest(uid);
+  personBox.append(strong,small);
+  row.append(avatar,personBox,add);
+  result.appendChild(row);
  }catch(error){result.textContent="Search failed: "+error.message}
 }
-async function sendRequest(uid,name,email){
+async function sendRequest(uid){
  const result=document.getElementById("searchResult");
  try{
   await db.ref("friendRequests/"+uid+"/"+currentUser.uid).set({
@@ -327,16 +396,26 @@ async function loadRequests(){
    const sender=child.key;
    const row=document.createElement("div");
    row.className="row";
-   const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=(req.senderName||"F").charAt(0).toUpperCase();
-   const person=document.createElement("div");person.className="person";
-   const strong=document.createElement("strong");strong.textContent=req.senderName||"Friend";
-   const small=document.createElement("small");small.textContent=req.senderEmail||"";
+   const avatar=document.createElement("div");
+   avatar.className="avatar";
+   avatar.textContent=(req.senderName||"F").charAt(0).toUpperCase();
+   const person=document.createElement("div");
+   person.className="person";
+   const strong=document.createElement("strong");
+   strong.textContent=req.senderName||"Friend";
+   const small=document.createElement("small");
+   small.textContent=req.senderEmail||"";
    person.append(strong,small);
-   const accept=document.createElement("button");accept.className="small-btn accept";accept.textContent="Accept";
+   const accept=document.createElement("button");
+   accept.className="small-btn accept";
+   accept.textContent="Accept";
    accept.onclick=()=>respondRequest(sender,"accepted");
-   const reject=document.createElement("button");reject.className="small-btn reject";reject.textContent="Reject";
+   const reject=document.createElement("button");
+   reject.className="small-btn reject";
+   reject.textContent="Reject";
    reject.onclick=()=>respondRequest(sender,"rejected");
-   row.append(avatar,person,accept,reject);list.appendChild(row);
+   row.append(avatar,person,accept,reject);
+   list.appendChild(row);
   });
   if(!list.children.length)list.innerHTML="<p class='empty'>No pending requests.</p>";
  }catch(error){list.textContent="Could not load requests: "+error.message}
@@ -365,15 +444,23 @@ async function loadFriends(){
  try{
   const snap=await db.ref("friends/"+currentUser.uid).once("value");
   list.innerHTML="";
-  if(!snap.exists()){list.innerHTML="<p class='empty'>No friends yet. Search by email to add friends.</p>";return}
+  if(!snap.exists()){list.innerHTML="<p class='empty'>No friends yet. Invite a friend to join IrfanTalk.</p>";return}
   snap.forEach(child=>{
    const friend=child.val();
-   const row=document.createElement("div");row.className="row";
-   const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=(friend.name||"F").charAt(0).toUpperCase();
-   const person=document.createElement("div");person.className="person";
-   const strong=document.createElement("strong");strong.textContent=friend.name||"Friend";
-   const small=document.createElement("small");small.textContent=friend.email||"";
-   person.append(strong,small);row.append(avatar,person);list.appendChild(row);
+   const row=document.createElement("div");
+   row.className="row";
+   const avatar=document.createElement("div");
+   avatar.className="avatar";
+   avatar.textContent=(friend.name||"F").charAt(0).toUpperCase();
+   const person=document.createElement("div");
+   person.className="person";
+   const strong=document.createElement("strong");
+   strong.textContent=friend.name||"Friend";
+   const small=document.createElement("small");
+   small.textContent=friend.email||"";
+   person.append(strong,small);
+   row.append(avatar,person);
+   list.appendChild(row);
   });
  }catch(error){list.textContent="Could not load friends: "+error.message}
 }
@@ -389,22 +476,4 @@ async function syncPublicProfile(user){
  try{await db.ref("publicUsers/"+user.uid).set(profile)}
  catch(error){console.error("Profile sync failed:",error)}
 }
-auth.getRedirectResult().catch(error=>console.error(error));
-auth.onAuthStateChanged(async user=>{
- currentUser=user;
- if(user){
-  document.getElementById("welcomeScreen").style.display="none";
-  document.getElementById("authScreen").style.display="none";
-  document.getElementById("dashboard").style.display="block";
-  document.getElementById("welcomeName").textContent="Hello, "+(user.displayName||"Friend")+"!";
-  await syncPublicProfile(user);
- }else{
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("authScreen").style.display="none";
-  document.getElementById("welcomeScreen").style.display="flex";
- }
-});
-async function logout(){await auth.signOut()}
-</script>
-</body>
-</html>
+auth.getRedirectResult().catch
