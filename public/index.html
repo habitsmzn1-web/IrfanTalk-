@@ -1,151 +1,75 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IrfanTalk - Connect with Friends</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IrfanTalk</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#101311;
-  color:white;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-}
-.container{
-  width:100%;
-  max-width:420px;
-  text-align:center;
-}
-.logo{margin-bottom:28px}
-.logo svg{width:76px;height:76px}
-.logo h1{
-  color:#c6fa54;
-  font-size:32px;
-  margin:8px 0;
-}
-.logo p{color:#9da89c;margin:0}
-.card{
-  background:#191e19;
-  border:1px solid #303a30;
-  border-radius:20px;
-  padding:25px;
-  text-align:left;
-}
-h2{text-align:center;margin-top:0}
-input{
-  width:100%;
-  padding:15px;
-  margin:9px 0;
-  border-radius:10px;
-  border:1px solid #394439;
-  background:#101710;
-  color:white;
-  font-size:16px;
-}
-button{
-  width:100%;
-  padding:15px;
-  margin-top:12px;
-  border:0;
-  border-radius:10px;
-  background:#c6fa54;
-  color:#101710;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-}
-.secondary{
-  background:#303a30;
-  color:white;
-}
-.link{
-  color:#c6fa54;
-  text-align:center;
-  display:block;
-  margin-top:18px;
-  cursor:pointer;
-}
-#message{
-  text-align:center;
-  color:#c6fa54;
-  margin-top:15px;
-  overflow-wrap:anywhere;
-}
+body{margin:0;background:#101311;color:white;font-family:Arial;padding:20px}
+.wrap{max-width:500px;margin:30px auto}
+header{text-align:center;margin-bottom:25px}
+.logo{font-size:60px}
+h1{color:#c6fa54;margin:5px}
+.card{background:#191e19;border:1px solid #354035;border-radius:18px;padding:22px;margin:15px 0}
+input{width:100%;padding:14px;margin:8px 0;background:#101710;color:white;border:1px solid #455045;border-radius:9px;font-size:16px}
+button{width:100%;padding:14px;margin:8px 0;background:#c6fa54;color:#101710;border:0;border-radius:9px;font-weight:bold;font-size:16px}
+.alt{background:#354035;color:white}
+.link{color:#c6fa54;text-align:center;display:block;padding:12px;cursor:pointer}
+.small{color:#aab5aa;font-size:13px}
+.item{padding:12px;border-bottom:1px solid #354035;overflow-wrap:anywhere}
 #app{display:none}
-.welcome{
-  text-align:center;
-  padding:25px 0;
-}
-.small{color:#9da89c;font-size:13px;text-align:center}
+#msg{color:#c6fa54;overflow-wrap:anywhere}
 </style>
 </head>
-
 <body>
-<div class="container">
+<div class="wrap">
+<header>
+<div class="logo">📻</div>
+<h1>IrfanTalk</h1>
+<p class="small">Talk • Chat • Connect</p>
+</header>
 
-  <div class="logo">
-    <svg viewBox="0 0 100 100" fill="none"
-      xmlns="http://www.w3.org/2000/svg">
-      <rect x="27" y="15" width="46" height="72" rx="12"
-        stroke="#C6FA54" stroke-width="5"/>
-      <path d="M43 15V7H57V15" stroke="#C6FA54" stroke-width="5"/>
-      <rect x="37" y="27" width="26" height="20" rx="4"
-        stroke="#C6FA54" stroke-width="4"/>
-      <path d="M39 57H61M39 65H61" stroke="#C6FA54"
-        stroke-width="4" stroke-linecap="round"/>
-      <circle cx="50" cy="77" r="4" fill="#C6FA54"/>
-      <path d="M76 29Q91 39 76 49M82 20Q105 39 82 58"
-        stroke="#C6FA54" stroke-width="4" stroke-linecap="round"/>
-    </svg>
-    <h1>IrfanTalk</h1>
-    <p>Talk • Chat • Connect</p>
-  </div>
+<section class="card" id="auth">
+<h2 id="heading">Welcome Back</h2>
+<input id="name" placeholder="Your name" style="display:none">
+<input id="email" type="email" placeholder="Email address">
+<input id="password" type="password" placeholder="Password">
+<button id="mainBtn" onclick="submitAuth()">Login</button>
+<span class="link" onclick="toggleMode()" id="toggle">New here? Create Account</span>
+<span class="link" onclick="resetPassword()">Forgot Password?</span>
+<p id="msg"></p>
+</section>
 
-  <div class="card" id="authCard">
-    <h2 id="formTitle">Welcome Back</h2>
+<section id="app">
+<div class="card">
+<h2 id="welcome">Welcome!</h2>
+<p class="small">Your IrfanTalk profile</p>
+<button onclick="copyInvite()">Copy My Invite Link</button>
+<p id="inviteText" class="small"></p>
+</div>
 
-    <input id="name" type="text"
-      placeholder="Your name" style="display:none">
+<div class="card">
+<h3>Send a Friend Request</h3>
+<p class="small">Open your friend's invite link after logging in to send a request.</p>
+<p id="inviteMessage"></p>
+</div>
 
-    <input id="email" type="email"
-      placeholder="Email address">
+<div class="card">
+<h3>Incoming Friend Requests</h3>
+<div id="requests" class="small">Loading requests...</div>
+</div>
 
-    <input id="password" type="password"
-      placeholder="Password">
-
-    <button id="mainButton" onclick="submitForm()">Login</button>
-
-    <span class="link" id="switchLink" onclick="switchMode()">
-      New here? Create Account
-    </span>
-
-    <span class="link" onclick="resetPassword()">
-      Forgot Password?
-    </span>
-
-    <p id="message"></p>
-  </div>
-
-  <div class="card" id="app">
-    <div class="welcome">
-      <h2>Welcome to IrfanTalk!</h2>
-      <p id="userEmail" class="small"></p>
-      <p>Your account is ready.</p>
-    </div>
-    <button onclick="logout()">Logout</button>
-  </div>
-
-  <p class="small">Made for friends, made for connection.</p>
+<div class="card">
+<h3>My Profile</h3>
+<p id="profileInfo" class="small"></p>
+<button class="alt" onclick="logout()">Logout</button>
+</div>
+</section>
 </div>
 
 <script>
@@ -161,99 +85,124 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-
+const db = firebase.database();
 let createMode = false;
+let currentUser = null;
 
-function switchMode(){
-  createMode = !createMode;
-
-  document.getElementById("formTitle").textContent =
-    createMode ? "Create Your Account" : "Welcome Back";
-
-  document.getElementById("mainButton").textContent =
-    createMode ? "Create Account" : "Login";
-
-  document.getElementById("switchLink").textContent =
-    createMode ? "Already registered? Login" :
-    "New here? Create Account";
-
-  document.getElementById("name").style.display =
-    createMode ? "block" : "none";
-
-  showMessage("");
+function message(t){
+  document.getElementById("msg").textContent=t;
 }
-
-function showMessage(text){
-  document.getElementById("message").textContent = text;
+function toggleMode(){
+  createMode=!createMode;
+  document.getElementById("name").style.display=createMode?"block":"none";
+  document.getElementById("heading").textContent=createMode?"Create Account":"Welcome Back";
+  document.getElementById("mainBtn").textContent=createMode?"Create Account":"Login";
+  document.getElementById("toggle").textContent=createMode?"Already registered? Login":"New here? Create Account";
+  message("");
 }
-
-async function submitForm(){
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const name = document.getElementById("name").value.trim();
-  const button = document.getElementById("mainButton");
-
-  if(!email || !password){
-    showMessage("Please enter email and password.");
-    return;
-  }
-
-  if(password.length < 6){
-    showMessage("Password must be at least 6 characters.");
-    return;
-  }
-
-  if(createMode && !name){
-    showMessage("Please enter your name.");
-    return;
-  }
-
-  button.disabled = true;
-  showMessage("Please wait...");
-
+async function submitAuth(){
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+  const name=document.getElementById("name").value.trim();
+  if(!email||!password){message("Enter your email and password.");return}
+  if(password.length<6){message("Password must be at least 6 characters.");return}
+  if(createMode&&!name){message("Please enter your name.");return}
   try{
+    message("Please wait...");
     if(createMode){
-      const result = await auth.createUserWithEmailAndPassword(
-        email,password
-      );
+      const result=await auth.createUserWithEmailAndPassword(email,password);
       await result.user.updateProfile({displayName:name});
+      await db.ref("users/"+result.user.uid).set({
+        displayName:name,
+        createdAt:firebase.database.ServerValue.TIMESTAMP
+      });
     }else{
       await auth.signInWithEmailAndPassword(email,password);
     }
-  }catch(error){
-    showMessage(error.message);
-  }finally{
-    button.disabled = false;
-  }
+  }catch(e){message(e.message)}
 }
-
 async function resetPassword(){
-  const email = document.getElementById("email").value.trim();
-
-  if(!email){
-    showMessage("First enter your email address.");
-    return;
-  }
-
+  const email=document.getElementById("email").value.trim();
+  if(!email){message("Enter your email first.");return}
   try{
     await auth.sendPasswordResetEmail(email);
-    showMessage("Password reset email sent. Check your inbox.");
-  }catch(error){
-    showMessage(error.message);
+    message("Password reset email sent. Check your inbox.");
+  }catch(e){message(e.message)}
+}
+function copyInvite(){
+  const url=location.origin+location.pathname+"?invite="+currentUser.uid;
+  navigator.clipboard.writeText(url).then(()=>{
+    document.getElementById("inviteText").textContent="Invite link copied! Share it with your friend.";
+  }).catch(()=>{
+    document.getElementById("inviteText").textContent=url;
+  });
+}
+async function sendInviteRequest(targetUid){
+  if(!targetUid||targetUid===currentUser.uid){
+    document.getElementById("inviteMessage").textContent="This invite link is not valid.";
+    return;
+  }
+  try{
+    const profile=await db.ref("users/"+currentUser.uid).once("value");
+    const myName=profile.val()?.displayName||currentUser.displayName||"IrfanTalk user";
+    await db.ref("friendRequests/"+targetUid+"/"+currentUser.uid).set({
+      senderName:myName,
+      createdAt:firebase.database.ServerValue.TIMESTAMP
+    });
+    document.getElementById("inviteMessage").textContent="Friend request sent!";
+  }catch(e){
+    document.getElementById("inviteMessage").textContent="Could not send request: "+e.message;
   }
 }
-
-function logout(){
-  auth.signOut();
+function loadRequests(){
+  const box=document.getElementById("requests");
+  db.ref("friendRequests/"+currentUser.uid).on("value",snapshot=>{
+    box.innerHTML="";
+    if(!snapshot.exists()){
+      box.textContent="No incoming requests yet.";
+      return;
+    }
+    snapshot.forEach(child=>{
+      const row=document.createElement("div");
+      row.className="item";
+      row.textContent=(child.val().senderName||"Friend")+" sent you a request.";
+      box.appendChild(row);
+    });
+  },error=>{
+    box.textContent="Could not load requests: "+error.message;
+  });
 }
+async function showApp(user){
+  currentUser=user;
+  document.getElementById("auth").style.display="none";
+  document.getElementById("app").style.display="block";
+  const ref=db.ref("users/"+user.uid);
+  try{
+    let snap=await ref.once("value");
+    if(!snap.exists()){
+      await ref.set({
+        displayName:user.displayName||"IrfanTalk user",
+        createdAt:firebase.database.ServerValue.TIMESTAMP
+      });
+      snap=await ref.once("value");
+    }
+    const profile=snap.val()||{};
+    document.getElementById("welcome").textContent="Hello, "+(profile.displayName||"Friend")+"!";
+    document.getElementById("profileInfo").textContent="Email: "+user.email;
+    loadRequests();
 
+    const invite=new URLSearchParams(location.search).get("invite");
+    if(invite) await sendInviteRequest(invite);
+  }catch(e){
+    document.getElementById("profileInfo").textContent="Profile error: "+e.message;
+  }
+}
+function logout(){auth.signOut()}
 auth.onAuthStateChanged(user=>{
-  if(user){
-    document.getElementById("authCard").style.display="none";
-    document.getElementById("app").style.display="block";
-    document.getElementById("userEmail").textContent=user.email;
-  }else{
-    document.getElementById("authCard").style.display="block";
+  if(user) showApp(user);
+  else{
+    currentUser=null;
+    document.getElementById("auth").style.display="block";
     document.getElementById("app").style.display="none";
   }
 });
