@@ -3,156 +3,332 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IrfanTalk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080817">
+<title>IrfanTalk - Voice Connects</title>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080817;color:white;font-family:Arial}
-main{max-width:480px;min-height:100vh;margin:auto;padding:25px;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at top,#28134f,#080817 65%)}
-.brand{text-align:center;margin-top:65px}
-.logo{width:190px;height:190px;margin:auto;border:2px solid #8b43f7;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 45px #7629ed55}
-.logo svg{width:135px}
-h1{font-size:38px;margin:20px 0 5px}
-h1 span{color:#15d9f4}
-.tag{letter-spacing:5px;color:#aaa;font-size:12px}
-button{width:100%;padding:18px;margin:10px 0;border:0;border-radius:16px;font-size:16px;font-weight:bold}
-.google{background:white;color:#171525}
-.email{background:linear-gradient(100deg,#7929ee,#08cce9);color:white}
-.or{display:flex;gap:15px;align-items:center;color:#999;margin:12px 0}
-.or:before,.or:after{content:"";height:1px;background:#555;flex:1}
-.login{text-align:center;margin:22px 0}
-.link{color:#15d9f4;cursor:pointer}
-.legal{text-align:center;color:#888;font-size:12px;line-height:1.7}
-#auth,#home{display:none;max-width:480px;min-height:100vh;margin:auto;padding:25px;background:#0c0a1d}
-#auth h2{text-align:center;margin:45px 0}
-input{width:100%;padding:15px;margin:9px 0;border-radius:10px;border:1px solid #504477;background:#19152e;color:white;font-size:16px}
-.action{background:linear-gradient(100deg,#7929ee,#08cce9);color:white}
-.back{text-align:center;color:#15d9f4;display:block;padding:14px}
-#status{color:#15d9f4;text-align:center}
-.tile{background:#1c1931;border:1px solid #413565;padding:20px;border-radius:15px;margin:12px 0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid button{background:#25203f;color:white;border:1px solid #514477}
+body{
+ margin:0;background:#080817;color:#fff;
+ font-family:Arial,sans-serif;
+}
+button,input{font:inherit}
+.screen{
+ max-width:480px;min-height:100vh;margin:auto;
+ padding:24px 22px;
+ display:flex;flex-direction:column;
+ justify-content:space-between;
+ background:radial-gradient(ellipse at 50% 25%,#251047,#080817 70%);
+}
+.brand{text-align:center;padding-top:45px}
+.logo{
+ width:225px;height:225px;margin:auto;
+ border:2px solid #7139f4;border-radius:50%;
+ display:flex;align-items:center;justify-content:center;
+ box-shadow:0 0 40px #7139f455;
+}
+.logo svg{width:175px;height:175px}
+.brand h1{font-size:38px;margin:18px 0 7px}
+.brand h1 span{color:#12d8f5}
+.tagline{font-size:12px;letter-spacing:5px;color:#aaa6ce}
+.auth-area{padding-bottom:15px}
+.btn{
+ width:100%;padding:18px;margin:10px 0;
+ border:0;border-radius:17px;
+ font-size:17px;font-weight:bold;cursor:pointer;
+}
+.google{background:#fff;color:#181525}
+.google-mark{font-size:22px;color:#4285f4;margin-right:14px}
+.email-btn,.action{
+ background:linear-gradient(100deg,#7929ee,#384cf6,#08cce9);
+ color:white;
+}
+.or{display:flex;align-items:center;gap:15px;color:#999;margin:12px 0}
+.or:before,.or:after{content:"";height:1px;background:#49445e;flex:1}
+.login-line{text-align:center;margin:22px 0;color:#ddd}
+.link{color:#15d9ef;cursor:pointer;font-weight:bold}
+.legal{text-align:center;font-size:12px;color:#85839b;line-height:1.7}
+.panel{
+ display:none;max-width:480px;min-height:100vh;
+ margin:auto;padding:24px 22px;
+ background:radial-gradient(ellipse at top,#251047,#080817 70%);
+}
+.panel h2{text-align:center;margin:35px 0 25px}
+input{
+ width:100%;padding:16px;margin:9px 0;
+ border-radius:12px;border:1px solid #49416c;
+ background:#17142c;color:white;font-size:16px;
+}
+.action{
+ width:100%;padding:16px;margin-top:14px;
+ border:0;border-radius:13px;font-weight:bold;
+}
+.back{text-align:center;display:block;padding:14px;color:#15d9ef;cursor:pointer}
+#status{color:#15d9ef;text-align:center;overflow-wrap:anywhere}
+.dashboard{
+ display:none;max-width:480px;min-height:100vh;
+ margin:auto;padding:24px 22px;background:#080817;
+}
+.dashboard-logo{text-align:center;padding:12px 0 25px}
+.dashboard-logo .logo{width:145px;height:145px}
+.dashboard-logo .logo svg{width:112px;height:112px}
+.dashboard-logo h1{font-size:30px;margin:12px 0 5px}
+.dashboard-logo h1 span{color:#12d8f5}
+.dashboard-logo .tagline{font-size:10px}
+.tile{
+ background:#1c1931;border:1px solid #413565;
+ border-radius:17px;padding:20px;margin:13px 0;
+}
+.tile h3{margin:0 0 10px}
+.tile p{color:#bbb;line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.grid button{
+ background:#25203f;color:white;
+ border:1px solid #514477;border-radius:15px;
+ padding:20px 5px;font-weight:bold;font-size:16px;
+}
+.logout{margin-top:20px}
 </style>
 </head>
+
 <body>
-<main id="welcome">
+
+<!-- WELCOME SCREEN -->
+<main class="screen" id="welcomeScreen">
  <div class="brand">
   <div class="logo">
-   <svg viewBox="0 0 150 150" fill="none">
-    <path d="M68 30L80 10L85 32" stroke="#15d9f4" stroke-width="5" stroke-linecap="round"/>
-    <rect x="43" y="30" width="65" height="100" rx="15" stroke="#15d9f4" stroke-width="5"/>
-    <rect x="55" y="43" width="41" height="38" rx="6" stroke="#a64aff" stroke-width="4"/>
-    <path d="M60 64H68L74 51L80 72L87 59L93 64" stroke="#15d9f4" stroke-width="3"/>
-    <path d="M58 96H91M58 107H91" stroke="#a64aff" stroke-width="4" stroke-linecap="round"/>
-    <path d="M116 48Q140 80 116 112M34 48Q10 80 34 112" stroke="#15d9f4" stroke-width="4" stroke-linecap="round"/>
+   <svg viewBox="0 0 200 200" fill="none">
+    <circle cx="100" cy="100" r="75" stroke="#12D8F5" stroke-width="1.5"/>
+    <path d="M92 45L104 17L114 48" stroke="#12D8F5" stroke-width="6" stroke-linecap="round"/>
+    <rect x="65" y="48" width="75" height="112" rx="19" stroke="#12D8F5" stroke-width="6"/>
+    <rect x="77" y="64" width="51" height="43" rx="8" stroke="#A64AFF" stroke-width="4"/>
+    <path d="M84 85H91L97 73L104 97L111 80L117 85H122" stroke="#12D8F5" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M83 122H105M83 136H105" stroke="#A64AFF" stroke-width="5" stroke-linecap="round"/>
+    <path d="M146 73Q168 100 146 124M55 73Q33 100 55 124" stroke="#12D8F5" stroke-width="5" stroke-linecap="round"/>
    </svg>
   </div>
   <h1>Irfan<span>Talk</span></h1>
-  <div class="tag">VOICE CONNECTS</div>
+  <div class="tagline">V O I C E&nbsp; C O N N E C T S</div>
  </div>
- <div>
-  <button class="google" onclick="googleLogin()">G &nbsp; Sign up with Google</button>
+
+ <div class="auth-area">
+  <button class="btn google" onclick="googleLogin()">
+   <span class="google-mark">G</span> Sign up with Google
+  </button>
   <div class="or">Or</div>
-  <button class="email" onclick="showAuth('signup')">✉ &nbsp; Sign Up with Email</button>
-  <div class="login">Already have an account? <span class="link" onclick="showAuth('login')">Log in</span></div>
-  <div class="legal">By proceeding, you agree to the<br>User Agreement &amp; Privacy Policy</div>
+  <button class="btn email-btn" onclick="showAuth('signup')">
+   ✉ &nbsp; Sign Up with Email
+  </button>
+  <div class="login-line">
+   Already have an account?
+   <span class="link" onclick="showAuth('login')">Log in</span>
+  </div>
+  <div class="legal">
+   By proceeding, you agree to the<br>
+   User Agreement &amp; Privacy Policy
+  </div>
  </div>
 </main>
 
-<section id="auth">
- <h2 id="heading">Create Account</h2>
- <input id="name" placeholder="Your name">
- <input id="email" type="email" placeholder="Email address">
- <input id="password" type="password" placeholder="Password">
- <button class="action" id="submit" onclick="emailAuth()">Create Account</button>
- <span class="back link" id="switch" onclick="switchMode()">Already registered? Log in</span>
- <span class="back link" onclick="forgotPassword()">Forgot Password?</span>
- <span class="back link" onclick="backHome()">Back</span>
+<!-- EMAIL AUTHENTICATION -->
+<section class="panel" id="authScreen">
+ <h2 id="authHeading">Create Account</h2>
+ <input id="nameInput" placeholder="Your name">
+ <input id="emailInput" type="email" placeholder="Email address">
+ <input id="passwordInput" type="password" placeholder="Password">
+ <button class="action" id="authButton" onclick="emailAuth()">Create Account</button>
+ <span class="back" id="switchLink" onclick="switchMode()">Already registered? Log in</span>
+ <span class="back" onclick="forgotPassword()">Forgot Password?</span>
+ <span class="back" onclick="backToWelcome()">Back</span>
  <p id="status"></p>
 </section>
 
-<section id="home">
- <h2>📻 IrfanTalk</h2>
- <div class="tile"><h3 id="hello">Welcome!</h3><p>Your voice. Your friends. Your connection.</p></div>
- <div class="tile"><h3>🎙 Walkie-Talkie</h3><p>Live voice feature coming next.</p></div>
- <div class="grid">
-  <button onclick="tab('Friends')">👥 Friends</button>
-  <button onclick="tab('Add Friends')">➕ Add Friends</button>
-  <button onclick="tab('Chats')">💬 Chats</button>
-  <button onclick="tab('Profile')">👤 Profile</button>
+<!-- HOME DASHBOARD -->
+<section class="dashboard" id="dashboard">
+
+ <div class="dashboard-logo">
+  <div class="logo">
+   <svg viewBox="0 0 200 200" fill="none">
+    <circle cx="100" cy="100" r="75" stroke="#12D8F5" stroke-width="1.5"/>
+    <path d="M92 45L104 17L114 48" stroke="#12D8F5" stroke-width="6" stroke-linecap="round"/>
+    <rect x="65" y="48" width="75" height="112" rx="19" stroke="#12D8F5" stroke-width="6"/>
+    <rect x="77" y="64" width="51" height="43" rx="8" stroke="#A64AFF" stroke-width="4"/>
+    <path d="M84 85H91L97 73L104 97L111 80L117 85H122" stroke="#12D8F5" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M83 122H105M83 136H105" stroke="#A64AFF" stroke-width="5" stroke-linecap="round"/>
+    <path d="M146 73Q168 100 146 124M55 73Q33 100 55 124" stroke="#12D8F5" stroke-width="5" stroke-linecap="round"/>
+   </svg>
+  </div>
+  <h1>Irfan<span>Talk</span></h1>
+  <div class="tagline">V O I C E&nbsp; C O N N E C T S</div>
  </div>
- <div class="tile" id="content">Welcome to IrfanTalk.</div>
- <button class="action" onclick="logout()">Logout</button>
+
+ <div class="tile">
+  <h3 id="welcomeName">Hello, Friend!</h3>
+  <p>Your voice. Your friends. Your connection.</p>
+ </div>
+
+ <div class="tile">
+  <h3>🎙️ Walkie-Talkie</h3>
+  <p>Live voice communication is coming in the next phase.</p>
+ </div>
+
+ <div class="grid">
+  <button onclick="openTab('Friends')">👥 Friends</button>
+  <button onclick="openTab('Add Friends')">➕ Add Friends</button>
+  <button onclick="openTab('Chats')">💬 Chats</button>
+  <button onclick="openTab('Profile')">👤 Profile</button>
+ </div>
+
+ <div class="tile" id="tabContent">
+  <h3>Home</h3>
+  <p>Welcome to IrfanTalk!</p>
+ </div>
+
+ <button class="action logout" onclick="logout()">Logout</button>
 </section>
 
 <script>
-const firebaseConfig={
- apiKey:"AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",
- authDomain:"irfantalk.firebaseapp.com",
- databaseURL:"https://irfantalk-default-rtdb.firebaseio.com",
- projectId:"irfantalk",
- storageBucket:"irfantalk.firebasestorage.app",
- messagingSenderId:"218169866517",
- appId:"1:218169866517:web:447670dc6a565e1e7b511c"
+const firebaseConfig = {
+ apiKey: "AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",
+ authDomain: "irfantalk.firebaseapp.com",
+ databaseURL: "https://irfantalk-default-rtdb.firebaseio.com",
+ projectId: "irfantalk",
+ storageBucket: "irfantalk.firebasestorage.app",
+ messagingSenderId: "218169866517",
+ appId: "1:218169866517:web:447670dc6a565e1e7b511c"
 };
+
 firebase.initializeApp(firebaseConfig);
-const auth=firebase.auth();
-let mode="signup";
-function showAuth(m){
- mode=m;welcome.style.display="none";home.style.display="none";authBox.style.display="block";
+const auth = firebase.auth();
+let mode = "signup";
+
+function showAuth(type) {
+ mode = type;
+ document.getElementById("welcomeScreen").style.display = "none";
+ document.getElementById("dashboard").style.display = "none";
+ document.getElementById("authScreen").style.display = "block";
+ document.getElementById("nameInput").style.display =
+   type === "signup" ? "block" : "none";
+ document.getElementById("authHeading").textContent =
+   type === "signup" ? "Create Account" : "Welcome Back";
+ document.getElementById("authButton").textContent =
+   type === "signup" ? "Create Account" : "Login";
+ document.getElementById("switchLink").textContent =
+   type === "signup" ? "Already registered? Log in" : "New here? Create Account";
+ document.getElementById("status").textContent = "";
 }
-const authBox=document.getElementById("auth");
-function showAuth(m){
- mode=m;document.getElementById("welcome").style.display="none";
- authBox.style.display="block";document.getElementById("home").style.display="none";
- document.getElementById("name").style.display=m==="signup"?"block":"none";
- document.getElementById("heading").textContent=m==="signup"?"Create Account":"Welcome Back";
- document.getElementById("submit").textContent=m==="signup"?"Create Account":"Login";
- document.getElementById("switch").textContent=m==="signup"?"Already registered? Log in":"New here? Create Account";
- document.getElementById("status").textContent="";
+
+function switchMode() {
+ showAuth(mode === "signup" ? "login" : "signup");
 }
-function switchMode(){showAuth(mode==="signup"?"login":"signup")}
-function backHome(){authBox.style.display="none";document.getElementById("welcome").style.display="flex"}
-async function emailAuth(){
- const email=document.getElementById("email").value.trim();
- const password=document.getElementById("password").value;
- const name=document.getElementById("name").value.trim();
- const status=document.getElementById("status");
- if(!email||!password){status.textContent="Enter email and password";return}
- if(password.length<6){status.textContent="Password must have at least 6 characters";return}
- if(mode==="signup"&&!name){status.textContent="Enter your name";return}
- try{
-  status.textContent="Please wait...";
-  if(mode==="signup"){
-   const result=await auth.createUserWithEmailAndPassword(email,password);
+
+function backToWelcome() {
+ document.getElementById("authScreen").style.display = "none";
+ document.getElementById("welcomeScreen").style.display = "flex";
+}
+
+async function emailAuth() {
+ const email = document.getElementById("emailInput").value.trim();
+ const password = document.getElementById("passwordInput").value;
+ const name = document.getElementById("nameInput").value.trim();
+ const status = document.getElementById("status");
+
+ if (!email || !password) {
+  status.textContent = "Please enter your email and password.";
+  return;
+ }
+ if (password.length < 6) {
+  status.textContent = "Password must be at least 6 characters.";
+  return;
+ }
+ if (mode === "signup" && !name) {
+  status.textContent = "Please enter your name.";
+  return;
+ }
+
+ status.textContent = "Please wait...";
+ try {
+  if (mode === "signup") {
+   const result = await auth.createUserWithEmailAndPassword(email, password);
    await result.user.updateProfile({displayName:name});
-  }else await auth.signInWithEmailAndPassword(email,password);
- }catch(e){status.textContent=e.message}
+  } else {
+   await auth.signInWithEmailAndPassword(email, password);
+  }
+ } catch (error) {
+  status.textContent = error.message;
+ }
 }
-async function googleLogin(){
- try{await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())}
- catch(e){alert(e.message)}
+
+async function googleLogin() {
+ try {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  await auth.signInWithRedirect(provider);
+ } catch (error) {
+  alert(error.message);
+ }
 }
-async function forgotPassword(){
- const email=document.getElementById("email").value.trim();
- if(!email){status.textContent="Enter your email first";return}
- try{await auth.sendPasswordResetEmail(email);status.textContent="Reset email sent"}
- catch(e){status.textContent=e.message}
+
+async function forgotPassword() {
+ const email = document.getElementById("emailInput").value.trim();
+ const status = document.getElementById("status");
+ if (!email) {
+  status.textContent = "Enter your email address first.";
+  return;
+ }
+ try {
+  await auth.sendPasswordResetEmail(email);
+  status.textContent = "Password reset email sent. Please check your inbox.";
+ } catch (error) {
+  status.textContent = error.message;
+ }
 }
-function tab(t){
- const c=document.getElementById("content");c.textContent=t+" feature will be added next.";
+
+function openTab(tab) {
+ const content = document.getElementById("tabContent");
+ content.innerHTML = "";
+
+ const heading = document.createElement("h3");
+ heading.textContent = tab;
+ content.appendChild(heading);
+
+ const paragraph = document.createElement("p");
+ if (tab === "Profile") {
+  paragraph.textContent = "Name: " +
+    (auth.currentUser.displayName || "Friend") +
+    " | Email: " + (auth.currentUser.email || "");
+ } else if (tab === "Friends") {
+  paragraph.textContent = "Your accepted friends will appear here. Friend management is the next feature to build.";
+ } else if (tab === "Add Friends") {
+  paragraph.textContent = "Friend search and invitations will be added in the next development step.";
+ } else {
+  paragraph.textContent = "Your private conversations will appear here after chat is implemented.";
+ }
+ content.appendChild(paragraph);
 }
-function logout(){auth.signOut()}
-auth.onAuthStateChanged(user=>{
- if(user){
-  document.getElementById("welcome").style.display="none";
-  authBox.style.display="none";document.getElementById("home").style.display="block";
-  document.getElementById("hello").textContent="Hello, "+(user.displayName||"Friend")+"!";
- }else{
-  document.getElementById("home").style.display="none";
-  authBox.style.display="none";document.getElementById("welcome").style.display="flex";
+
+function logout() {
+ auth.signOut();
+}
+
+auth.getRedirectResult().catch(error => {
+ document.getElementById("status").textContent = error.message;
+});
+
+auth.onAuthStateChanged(user => {
+ if (user) {
+  document.getElementById("welcomeScreen").style.display = "none";
+  document.getElementById("authScreen").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("welcomeName").textContent =
+   "Hello, " + (user.displayName || "Friend") + "!";
+ } else {
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("authScreen").style.display = "none";
+  document.getElementById("welcomeScreen").style.display = "flex";
  }
 });
 </script>
