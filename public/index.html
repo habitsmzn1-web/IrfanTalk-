@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,335 +5,258 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IrfanTalk - Connect with Friends</title>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#101311;
- color:white;
- min-height:100vh;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#101311;
+  color:white;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
 }
-header{
- padding:20px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- background:#191e19;
- border-bottom:1px solid #303a30;
+.container{
+  width:100%;
+  max-width:420px;
+  text-align:center;
 }
-.logo{font-size:25px;font-weight:bold;color:#c6fa54}
-.small{color:#9da89c;font-size:13px}
-.container{max-width:600px;margin:auto;padding:20px}
+.logo{margin-bottom:28px}
+.logo svg{width:76px;height:76px}
+.logo h1{
+  color:#c6fa54;
+  font-size:32px;
+  margin:8px 0;
+}
+.logo p{color:#9da89c;margin:0}
 .card{
- background:#1b211c;
- border:1px solid #303a30;
- border-radius:20px;
- padding:22px;
- margin:18px 0;
+  background:#191e19;
+  border:1px solid #303a30;
+  border-radius:20px;
+  padding:25px;
+  text-align:left;
 }
-h2{margin-top:0}
+h2{text-align:center;margin-top:0}
 input{
- width:100%;padding:15px;margin:10px 0;
- border:1px solid #414a40;border-radius:12px;
- background:#111711;color:white;font-size:16px;
+  width:100%;
+  padding:15px;
+  margin:9px 0;
+  border-radius:10px;
+  border:1px solid #394439;
+  background:#101710;
+  color:white;
+  font-size:16px;
 }
 button{
- border:0;border-radius:12px;padding:14px 18px;
- background:#c6fa54;color:#17200c;
- font-weight:bold;font-size:15px;cursor:pointer;
+  width:100%;
+  padding:15px;
+  margin-top:12px;
+  border:0;
+  border-radius:10px;
+  background:#c6fa54;
+  color:#101710;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
 }
-button:disabled{opacity:.5}
-.full{width:100%}
-.hidden{display:none!important}
-#messages{
- height:300px;overflow-y:auto;
- display:flex;flex-direction:column;gap:10px;
+.secondary{
+  background:#303a30;
+  color:white;
 }
-.msg{
- background:#293229;padding:12px;border-radius:12px;
- overflow-wrap:anywhere;
+.link{
+  color:#c6fa54;
+  text-align:center;
+  display:block;
+  margin-top:18px;
+  cursor:pointer;
 }
-.msg small{display:block;color:#c6fa54;margin-bottom:5px}
-.row{display:flex;gap:8px;align-items:center}
-.row input{flex:1;min-width:0}
-.tabs{display:flex;gap:10px;margin:20px 0}
-.tab{
- flex:1;background:#293229;color:white;
+#message{
+  text-align:center;
+  color:#c6fa54;
+  margin-top:15px;
+  overflow-wrap:anywhere;
 }
-.tab.active{background:#c6fa54;color:#17200c}
-.mic{
- width:145px;height:145px;border-radius:50%;
- background:linear-gradient(145deg,#555,#252525);
- color:white;font-size:42px;
- display:block;margin:25px auto;
+#app{display:none}
+.welcome{
+  text-align:center;
+  padding:25px 0;
 }
-.status{color:#c6fa54;font-size:13px}
-.error{color:#ff8585;margin:10px 0;font-size:14px}
+.small{color:#9da89c;font-size:13px;text-align:center}
 </style>
 </head>
 
 <body>
-
-<header>
- <div>
-  <div class="logo">IrfanTalk</div>
-  <div class="small">Connect • Talk • Together</div>
- </div>
- <div class="status" id="status">Welcome</div>
-</header>
-
 <div class="container">
 
-<!-- LOGIN -->
-<section id="login">
- <div class="card">
-  <h2>Welcome to IrfanTalk 👋</h2>
-  <p class="small">Sign in with your mobile number.</p>
-
-  <div id="phoneArea">
-   <label>Mobile number</label>
-   <input id="phone" type="tel" value="+91" placeholder="+91XXXXXXXXXX">
-   <div id="recaptcha-container"></div>
-   <br>
-   <button class="full" id="sendOtp">Send OTP</button>
+  <div class="logo">
+    <svg viewBox="0 0 100 100" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <rect x="27" y="15" width="46" height="72" rx="12"
+        stroke="#C6FA54" stroke-width="5"/>
+      <path d="M43 15V7H57V15" stroke="#C6FA54" stroke-width="5"/>
+      <rect x="37" y="27" width="26" height="20" rx="4"
+        stroke="#C6FA54" stroke-width="4"/>
+      <path d="M39 57H61M39 65H61" stroke="#C6FA54"
+        stroke-width="4" stroke-linecap="round"/>
+      <circle cx="50" cy="77" r="4" fill="#C6FA54"/>
+      <path d="M76 29Q91 39 76 49M82 20Q105 39 82 58"
+        stroke="#C6FA54" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <h1>IrfanTalk</h1>
+    <p>Talk • Chat • Connect</p>
   </div>
 
-  <div id="otpArea" class="hidden">
-   <label>Enter OTP</label>
-   <input id="otp" type="number" placeholder="6-digit OTP">
-   <button class="full" id="verifyOtp">Verify OTP</button>
+  <div class="card" id="authCard">
+    <h2 id="formTitle">Welcome Back</h2>
+
+    <input id="name" type="text"
+      placeholder="Your name" style="display:none">
+
+    <input id="email" type="email"
+      placeholder="Email address">
+
+    <input id="password" type="password"
+      placeholder="Password">
+
+    <button id="mainButton" onclick="submitForm()">Login</button>
+
+    <span class="link" id="switchLink" onclick="switchMode()">
+      New here? Create Account
+    </span>
+
+    <span class="link" onclick="resetPassword()">
+      Forgot Password?
+    </span>
+
+    <p id="message"></p>
   </div>
 
-  <div id="loginError" class="error"></div>
- </div>
-</section>
-
-<!-- APP -->
-<section id="app" class="hidden">
-
- <div class="card">
-  <div class="row">
-   <div style="flex:1">
-    <h2 id="welcome">Hello!</h2>
-    <div class="small" id="userPhone"></div>
-   </div>
-   <button id="logout">Logout</button>
+  <div class="card" id="app">
+    <div class="welcome">
+      <h2>Welcome to IrfanTalk!</h2>
+      <p id="userEmail" class="small"></p>
+      <p>Your account is ready.</p>
+    </div>
+    <button onclick="logout()">Logout</button>
   </div>
- </div>
 
- <div class="tabs">
-  <button class="tab active" id="chatTab">💬 Chat</button>
-  <button class="tab" id="voiceTab">🎙️ Walkie-Talkie</button>
- </div>
-
- <div id="chatSection" class="card">
-  <h2>Friends Chat</h2>
-  <p class="small">IrfanTalk shared demo room</p>
-  <div id="messages"></div>
-
-  <form id="chatForm" class="row">
-   <input id="message" placeholder="Write a message..." autocomplete="off">
-   <button type="submit">Send</button>
-  </form>
-  <div id="chatError" class="error"></div>
- </div>
-
- <div id="voiceSection" class="card hidden">
-  <h2>Walkie-Talkie 🎙️</h2>
-  <p class="small">Talk to your friends instantly.</p>
-  <button class="mic" disabled>🎙️</button>
-  <p class="small" style="text-align:center">
-   Voice transmission is coming in the next development step.
-  </p>
- </div>
-
-</section>
+  <p class="small">Made for friends, made for connection.</p>
 </div>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
 <script>
-// YOUR FIREBASE CONFIGURATION
 const firebaseConfig = {
- apiKey: "AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",
- authDomain: "irfantalk.firebaseapp.com",
- databaseURL: "https://irfantalk-default-rtdb.firebaseio.com",
- projectId: "irfantalk",
- storageBucket: "irfantalk.firebasestorage.app",
- messagingSenderId: "218169866517",
- appId: "1:218169866517:web:447670dc6a565e1e7b511c"
+  apiKey: "AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",
+  authDomain: "irfantalk.firebaseapp.com",
+  databaseURL: "https://irfantalk-default-rtdb.firebaseio.com",
+  projectId: "irfantalk",
+  storageBucket: "irfantalk.firebasestorage.app",
+  messagingSenderId: "218169866517",
+  appId: "1:218169866517:web:447670dc6a565e1e7b511c"
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
-const db = firebase.database();
 
-const $ = id => document.getElementById(id);
+let createMode = false;
 
-let confirmationResult = null;
-let messagesStarted = false;
+function switchMode(){
+  createMode = !createMode;
 
-// SEND OTP
-$("sendOtp").addEventListener("click", async () => {
- const phone = $("phone").value.trim();
- $("loginError").textContent = "";
+  document.getElementById("formTitle").textContent =
+    createMode ? "Create Your Account" : "Welcome Back";
 
- if(!/^\+[1-9]\d{7,14}$/.test(phone)){
-  $("loginError").textContent =
-   "Enter a valid number with country code, e.g. +919876543210";
-  return;
- }
+  document.getElementById("mainButton").textContent =
+    createMode ? "Create Account" : "Login";
 
- try{
-  $("sendOtp").disabled = true;
+  document.getElementById("switchLink").textContent =
+    createMode ? "Already registered? Login" :
+    "New here? Create Account";
 
-  if(!window.recaptchaVerifier){
-   window.recaptchaVerifier =
-    new firebase.auth.RecaptchaVerifier(
-     "recaptcha-container",
-     {size:"normal"}
-    );
-  }
+  document.getElementById("name").style.display =
+    createMode ? "block" : "none";
 
-  await window.recaptchaVerifier.render();
-
-  confirmationResult =
-   await auth.signInWithPhoneNumber(
-    phone,window.recaptchaVerifier
-   );
-
-  $("phoneArea").classList.add("hidden");
-  $("otpArea").classList.remove("hidden");
-  $("loginError").textContent = "";
- }catch(error){
-  $("loginError").textContent = error.message;
-  if(window.recaptchaVerifier){
-   window.recaptchaVerifier.clear();
-   window.recaptchaVerifier = null;
-  }
- }finally{
-  $("sendOtp").disabled = false;
- }
-});
-
-// VERIFY OTP
-$("verifyOtp").addEventListener("click",async()=>{
- const otp = $("otp").value.trim();
- $("loginError").textContent = "";
-
- if(!confirmationResult){
-  $("loginError").textContent = "Please request an OTP first.";
-  return;
- }
-
- try{
-  await confirmationResult.confirm(otp);
- }catch(error){
-  $("loginError").textContent =
-   "OTP verification failed: " + error.message;
- }
-});
-
-// AUTH STATE
-auth.onAuthStateChanged(user=>{
- if(user){
-  $("login").classList.add("hidden");
-  $("app").classList.remove("hidden");
-  $("welcome").textContent = "Welcome to IrfanTalk!";
-  $("userPhone").textContent = user.phoneNumber || "";
-  $("status").textContent = "● Online";
-  startMessages();
- }else{
-  $("app").classList.add("hidden");
-  $("login").classList.remove("hidden");
-  $("status").textContent = "Welcome";
-  $("messages").innerHTML = "";
-  messagesStarted = false;
- }
-});
-
-// REALTIME CHAT
-function startMessages(){
- if(messagesStarted)return;
- messagesStarted = true;
-
- const chatRef = db.ref("lobby/messages")
-  .limitToLast(50);
-
- chatRef.on("child_added",snapshot=>{
-  const data = snapshot.val();
-  if(!data)return;
-
-  const item = document.createElement("div");
-  item.className = "msg";
-
-  const name = document.createElement("small");
-  name.textContent = data.phone || "IrfanTalk User";
-
-  const content = document.createElement("div");
-  content.textContent = data.text || "";
-
-  item.appendChild(name);
-  item.appendChild(content);
-
-  $("messages").appendChild(item);
-  $("messages").scrollTop = $("messages").scrollHeight;
- },error=>{
-  $("chatError").textContent =
-   "Database access error: " + error.message;
- });
+  showMessage("");
 }
 
-// SEND MESSAGE
-$("chatForm").addEventListener("submit",async e=>{
- e.preventDefault();
+function showMessage(text){
+  document.getElementById("message").textContent = text;
+}
 
- const user = auth.currentUser;
- const text = $("message").value.trim();
+async function submitForm(){
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const name = document.getElementById("name").value.trim();
+  const button = document.getElementById("mainButton");
 
- if(!user || !text)return;
+  if(!email || !password){
+    showMessage("Please enter email and password.");
+    return;
+  }
 
- $("chatError").textContent = "";
+  if(password.length < 6){
+    showMessage("Password must be at least 6 characters.");
+    return;
+  }
 
- try{
-  await db.ref("lobby/messages").push({
-   uid:user.uid,
-   phone:user.phoneNumber || "User",
-   text:text,
-   timestamp:firebase.database.ServerValue.TIMESTAMP
-  });
+  if(createMode && !name){
+    showMessage("Please enter your name.");
+    return;
+  }
 
-  $("message").value = "";
- }catch(error){
-  $("chatError").textContent = error.message;
- }
-});
+  button.disabled = true;
+  showMessage("Please wait...");
 
-// LOGOUT
-$("logout").addEventListener("click",()=>{
- auth.signOut();
-});
+  try{
+    if(createMode){
+      const result = await auth.createUserWithEmailAndPassword(
+        email,password
+      );
+      await result.user.updateProfile({displayName:name});
+    }else{
+      await auth.signInWithEmailAndPassword(email,password);
+    }
+  }catch(error){
+    showMessage(error.message);
+  }finally{
+    button.disabled = false;
+  }
+}
 
-// TABS
-$("chatTab").addEventListener("click",()=>{
- $("chatSection").classList.remove("hidden");
- $("voiceSection").classList.add("hidden");
- $("chatTab").classList.add("active");
- $("voiceTab").classList.remove("active");
-});
+async function resetPassword(){
+  const email = document.getElementById("email").value.trim();
 
-$("voiceTab").addEventListener("click",()=>{
- $("chatSection").classList.add("hidden");
- $("voiceSection").classList.remove("hidden");
- $("voiceTab").classList.add("active");
- $("chatTab").classList.remove("active");
+  if(!email){
+    showMessage("First enter your email address.");
+    return;
+  }
+
+  try{
+    await auth.sendPasswordResetEmail(email);
+    showMessage("Password reset email sent. Check your inbox.");
+  }catch(error){
+    showMessage(error.message);
+  }
+}
+
+function logout(){
+  auth.signOut();
+}
+
+auth.onAuthStateChanged(user=>{
+  if(user){
+    document.getElementById("authCard").style.display="none";
+    document.getElementById("app").style.display="block";
+    document.getElementById("userEmail").textContent=user.email;
+  }else{
+    document.getElementById("authCard").style.display="block";
+    document.getElementById("app").style.display="none";
+  }
 });
 </script>
-
 </body>
 </html>
