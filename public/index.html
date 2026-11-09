@@ -475,5 +475,33 @@ async function syncPublicProfile(user){
  };
  try{await db.ref("publicUsers/"+user.uid).set(profile)}
  catch(error){console.error("Profile sync failed:",error)}
+}auth.getRedirectResult().catch(error=>{
+ console.error("Google login error:",error);
+ alert("Google Login Error: "+error.message);
+});
+
+auth.onAuthStateChanged(async user=>{
+ currentUser=user;
+
+ if(user){
+  document.getElementById("welcomeScreen").style.display="none";
+  document.getElementById("authScreen").style.display="none";
+  document.getElementById("dashboard").style.display="block";
+
+  document.getElementById("welcomeName").textContent=
+   "Hello, "+(user.displayName||"Friend")+"!";
+
+  await syncPublicProfile(user);
+ }else{
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("authScreen").style.display="none";
+  document.getElementById("welcomeScreen").style.display="flex";
+ }
+});
+
+function logout(){
+ auth.signOut();
 }
-auth.getRedirectResult().catch
+</script>
+</body>
+</html>
