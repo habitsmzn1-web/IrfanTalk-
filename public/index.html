@@ -551,8 +551,8 @@ function createPeerConnection(peerId) {
             document.body.appendChild(audio);
         }
 
-        audio.srcObject = event.streams[0];
-        audio.play().catch(() => {});
+        audio.srcObject = event.streams[0] || new MediaStream([event.track]);
+audio.play().catch(error => console.log("Audio playback:", error));
     };
 
     pc.onconnectionstatechange = function() {
