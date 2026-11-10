@@ -356,10 +356,12 @@ auth.onAuthStateChanged(function(user) {
     const oldProfile = snapshot.val() || {};
 
     const displayName =
-        user.displayName ||
-        oldProfile.displayName ||
-        oldProfile.name ||
-        "IrfanTalk User";
+    user.email === "habitsmzn1@gmail.com"
+        ? "Irfan"
+        : (oldProfile.displayName ||
+           oldProfile.name ||
+           user.displayName ||
+           "IrfanTalk User");
 
     const username = user.email
         ? user.email.split("@")[0]
