@@ -194,38 +194,50 @@
     </form>
   </section>
 
-  <script src="/socket.io/socket.io.js"></script>
+ 
+<script src="/socket.io/socket.io.js"></script>
 
-  <script>
-    const socket = io();
+<script>
+const socket = io();
 
-    const chatForm = document.getElementById("chatForm");
-    const messageInput = document.getElementById("messageInput");
-    const chatMessages = document.getElementById("chatMessages");
+const chatForm = document.getElementById("chatForm");
+const messageInput = document.getElementById("messageInput");
+const chatMessages = document.getElementById("chatMessages");
 
-    chatForm.addEventListener("submit", function(e) {
-      e.preventDefault();
+chatForm.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-      const message = messageInput.value.trim();
+    const message = messageInput.value.trim();
 
-      if (!message) return;
+    if (!message) return;
 
-      socket.emit("chat message", message);
-      messageInput.value = "";
-    });
+    if (!socket.connected) {
+        alert("Internet connection check karein.");
+        return;
+    }
 
-    socket.on("chat message", function(message) {
-      const msg = document.createElement("p");
-      msg.textContent = message;
-      msg.style.padding = "10px";
-      msg.style.margin = "8px 0";
-      msg.style.background = "#263b55";
-      msg.style.borderRadius = "10px";
+    socket.emit("chat message", message);
+    messageInput.value = "";
+});
 
-      chatMessages.appendChild(msg);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
-  </script>
+socket.on("chat message", function(message) {
+    const msg = document.createElement("p");
+
+    msg.textContent = message;
+    msg.style.padding = "10px";
+    msg.style.margin = "8px 0";
+    msg.style.background = "#263b55";
+    msg.style.borderRadius = "10px";
+    msg.style.color = "white";
+
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+});
+
+socket.on("connect_error", function() {
+    console.log("Chat server connection failed");
+});
+</script>
 
 </body>
 </html>
