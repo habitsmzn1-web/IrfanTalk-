@@ -1,410 +1,419 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<meta name="theme-color" content="#080817">  
+<title>IrfanTalk - Voice Connects</title>  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>  <style>  
+*{box-sizing:border-box}  
+body{margin:0;background:#080817;color:white;font-family:Arial,sans-serif}  
+button,input{font:inherit}  
+button{cursor:pointer}  
+.screen,.dashboard,.panel{  
+ max-width:480px;min-height:100vh;margin:auto;padding:24px 22px;  
+ background:radial-gradient(ellipse at 50% 25%,#251047,#080817 70%);  
+}  
+.screen{display:flex;flex-direction:column;justify-content:space-between}  
+.brand{text-align:center;padding-top:45px}  
+.logo{  
+ width:225px;height:225px;margin:auto;border:2px solid #7139f4;  
+ border-radius:50%;display:flex;align-items:center;justify-content:center;  
+ box-shadow:0 0 40px #7139f455  
+}  
+.logo svg{width:175px;height:175px}  
+.brand h1{font-size:38px;margin:18px 0 7px}  
+.brand h1 span,.dashboard-logo h1 span{color:#12d8f5}  
+.tagline{font-size:12px;letter-spacing:5px;color:#aaa6ce}  
+.auth-area{padding-bottom:15px}  
+.btn,.action{  
+ width:100%;padding:18px;margin:10px 0;border:0;border-radius:17px;  
+ font-size:17px;font-weight:bold  
+}  
+.google{background:white;color:#181525}  
+.google-mark{font-size:22px;color:#4285f4;margin-right:14px}  
+.email-btn,.action{  
+ background:linear-gradient(100deg,#7929ee,#384cf6,#08cce9);color:white  
+}  
+.or{display:flex;align-items:center;gap:15px;color:#999;margin:12px 0}  
+.or:before,.or:after{content:"";height:1px;background:#49445e;flex:1}  
+.login-line{text-align:center;margin:22px 0;color:#ddd}  
+.link{color:#15d9ef;cursor:pointer;font-weight:bold}  
+.legal{text-align:center;font-size:12px;color:#85839b;line-height:1.7}  
+.panel{display:none}  
+.panel h2{text-align:center;margin:20px 0 25px}  
+input{  
+ width:100%;padding:15px;margin:8px 0;border-radius:12px;  
+ border:1px solid #49416c;background:#17142c;color:white;font-size:16px  
+}  
+.back{display:block;text-align:center;padding:14px;color:#15d9ef;cursor:pointer}  
+#status,.message{color:#15d9ef;text-align:center;overflow-wrap:anywhere}  
+.dashboard{display:none;background:#080817}  
+.dashboard-logo{text-align:center;padding:12px 0 25px}  
+.dashboard-logo .logo{width:145px;height:145px}  
+.dashboard-logo .logo svg{width:112px;height:112px}  
+.dashboard-logo h1{font-size:30px;margin:12px 0 5px}  
+.tile{background:#1c1931;border:1px solid #413565;border-radius:17px;padding:20px;margin:13px 0}  
+.tile h3{margin:0 0 10px}  
+.tile p{color:#bbb;line-height:1.5}  
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}  
+.grid button{  
+ background:#25203f;color:white;border:1px solid #514477;  
+ border-radius:15px;padding:20px 5px;font-weight:bold;font-size:16px  
+}  
+.section{display:none}  
+.section-title{font-size:23px;margin:20px 0}  
+.row{  
+ display:flex;align-items:center;gap:12px;padding:13px 4px;  
+ border-bottom:1px solid #383149  
+}  
+.avatar{  
+ width:43px;height:43px;border-radius:50%;background:#4930a0;  
+ display:flex;align-items:center;justify-content:center;  
+ color:white;font-weight:bold;font-size:18px;flex-shrink:0  
+}  
+.person{flex:1;min-width:0}  
+.person strong{display:block;overflow-wrap:anywhere}  
+.person small{color:#aaa}  
+.small-btn{  
+ border:0;border-radius:9px;padding:9px 12px;  
+ background:#7438e9;color:white;font-weight:bold  
+}  
+.accept{background:#14a879}  
+.reject{background:#493d5c}  
+.empty{color:#aaa;text-align:center;padding:20px}  
+.logout{margin-top:25px}  
+.homeBack{color:#15d9ef;cursor:pointer;margin:15px 0;display:inline-block}  
+.invite-option{  
+ display:block;width:100%;padding:16px;margin:12px 0;  
+ border:1px solid #514477;border-radius:13px;  
+ background:#25203f;color:white;font-weight:bold;text-align:center  
+}  
+</style>  </head>  <body>  <main class="screen" id="welcomeScreen">  
+ <div class="brand">  
+  <div class="logo">  
+   <svg viewBox="0 0 200 200" fill="none">  
+    <circle cx="100" cy="100" r="75" stroke="#12D8F5" stroke-width="1.5"/>  
+    <path d="M92 45L104 17L114 48" stroke="#12D8F5" stroke-width="6" stroke-linecap="round"/>  
+    <rect x="65" y="48" width="75" height="112" rx="19" stroke="#12D8F5" stroke-width="6"/>  
+    <rect x="77" y="64" width="51" height="43" rx="8" stroke="#A64AFF" stroke-width="4"/>  
+    <path d="M84 85H91L97 73L104 97L111 80L117 85H122" stroke="#12D8F5" stroke-width="4" stroke-linejoin="round"/>  
+    <path d="M83 122H105M83 136H105" stroke="#A64AFF" stroke-width="5" stroke-linecap="round"/>  
+    <path d="M146 73Q168 100 146 124M55 73Q33 100 55 124" stroke="#12D8F5" stroke-width="5" stroke-linecap="round"/>  
+   </svg>  
+  </div>  
+  <h1>Irfan<span>Talk</span></h1>  
+  <div class="tagline">V O I C E&nbsp; C O N N E C T S</div>  
+ </div>  
+ <div class="auth-area">  
+  <button class="btn google" onclick="googleLogin()"><span class="google-mark">G</span> Sign up with Google</button>  
+  <div class="or">Or</div>  
+  <button class="btn email-btn" onclick="showAuth('signup')">✉ &nbsp; Sign Up with Email</button>  
+  <div class="login-line">Already have an account? <span class="link" onclick="showAuth('login')">Log in</span></div>  
+  <div class="legal">By proceeding, you agree to the<br>User Agreement &amp; Privacy Policy</div>  
+ </div>  
+</main>  <section class="panel" id="authScreen">  
+ <h2 id="authHeading">Create Account</h2>  
+ <input id="nameInput" placeholder="Your name">  
+ <input id="emailInput" type="email" placeholder="Email address">  
+ <input id="passwordInput" type="password" placeholder="Password">  
+ <button class="action" id="authButton" onclick="emailAuth()">Create Account</button>  
+ <span class="back" id="switchLink" onclick="switchMode()">Already registered? Log in</span>  
+ <span class="back" onclick="forgotPassword()">Forgot Password?</span>  
+ <span class="back" onclick="backToWelcome()">Back</span>  
+ <p id="status"></p>  
+</section>  <section class="dashboard" id="dashboard">  
+ <div class="dashboard-logo">  
+  <div class="logo">  
+   <svg viewBox="0 0 200 200" fill="none">  
+    <circle cx="100" cy="100" r="75" stroke="#12D8F5" stroke-width="1.5"/>  
+    <path d="M92 45L104 17L114 48" stroke="#12D8F5" stroke-width="6" stroke-linecap="round"/>  
+    <rect x="65" y="48" width="75" height="112" rx="19" stroke="#12D8F5" stroke-width="6"/>  
+    <rect x="77" y="64" width="51" height="43" rx="8" stroke="#A64AFF" stroke-width="4"/>  
+    <path d="M84 85H91L97 73L104 97L111 80L117 85H122" stroke="#12D8F5" stroke-width="4" stroke-linejoin="round"/>  
+    <path d="M83 122H105M83 136H105" stroke="#A64AFF" stroke-width="5" stroke-linecap="round"/>  
+    <path d="M146 73Q168 100 146 124M55 73Q33 100 55 124" stroke="#12D8F5" stroke-width="5" stroke-linecap="round"/>  
+   </svg>  
+  </div>  
+  <h1>Irfan<span>Talk</span></h1>  
+  <div class="tagline">V O I C E&nbsp; C O N N E C T S</div>  
+ </div>   <div class="tile">  
+  <h3 id="welcomeName">Hello, Friend!</h3>  
+  <p>Your voice. Your friends. Your connection.</p>  
+ </div>  
+ <div class="tile">  
+  <h3>🎙️ Walkie-Talkie</h3>  
+  <p>Live voice communication is coming in the next phase.</p>  
+ </div>   <div class="grid">  
+  <button onclick="openSection('friendsSection')">👥 Friends</button>  
+  <button onclick="openSection('inviteSection')">📨 Invite Friends</button>  
+  <button onclick="openSection('requestsSection')">🔔 Requests</button>  
+  <button onclick="openSection('profileSection')">👤 Profile</button>  
+ </div>   <div class="tile">  
+  <h3>Welcome to IrfanTalk!</h3>  
+  <p>Your friends and conversations will appear inside the app.</p>  
+ </div>   <div class="section tile" id="inviteSection">  
+  <span class="homeBack" onclick="showHome()">← Home</span>  
+  <h2 class="section-title">Invite Friends</h2>  
+  <p>Invite your friends to join IrfanTalk!</p>  
+  <button class="invite-option" onclick="shareInvite()">📤 Share Invite</button>  
+  <button class="invite-option" onclick="whatsappInvite()">🟢 Invite with WhatsApp</button>  
+  <button class="invite-option" onclick="smsInvite()">💬 Invite with SMS</button>  
+  <button class="invite-option" onclick="copyInvite()">📋 Copy Invite Link</button>  
+  <p id="inviteStatus" class="message"></p>  
+ </div>   <div class="section tile" id="searchSection">  
+  <span class="homeBack" onclick="showHome()">← Home</span>  
+  <h2 class="section-title">Find Friends</h2>  
+  <input id="searchEmail" type="email" placeholder="Enter friend's registered email">  
+  <button class="action" onclick="searchFriend()">Search Friend</button>  
+  <div id="searchResult"></div>  
+ </div>   <div class="section tile" id="requestsSection">  
+  <span class="homeBack" onclick="showHome()">← Home</span>  
+  <h2 class="section-title">Friend Requests</h2>  
+  <div id="requestsList"><p class="empty">Loading requests...</p></div>  
+ </div>   <div class="section tile" id="friendsSection">  
+  <span class="homeBack" onclick="showHome()">← Home</span>  
+  <h2 class="section-title">My Friends</h2>  
+  <div id="friendsList"><p class="empty">Loading friends...</p></div>  
+ </div>   <div class="section tile" id="profileSection">  
+  <span class="homeBack" onclick="showHome()">← Home</span>  
+  <h2 class="section-title">My Profile</h2>  
+  <div id="profileInfo"></div>  
+ </div>  <button class="action logout" onclick="logout()">Logout</button>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080817">
-<title>IrfanTalk - Voice Connects</title>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#080817;color:white;font-family:Arial,sans-serif}
-button,input{font:inherit}
-button{cursor:pointer}
-.screen,.dashboard,.panel{
- max-width:480px;min-height:100vh;margin:auto;padding:24px 22px;
- background:radial-gradient(ellipse at 50% 25%,#251047,#080817 70%);
-}
-.screen{display:flex;flex-direction:column;justify-content:space-between}
-.brand{text-align:center;padding-top:45px}
-.logo{
- width:225px;height:225px;margin:auto;border:2px solid #7139f4;
- border-radius:50%;display:flex;align-items:center;justify-content:center;
- box-shadow:0 0 40px #7139f455
-}
-.logo svg{width:175px;height:175px}
-.brand h1{font-size:38px;margin:18px 0 7px}
-.brand h1 span,.dashboard-logo h1 span{color:#12d8f5}
-.tagline{font-size:12px;letter-spacing:5px;color:#aaa6ce}
-.auth-area{padding-bottom:15px}
-.btn,.action{
- width:100%;padding:18px;margin:10px 0;border:0;border-radius:17px;
- font-size:17px;font-weight:bold
-}
-.google{background:white;color:#181525}
-.google-mark{font-size:22px;color:#4285f4;margin-right:14px}
-.email-btn,.action{
- background:linear-gradient(100deg,#7929ee,#384cf6,#08cce9);color:white
-}
-.or{display:flex;align-items:center;gap:15px;color:#999;margin:12px 0}
-.or:before,.or:after{content:"";height:1px;background:#49445e;flex:1}
-.login-line{text-align:center;margin:22px 0;color:#ddd}
-.link{color:#15d9ef;cursor:pointer;font-weight:bold}
-.legal{text-align:center;font-size:12px;color:#85839b;line-height:1.7}
-.panel{display:none}
-.panel h2{text-align:center;margin:20px 0 25px}
-input{
- width:100%;padding:15px;margin:8px 0;border-radius:12px;
- border:1px solid #49416c;background:#17142c;color:white;font-size:16px
-}
-.back{display:block;text-align:center;padding:14px;color:#15d9ef;cursor:pointer}
-#status,.message{color:#15d9ef;text-align:center;overflow-wrap:anywhere}
-.dashboard{display:none;background:#080817}
-.dashboard-logo{text-align:center;padding:12px 0 25px}
-.dashboard-logo .logo{width:145px;height:145px}
-.dashboard-logo .logo svg{width:112px;height:112px}
-.dashboard-logo h1{font-size:30px;margin:12px 0 5px}
-.tile{background:#1c1931;border:1px solid #413565;border-radius:17px;padding:20px;margin:13px 0}
-.tile h3{margin:0 0 10px}
-.tile p{color:#bbb;line-height:1.5}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
-.grid button{
- background:#25203f;color:white;border:1px solid #514477;
- border-radius:15px;padding:20px 5px;font-weight:bold;font-size:16px
-}
-.section{display:none}
-.section-title{font-size:23px;margin:20px 0}
-.row{
- display:flex;align-items:center;gap:12px;padding:13px 4px;
- border-bottom:1px solid #383149
-}
-.avatar{
- width:43px;height:43px;border-radius:50%;background:#4930a0;
- display:flex;align-items:center;justify-content:center;
- color:white;font-weight:bold;font-size:18px;flex-shrink:0
-}
-.person{flex:1;min-width:0}
-.person strong{display:block;overflow-wrap:anywhere}
-.person small{color:#aaa}
-.small-btn{
- border:0;border-radius:9px;padding:9px 12px;
- background:#7438e9;color:white;font-weight:bold
-}
-.accept{background:#14a879}
-.reject{background:#493d5c}
-.empty{color:#aaa;text-align:center;padding:20px}
-.logout{margin-top:25px}
-.homeBack{color:#15d9ef;cursor:pointer;margin:15px 0;display:inline-block}
-</style>
-</head>
-
-<body>
-
-<!-- OFFICIAL IRFANTALK WELCOME SCREEN -->
-<main class="screen" id="welcomeScreen">
- <div class="brand">
-  <div class="logo">
-   <svg viewBox="0 0 200 200" fill="none">
-    <circle cx="100" cy="100" r="75" stroke="#12D8F5" stroke-width="1.5"/>
-    <path d="M92 45L104 17L114 48" stroke="#12D8F5" stroke-width="6" stroke-linecap="round"/>
-    <rect x="65" y="48" width="75" height="112" rx="19" stroke="#12D8F5" stroke-width="6"/>
-    <rect x="77" y="64" width="51" height="43" rx="8" stroke="#A64AFF" stroke-width="4"/>
-    <path d="M84 85H91L97 73L104 97L111 80L117 85H122" stroke="#12D8F5" stroke-width="4" stroke-linejoin="round"/>
-    <path d="M83 122H105M83 136H105" stroke="#A64AFF" stroke-width="5" stroke-linecap="round"/>
-    <path d="M146 73Q168 100 146 124M55 73Q33 100 55 124" stroke="#12D8F5" stroke-width="5" stroke-linecap="round"/>
-   </svg>
-  </div>
-  <h1>Irfan<span>Talk</span></h1>
-  <div class="tagline">V O I C E&nbsp; C O N N E C T S</div>
- </div>
- <div class="auth-area">
-  <button class="btn google" onclick="googleLogin()"><span class="google-mark">G</span> Sign up with Google</button>
-  <div class="or">Or</div>
-  <button class="btn email-btn" onclick="showAuth('signup')">✉ &nbsp; Sign Up with Email</button>
-  <div class="login-line">Already have an account? <span class="link" onclick="showAuth('login')">Log in</span></div>
-  <div class="legal">By proceeding, you agree to the<br>User Agreement &amp; Privacy Policy</div>
- </div>
-</main>
-
-<!-- EMAIL LOGIN / SIGNUP -->
-<section class="panel" id="authScreen">
- <h2 id="authHeading">Create Account</h2>
- <input id="nameInput" placeholder="Your name">
- <input id="emailInput" type="email" placeholder="Email address">
- <input id="passwordInput" type="password" placeholder="Password">
- <button class="action" id="authButton" onclick="emailAuth()">Create Account</button>
- <span class="back" id="switchLink" onclick="switchMode()">Already registered? Log in</span>
- <span class="back" onclick="forgotPassword()">Forgot Password?</span>
- <span class="back" onclick="backToWelcome()">Back</span>
- <p id="status"></p>
-</section>
-
-<!-- DASHBOARD -->
-<section class="dashboard" id="dashboard">
- <div class="dashboard-logo">
-  <div class="logo">
-   <svg viewBox="0 0 200 200" fill="none">
-    <circle cx="100" cy="100" r="75" stroke="#12D8F5" stroke-width="1.5"/>
-    <path d="M92 45L104 17L114 48" stroke="#12D8F5" stroke-width="6" stroke-linecap="round"/>
-    <rect x="65" y="48" width="75" height="112" rx="19" stroke="#12D8F5" stroke-width="6"/>
-    <rect x="77" y="64" width="51" height="43" rx="8" stroke="#A64AFF" stroke-width="4"/>
-    <path d="M84 85H91L97 73L104 97L111 80L117 85H122" stroke="#12D8F5" stroke-width="4" stroke-linejoin="round"/>
-    <path d="M83 122H105M83 136H105" stroke="#A64AFF" stroke-width="5" stroke-linecap="round"/>
-    <path d="M146 73Q168 100 146 124M55 73Q33 100 55 124" stroke="#12D8F5" stroke-width="5" stroke-linecap="round"/>
-   </svg>
-  </div>
-  <h1>Irfan<span>Talk</span></h1>
-  <div class="tagline">V O I C E&nbsp; C O N N E C T S</div>
- </div>
-
- <div class="tile">
-  <h3 id="welcomeName">Hello, Friend!</h3>
-  <p>Your voice. Your friends. Your connection.</p>
- </div>
- <div class="tile">
-  <h3>🎙️ Walkie-Talkie</h3>
-  <p>Live voice communication is coming in the next phase.</p>
- </div>
- <div class="grid">
-  <button onclick="openSection('friendsSection')">👥 Friends</button>
-  <button onclick="openSection('searchSection')">➕ Add Friends</button>
-  <button onclick="openSection('requestsSection')">🔔 Requests</button>
-  <button onclick="openSection('profileSection')">👤 Profile</button>
- </div>
- <div class="tile">
-  <h3>Welcome to IrfanTalk!</h3>
-  <p>Your friends and conversations will appear inside the app.</p>
- </div>
-
- <!-- FRIEND SEARCH -->
- <div class="section tile" id="searchSection">
-  <span class="homeBack" onclick="showHome()">← Home</span>
-  <h2 class="section-title">Find Friends</h2>
-  <input id="searchEmail" type="email" placeholder="Enter friend's registered email">
-  <button class="action" onclick="searchFriend()">Search Friend</button>
-  <div id="searchResult"></div>
- </div>
-
- <!-- FRIEND REQUESTS -->
- <div class="section tile" id="requestsSection">
-  <span class="homeBack" onclick="showHome()">← Home</span>
-  <h2 class="section-title">Friend Requests</h2>
-  <div id="requestsList"><p class="empty">Loading requests...</p></div>
- </div>
-
- <!-- FRIENDS LIST -->
- <div class="section tile" id="friendsSection">
-  <span class="homeBack" onclick="showHome()">← Home</span>
-  <h2 class="section-title">My Friends</h2>
-  <div id="friendsList"><p class="empty">Loading friends...</p></div>
- </div>
-
- <!-- PROFILE -->
- <div class="section tile" id="profileSection">
-  <span class="homeBack" onclick="showHome()">← Home</span>
-  <h2 class="section-title">My Profile</h2>
-  <div id="profileInfo"></div>
- </div>
-
- <button class="action logout" onclick="logout()">Logout</button>
-</section>
-
-<script>
-const firebaseConfig = {
- apiKey: "AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",
- authDomain: "irfantalk.firebaseapp.com",
- databaseURL: "https://irfantalk-default-rtdb.firebaseio.com",
- projectId: "irfantalk",
- storageBucket: "irfantalk.firebasestorage.app",
- messagingSenderId: "218169866517",
- appId: "1:218169866517:web:447670dc6a565e1e7b511c"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-let mode = "signup";
-let currentUser = null;
-
-function showAuth(type){
- mode=type;
- document.getElementById("welcomeScreen").style.display="none";
- document.getElementById("dashboard").style.display="none";
- document.getElementById("authScreen").style.display="block";
- document.getElementById("nameInput").style.display=type==="signup"?"block":"none";
- document.getElementById("authHeading").textContent=type==="signup"?"Create Account":"Welcome Back";
- document.getElementById("authButton").textContent=type==="signup"?"Create Account":"Login";
- document.getElementById("switchLink").textContent=type==="signup"?"Already registered? Log in":"New here? Create Account";
- document.getElementById("status").textContent="";
-}
-function switchMode(){showAuth(mode==="signup"?"login":"signup")}
-function backToWelcome(){
- document.getElementById("authScreen").style.display="none";
- document.getElementById("welcomeScreen").style.display="flex";
-}
-async function emailAuth(){
- const email=document.getElementById("emailInput").value.trim().toLowerCase();
- const password=document.getElementById("passwordInput").value;
- const name=document.getElementById("nameInput").value.trim();
- const status=document.getElementById("status");
- if(!email||!password){status.textContent="Enter your email and password.";return}
- if(password.length<6){status.textContent="Password must be at least 6 characters.";return}
- if(mode==="signup"&&!name){status.textContent="Enter your name.";return}
- status.textContent="Please wait...";
- try{
-  if(mode==="signup"){
-   const result=await auth.createUserWithEmailAndPassword(email,password);
-   await result.user.updateProfile({displayName:name});
-  }else{
-   await auth.signInWithEmailAndPassword(email,password);
-  }
- }catch(error){status.textContent=error.message}
-}
-async function googleLogin(){
- try{
-  await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
- }catch(error){alert(error.message)}
-}
-async function forgotPassword(){
- const email=document.getElementById("emailInput").value.trim();
- const status=document.getElementById("status");
- if(!email){status.textContent="Enter your email address first.";return}
- try{
-  await auth.sendPasswordResetEmail(email);
-  status.textContent="Password reset email sent. Check your inbox.";
- }catch(error){status.textContent=error.message}
-}
-function openSection(id){
- document.querySelectorAll(".section").forEach(el=>el.style.display="none");
- document.getElementById(id).style.display="block";
- if(id==="friendsSection")loadFriends();
- if(id==="requestsSection")loadRequests();
- if(id==="profileSection")showProfile();
-}
-function showHome(){
- document.querySelectorAll(".section").forEach(el=>el.style.display="none");
-}
-function safeText(value){
- return String(value||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-async function searchFriend(){
- const email=document.getElementById("searchEmail").value.trim().toLowerCase();
- const result=document.getElementById("searchResult");
- result.innerHTML="";
- if(!email||!email.includes("@")){result.textContent="Please enter a valid email address.";return}
- if(email===currentUser.email.toLowerCase()){result.textContent="This is your own email address.";return}
- result.textContent="Searching...";
- try{
-  const snapshot=await db.ref("publicUsers").orderByChild("email").equalTo(email).limitToFirst(1).once("value");
-  if(!snapshot.exists()){result.textContent="No IrfanTalk account found with this email.";return}
-  const uid=Object.keys(snapshot.val())[0];
-  const person=snapshot.val()[uid];
-  const already=await db.ref("friends/"+currentUser.uid+"/"+uid).once("value");
-  if(already.exists()){result.textContent="You are already friends.";return}
-  const pending=await db.ref("friendRequests/"+uid+"/"+currentUser.uid).once("value");
-  if(pending.exists()){result.textContent="Friend request already sent.";return}
-  result.innerHTML="<div class='row'><div class='avatar'>"+safeText((person.name||"F").charAt(0).toUpperCase())+"</div><div class='person'><strong>"+safeText(person.name)+"</strong><small>"+safeText(person.email)+"</small></div><button class='small-btn' onclick=\"sendRequest('"+uid+"','"+safeText(person.name).replace(/'/g,"&#39;")+"','"+safeText(person.email)+"')\">Add</button></div>";
- }catch(error){result.textContent="Search failed: "+error.message}
-}
-async function sendRequest(uid,name,email){
- const result=document.getElementById("searchResult");
- try{
-  await db.ref("friendRequests/"+uid+"/"+currentUser.uid).set({
-   senderUid:currentUser.uid,
-   senderName:currentUser.displayName||currentUser.email.split("@")[0],
-   senderEmail:currentUser.email.toLowerCase(),
-   status:"pending",
-   createdAt:firebase.database.ServerValue.TIMESTAMP
-  });
-  result.textContent="Friend request sent!";
- }catch(error){result.textContent="Could not send request: "+error.message}
-}
-async function loadRequests(){
- const list=document.getElementById("requestsList");
- list.innerHTML="<p class='empty'>Loading...</p>";
- try{
-  const snap=await db.ref("friendRequests/"+currentUser.uid).once("value");
-  list.innerHTML="";
-  if(!snap.exists()){list.innerHTML="<p class='empty'>No incoming requests yet.</p>";return}
-  snap.forEach(child=>{
-   const req=child.val();
-   if(req.status!=="pending")return;
-   const sender=child.key;
-   const row=document.createElement("div");
-   row.className="row";
-   const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=(req.senderName||"F").charAt(0).toUpperCase();
-   const person=document.createElement("div");person.className="person";
-   const strong=document.createElement("strong");strong.textContent=req.senderName||"Friend";
-   const small=document.createElement("small");small.textContent=req.senderEmail||"";
-   person.append(strong,small);
-   const accept=document.createElement("button");accept.className="small-btn accept";accept.textContent="Accept";
-   accept.onclick=()=>respondRequest(sender,"accepted");
-   const reject=document.createElement("button");reject.className="small-btn reject";reject.textContent="Reject";
-   reject.onclick=()=>respondRequest(sender,"rejected");
-   row.append(avatar,person,accept,reject);list.appendChild(row);
-  });
-  if(!list.children.length)list.innerHTML="<p class='empty'>No pending requests.</p>";
- }catch(error){list.textContent="Could not load requests: "+error.message}
-}
-async function respondRequest(sender,status){
- try{
-  const requestRef=db.ref("friendRequests/"+currentUser.uid+"/"+sender);
-  const snap=await requestRef.once("value");
-  if(!snap.exists()){alert("Request not found.");return}
-  const req=snap.val();
-  if(status==="accepted"){
-   await requestRef.update({status:"accepted"});
-   const myRecord={uid:sender,name:req.senderName||"Friend",email:req.senderEmail||""};
-   const theirRecord={uid:currentUser.uid,name:currentUser.displayName||"Friend",email:currentUser.email.toLowerCase()};
-   await db.ref("friends/"+currentUser.uid+"/"+sender).set(myRecord);
-   await db.ref("friends/"+sender+"/"+currentUser.uid).set(theirRecord);
-  }else{
-   await requestRef.update({status:"rejected"});
-  }
-  loadRequests();
- }catch(error){alert("Could not update request: "+error.message)}
-}
-async function loadFriends(){
- const list=document.getElementById("friendsList");
- list.innerHTML="<p class='empty'>Loading...</p>";
- try{
-  const snap=await db.ref("friends/"+currentUser.uid).once("value");
-  list.innerHTML="";
-  if(!snap.exists()){list.innerHTML="<p class='empty'>No friends yet. Search by email to add friends.</p>";return}
-  snap.forEach(child=>{
-   const friend=child.val();
-   const row=document.createElement("div");row.className="row";
-   const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=(friend.name||"F").charAt(0).toUpperCase();
-   const person=document.createElement("div");person.className="person";
-   const strong=document.createElement("strong");strong.textContent=friend.name||"Friend";
-   const small=document.createElement("small");small.textContent=friend.email||"";
-   person.append(strong,small);row.append(avatar,person);list.appendChild(row);
-  });
- }catch(error){list.textContent="Could not load friends: "+error.message}
-}
-function showProfile(){
- document.getElementById("profileInfo").textContent=
-  "Name: "+(currentUser.displayName||"Friend")+" | Email: "+currentUser.email;
-}
-async function syncPublicProfile(user){
- const profile={
-  name:user.displayName||user.email.split("@")[0],
-  email:user.email.toLowerCase()
- };
- try{await db.ref("publicUsers/"+user.uid).set(profile)}
- catch(error){console.error("Profile sync failed:",error)}
-}
-auth.getRedirectResult().catch(error=>console.error(error));
-auth.onAuthStateChanged(async user=>{
- currentUser=user;
- if(user){
-  document.getElementById("welcomeScreen").style.display="none";
-  document.getElementById("authScreen").style.display="none";
-  document.getElementById("dashboard").style.display="block";
-  document.getElementById("welcomeName").textContent="Hello, "+(user.displayName||"Friend")+"!";
-  await syncPublicProfile(user);
- }else{
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("authScreen").style.display="none";
-  document.getElementById("welcomeScreen").style.display="flex";
- }
-});
-async function logout(){await auth.signOut()}
-</script>
-</body>
-</html>
+</section>  <script>  
+const firebaseConfig = {  
+ apiKey: "AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",  
+ authDomain: "irfantalk.firebaseapp.com",  
+ databaseURL: "https://irfantalk-default-rtdb.firebaseio.com",  
+ projectId: "irfantalk",  
+ storageBucket: "irfantalk.firebasestorage.app",  
+ messagingSenderId: "218169866517",  
+ appId: "1:218169866517:web:447670dc6a565e1e7b511c"  
+};  
+  
+firebase.initializeApp(firebaseConfig);  
+const auth=firebase.auth();  
+const db=firebase.database();  
+let mode="signup";  
+let currentUser=null;  
+  
+function showAuth(type){  
+ mode=type;  
+ document.getElementById("welcomeScreen").style.display="none";  
+ document.getElementById("dashboard").style.display="none";  
+ document.getElementById("authScreen").style.display="block";  
+ document.getElementById("nameInput").style.display=type==="signup"?"block":"none";  
+ document.getElementById("authHeading").textContent=type==="signup"?"Create Account":"Welcome Back";  
+ document.getElementById("authButton").textContent=type==="signup"?"Create Account":"Login";  
+ document.getElementById("switchLink").textContent=type==="signup"?"Already registered? Log in":"New here? Create Account";  
+ document.getElementById("status").textContent="";  
+}  
+function switchMode(){showAuth(mode==="signup"?"login":"signup")}  
+function backToWelcome(){  
+ document.getElementById("authScreen").style.display="none";  
+ document.getElementById("welcomeScreen").style.display="flex";  
+}  
+async function emailAuth(){  
+ const email=document.getElementById("emailInput").value.trim().toLowerCase();  
+ const password=document.getElementById("passwordInput").value;  
+ const name=document.getElementById("nameInput").value.trim();  
+ const status=document.getElementById("status");  
+ if(!email||!password){status.textContent="Enter your email and password.";return}  
+ if(password.length<6){status.textContent="Password must be at least 6 characters.";return}  
+ if(mode==="signup"&&!name){status.textContent="Enter your name.";return}  
+ status.textContent="Please wait...";  
+ try{  
+  if(mode==="signup"){  
+   const result=await auth.createUserWithEmailAndPassword(email,password);  
+   await result.user.updateProfile({displayName:name});  
+  }else{  
+   await auth.signInWithEmailAndPassword(email,password);  
+  }  
+ }catch(error){status.textContent=error.message}  
+}  
+async function googleLogin(){  
+ try{  
+  await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());  
+ }catch(error){alert(error.message)}  
+}  
+async function forgotPassword(){  
+ const email=document.getElementById("emailInput").value.trim();  
+ const status=document.getElementById("status");  
+ if(!email){status.textContent="Enter your email address first.";return}  
+ try{  
+  await auth.sendPasswordResetEmail(email);  
+  status.textContent="Password reset email sent. Check your inbox.";  
+ }catch(error){status.textContent=error.message}  
+}  
+  
+function openSection(id){  
+ document.querySelectorAll(".section").forEach(el=>el.style.display="none");  
+ document.getElementById(id).style.display="block";  
+ if(id==="friendsSection")loadFriends();  
+ if(id==="requestsSection")loadRequests();  
+ if(id==="profileSection")showProfile();  
+}  
+function showHome(){  
+ document.querySelectorAll(".section").forEach(el=>el.style.display="none");  
+}  
+function safeText(value){  
+ return String(value||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));  
+}  
+  
+/* INVITE FRIENDS */  
+function inviteUrl(){  
+ return window.location.origin;  
+}  
+function inviteMessage(){  
+ return "Join me on IrfanTalk! Let's chat and talk together. Open IrfanTalk here: "+inviteUrl();  
+}  
+async function shareInvite(){  
+ const status=document.getElementById("inviteStatus");  
+ try{  
+  if(navigator.share){  
+   await navigator.share({title:"Join IrfanTalk",text:inviteMessage(),url:inviteUrl()});  
+   status.textContent="Invite shared!";  
+  }else{  
+   await copyInvite();  
+  }  
+ }catch(error){  
+  if(error.name!=="AbortError")status.textContent="Sharing was not completed. Try WhatsApp or Copy Link.";  
+ }  
+}  
+function whatsappInvite(){  
+ const url="https://wa.me/?text="+encodeURIComponent(inviteMessage());  
+ window.open(url,"_blank");  
+}  
+function smsInvite(){  
+ const body=encodeURIComponent(inviteMessage());  
+ window.location.href="sms:?body="+body;  
+}  
+async function copyInvite(){  
+ const status=document.getElementById("inviteStatus");  
+ try{  
+  await navigator.clipboard.writeText(inviteUrl());  
+  status.textContent="Invite link copied! Now share it with your friends.";  
+ }catch(error){  
+  status.textContent="Please copy this link: "+inviteUrl();  
+ }  
+}  
+  
+/* FRIEND SEARCH */  
+async function searchFriend(){  
+ const email=document.getElementById("searchEmail").value.trim().toLowerCase();  
+ const result=document.getElementById("searchResult");  
+ result.innerHTML="";  
+ if(!email||!email.includes("@")){result.textContent="Please enter a valid email address.";return}  
+ if(!currentUser||email===currentUser.email.toLowerCase()){result.textContent="This is your own email address.";return}  
+ result.textContent="Searching...";  
+ try{  
+  const snapshot=await db.ref("publicUsers").orderByChild("email").equalTo(email).limitToFirst(1).once("value");  
+  if(!snapshot.exists()){result.textContent="No IrfanTalk account found with this email.";return}  
+  const uid=Object.keys(snapshot.val())[0];  
+  const person=snapshot.val()[uid];  
+  const already=await db.ref("friends/"+currentUser.uid+"/"+uid).once("value");  
+  if(already.exists()){result.textContent="You are already friends.";return}  
+  const pending=await db.ref("friendRequests/"+uid+"/"+currentUser.uid).once("value");  
+  if(pending.exists()){result.textContent="Friend request already sent.";return}  
+  const row=document.createElement("div");  
+  row.className="row";  
+  const avatar=document.createElement("div");  
+  avatar.className="avatar";  
+  avatar.textContent=(person.name||"F").charAt(0).toUpperCase();  
+  const personBox=document.createElement("div");  
+  personBox.className="person";  
+  const strong=document.createElement("strong");  
+  strong.textContent=person.name||"Friend";  
+  const small=document.createElement("small");  
+  small.textContent=person.email||"";  
+  const add=document.createElement("button");  
+  add.className="small-btn";  
+  add.textContent="Add";  
+  add.onclick=()=>sendRequest(uid);  
+  personBox.append(strong,small);  
+  row.append(avatar,personBox,add);  
+  result.appendChild(row);  
+ }catch(error){result.textContent="Search failed: "+error.message}  
+}  
+async function sendRequest(uid){  
+ const result=document.getElementById("searchResult");  
+ try{  
+  await db.ref("friendRequests/"+uid+"/"+currentUser.uid).set({  
+   senderUid:currentUser.uid,  
+   senderName:currentUser.displayName||currentUser.email.split("@")[0],  
+   senderEmail:currentUser.email.toLowerCase(),  
+   status:"pending",  
+   createdAt:firebase.database.ServerValue.TIMESTAMP  
+  });  
+  result.textContent="Friend request sent!";  
+ }catch(error){result.textContent="Could not send request: "+error.message}  
+}  
+async function loadRequests(){  
+ const list=document.getElementById("requestsList");  
+ list.innerHTML="<p class='empty'>Loading...</p>";  
+ try{  
+  const snap=await db.ref("friendRequests/"+currentUser.uid).once("value");  
+  list.innerHTML="";  
+  if(!snap.exists()){list.innerHTML="<p class='empty'>No incoming requests yet.</p>";return}  
+  snap.forEach(child=>{  
+   const req=child.val();  
+   if(req.status!=="pending")return;  
+   const sender=child.key;  
+   const row=document.createElement("div");  
+   row.className="row";  
+   const avatar=document.createElement("div");  
+   avatar.className="avatar";  
+   avatar.textContent=(req.senderName||"F").charAt(0).toUpperCase();  
+   const person=document.createElement("div");  
+   person.className="person";  
+   const strong=document.createElement("strong");  
+   strong.textContent=req.senderName||"Friend";  
+   const small=document.createElement("small");  
+   small.textContent=req.senderEmail||"";  
+   person.append(strong,small);  
+   const accept=document.createElement("button");  
+   accept.className="small-btn accept";  
+   accept.textContent="Accept";  
+   accept.onclick=()=>respondRequest(sender,"accepted");  
+   const reject=document.createElement("button");  
+   reject.className="small-btn reject";  
+   reject.textContent="Reject";  
+   reject.onclick=()=>respondRequest(sender,"rejected");  
+   row.append(avatar,person,accept,reject);  
+   list.appendChild(row);  
+  });  
+  if(!list.children.length)list.innerHTML="<p class='empty'>No pending requests.</p>";  
+ }catch(error){list.textContent="Could not load requests: "+error.message}  
+}  
+async function respondRequest(sender,status){  
+ try{  
+  const requestRef=db.ref("friendRequests/"+currentUser.uid+"/"+sender);  
+  const snap=await requestRef.once("value");  
+  if(!snap.exists()){alert("Request not found.");return}  
+  const req=snap.val();  
+  if(status==="accepted"){  
+   await requestRef.update({status:"accepted"});  
+   const myRecord={uid:sender,name:req.senderName||"Friend",email:req.senderEmail||""};  
+   const theirRecord={uid:currentUser.uid,name:currentUser.displayName||"Friend",email:currentUser.email.toLowerCase()};  
+   await db.ref("friends/"+currentUser.uid+"/"+sender).set(myRecord);  
+   await db.ref("friends/"+sender+"/"+currentUser.uid).set(theirRecord);  
+  }else{  
+   await requestRef.update({status:"rejected"});  
+  }  
+  loadRequests();  
+ }catch(error){alert("Could not update request: "+error.message)}  
+}  
+async function loadFriends(){  
+ const list=document.getElementById("friendsList");  
+ list.innerHTML="<p class='empty'>Loading...</p>";  
+ try{  
+  const snap=await db.ref("friends/"+currentUser.uid).once("value");  
+  list.innerHTML="";  
+  if(!snap.exists()){list.innerHTML="<p class='empty'>No friends yet. Invite a friend to join IrfanTalk.</p>";return}  
+  snap.forEach(child=>{  
+   const friend=child.val();  
+   const row=document.createElement("div");  
+   row.className="row";  
+   const avatar=document.createElement("div");  
+   avatar.className="avatar";  
+   avatar.textContent=(friend.name||"F").charAt(0).toUpperCase();  
+   const person=document.createElement("div")
