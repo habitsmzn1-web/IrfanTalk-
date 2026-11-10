@@ -138,37 +138,61 @@ input{
 </section>
 
 <section class="dashboard" id="dashboard">
- <div class="dashboard-logo">
-  <div class="logo">
-   <svg viewBox="0 0 200 200" fill="none">
-    <circle cx="100" cy="100" r="75" stroke="#12D8F5" stroke-width="1.5"/>
-    <path d="M92 45L104 17L114 48" stroke="#12D8F5" stroke-width="6" stroke-linecap="round"/>
-    <rect x="65" y="48" width="75" height="112" rx="19" stroke="#12D8F5" stroke-width="6"/>
-    <rect x="77" y="64" width="51" height="43" rx="8" stroke="#A64AFF" stroke-width="4"/>
-    <path d="M84 85H91L97 73L104 97L111 80L117 85H122" stroke="#12D8F5" stroke-width="4" stroke-linejoin="round"/>
-    <path d="M83 122H105M83 136H105" stroke="#A64AFF" stroke-width="5" stroke-linecap="round"/>
-    <path d="M146 73Q168 100 146 124M55 73Q33 100 55 124" stroke="#12D8F5" stroke-width="5" stroke-linecap="round"/>
-   </svg>
+ <div style="background:#191919;color:white;min-height:100vh;padding:18px 12px 30px">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:12px">
+    <div onclick="openSection('profileSection')" style="font-size:25px">👤</div>
+    <div style="background:#343d20;color:#c4f45c;border-radius:25px;padding:12px 18px">
+      🔊 Autoplay
+    </div>
+    <div onclick="openSection('searchSection')" style="font-size:25px">🔍</div>
+    <div onclick="openSection('inviteSection')" style="font-size:25px">👤＋</div>
+  </header>
+
+  <div style="background:#050505;border:2px solid #292929;border-radius:32px;padding:22px 12px;margin-top:18px">
+
+    <div style="display:flex;justify-content:space-around;align-items:center;text-align:center;gap:8px">
+
+      <div onclick="openSection('searchSection')">
+        <div style="background:#292929;border-radius:50%;width:90px;height:90px;display:grid;place-items:center;font-size:35px">＋</div>
+        <p>New Chat</p>
+      </div>
+
+      <div onclick="openSection('friendsSection')">
+        <div style="background:#b9360b;border-radius:50%;width:125px;height:125px;display:grid;place-items:center;font-size:65px">👤</div>
+        <h3 id="homeUserName">You</h3>
+      </div>
+
+      <div onclick="openSection('friendsSection')">
+        <div style="background:#07545e;border-radius:50%;width:90px;height:90px;display:grid;place-items:center;font-size:35px">👥</div>
+        <p>Friends</p>
+      </div>
+
+    </div>
+
+    <div onclick="openSection('friendsSection')" style="background:#202020;border-radius:30px;padding:25px;margin-top:35px">
+      <p style="font-size:23px">Welcome to IrfanTalk</p>
+      <p style="color:#aaa">Your chats and voice calls will appear here.</p>
+      <p style="text-align:right;color:#aaa">Chat ›</p>
+    </div>
+
   </div>
-  <h1>Irfan<span>Talk</span></h1>
-  <div class="tagline">V O I C E&nbsp; C O N N E C T S</div>
- </div>
 
- <div class="tile">
-  <h3 id="welcomeName">Hello, Friend!</h3>
-  <p>Your voice. Your friends. Your connection.</p>
- </div>
- <div class="tile">
-  <h3>🎙️ Walkie-Talkie</h3>
-  <p>Live voice communication is coming in the next phase.</p>
- </div>
+  <div style="display:flex;justify-content:center;margin:65px 0">
+    <button onclick="alert('Walkie-Talkie voice feature is coming next!')"
+      style="width:250px;height:250px;border:0;border-radius:50%;background:linear-gradient(135deg,#777,#292929);color:white;font-size:65px">
+      🎙️
+    </button>
+  </div>
 
- <div class="grid">
-  <button onclick="openSection('friendsSection')">👥 Friends</button>
-  <button onclick="openSection('searchSection')">🔍 Find Friends</button>
-  <button onclick="openSection('inviteSection')">📨 Invite Friends</button>
-  <button onclick="openSection('requestsSection')">🔔 Requests</button>
-  <button onclick="openSection('profileSection')">👤 Profile</button>
+  <div style="background:#292929;border-radius:50px;padding:18px;display:flex;justify-content:space-around;font-size:27px">
+    <span onclick="openSection('friendsSection')">👥</span>
+    <span onclick="openSection('friendsSection')">🎙️</span>
+    <span onclick="openSection('requestsSection')">🔔</span>
+    <span onclick="openSection('inviteSection')">▦</span>
+    <span onclick="openSection('profileSection')">＋</span>
+  </div>
+
 </div>
 
  <div class="tile">
