@@ -346,7 +346,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-
+const db = firebase.database();
  // Show app after successful login
 auth.onAuthStateChanged(function(user) {
   const loginScreen = document.getElementById("loginScreen");
