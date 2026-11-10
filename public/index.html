@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080817">
 <title>IrfanTalk - Voice Connects</title>
 
@@ -13,12 +13,17 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080817;color:white;font-family:Arial,sans-serif}
+body{
+ margin:0;background:#080817;color:white;
+ font-family:Arial,sans-serif
+}
 button,input{font:inherit}
 button{cursor:pointer}
-.screen,.dashboard,.panel{
+button:disabled{opacity:.5;cursor:not-allowed}
+
+.screen,.panel{
  max-width:480px;min-height:100vh;margin:auto;padding:24px 22px;
- background:radial-gradient(ellipse at 50% 25%,#251047,#080817 70%);
+ background:radial-gradient(ellipse at 50% 25%,#251047,#080817 75%)
 }
 .screen{display:flex;flex-direction:column;justify-content:space-between}
 .brand{text-align:center;padding-top:45px}
@@ -29,11 +34,11 @@ button{cursor:pointer}
 }
 .logo svg{width:175px;height:175px}
 .brand h1{font-size:38px;margin:18px 0 7px}
-.brand h1 span,.dashboard-logo h1 span{color:#12d8f5}
+.brand h1 span,.brand-name span{color:#12d8f5}
 .tagline{font-size:12px;letter-spacing:5px;color:#aaa6ce}
 .auth-area{padding-bottom:15px}
 .btn,.action{
- width:100%;padding:18px;margin:10px 0;border:0;border-radius:17px;
+ width:100%;padding:17px;margin:10px 0;border:0;border-radius:17px;
  font-size:17px;font-weight:bold
 }
 .google{background:white;color:#181525}
@@ -46,6 +51,7 @@ button{cursor:pointer}
 .login-line{text-align:center;margin:22px 0;color:#ddd}
 .link{color:#15d9ef;cursor:pointer;font-weight:bold}
 .legal{text-align:center;font-size:12px;color:#85839b;line-height:1.7}
+
 .panel{display:none}
 .panel h2{text-align:center;margin:20px 0 25px}
 input{
@@ -54,21 +60,105 @@ input{
 }
 .back{display:block;text-align:center;padding:14px;color:#15d9ef;cursor:pointer}
 #status,.message{color:#15d9ef;text-align:center;overflow-wrap:anywhere}
-.dashboard{display:none;background:#080817}
-.dashboard-logo{text-align:center;padding:12px 0 25px}
-.dashboard-logo .logo{width:145px;height:145px}
-.dashboard-logo .logo svg{width:112px;height:112px}
-.dashboard-logo h1{font-size:30px;margin:12px 0 5px}
-.tile{background:#1c1931;border:1px solid #413565;border-radius:17px;padding:20px;margin:13px 0}
-.tile h3{margin:0 0 10px}
-.tile p{color:#bbb;line-height:1.5}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
-.grid button{
- background:#25203f;color:white;border:1px solid #514477;
- border-radius:15px;padding:20px 5px;font-weight:bold;font-size:16px
+
+.dashboard{
+ display:none;max-width:480px;min-height:100vh;margin:auto;
+ padding:14px 12px 25px;
+ color:white;
+ background:radial-gradient(ellipse at 50% 15%,#251047,#080817 75%);
 }
-.section{display:none}
-.section-title{font-size:23px;margin:20px 0}
+.topbar{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:8px;padding:8px 2px 17px
+}
+.top-icon{
+ border:0;background:transparent;color:#15d9ef;
+ font-size:25px;padding:8px
+}
+.brand-name{font-size:23px;font-weight:bold}
+.autoplay{
+ border:1px solid #58418c;border-radius:25px;
+ padding:10px;background:#251047;color:#12d8f5;
+ font-size:12px
+}
+.status-dot{color:#aaff54;font-size:12px}
+
+.friend-stage{
+ background:#10091f;border:2px solid #7139f4;
+ border-radius:30px;padding:20px 10px;margin-top:8px;
+ box-shadow:0 0 20px #7139f422
+}
+.friend-circles{
+ display:flex;justify-content:space-around;align-items:center;
+ gap:5px;text-align:center;min-height:175px
+}
+.circle-item{flex:1;min-width:0}
+.circle{
+ width:85px;height:85px;border-radius:50%;margin:auto;
+ display:flex;align-items:center;justify-content:center;
+ background:#251047;border:2px solid #7139f4;
+ color:#12d8f5;font-size:30px
+}
+.circle.you{
+ width:118px;height:118px;
+ background:linear-gradient(135deg,#7929ee,#384cf6);
+ font-size:42px
+}
+.circle.new{background:#201638}
+.circle.friend{background:#123c50}
+.circle-label{font-weight:bold;margin-top:10px;font-size:14px;overflow-wrap:anywhere}
+.online{color:#b9ff55}
+
+.activity-card{
+ background:#1c1931;border:1px solid #514477;
+ border-radius:28px;padding:22px;margin-top:22px;min-height:170px
+}
+.activity-card h2{font-size:22px;font-weight:normal;margin:5px 0 18px}
+.activity-card p{color:#aaa6ce;line-height:1.5}
+.activity-footer{
+ display:flex;justify-content:space-between;align-items:center;
+ color:#aaa6ce;font-size:14px
+}
+.activity-footer button{
+ background:none;border:0;color:#12d8f5
+}
+.mic-area{
+ display:flex;flex-direction:column;align-items:center;
+ padding:38px 0 28px
+}
+.mic-button{
+ width:230px;height:230px;border-radius:50%;border:3px solid #7139f4;
+ background:linear-gradient(140deg,#7929ee,#384cf6,#08cce9);
+ color:white;font-size:65px;
+ box-shadow:0 0 40px #7139f455;
+ touch-action:none;user-select:none;
+ transition:transform .15s,box-shadow .15s
+}
+.mic-button:active,.mic-button.pressed{
+ transform:scale(.94);
+ box-shadow:0 0 55px #12d8f5aa
+}
+.mic-caption{color:#aaa6ce;font-size:13px;margin-top:15px}
+.bottom-nav{
+ position:sticky;bottom:8px;
+ display:flex;justify-content:space-around;align-items:center;
+ background:#211735;border:1px solid #514477;
+ border-radius:40px;padding:13px 5px;
+ box-shadow:0 0 20px #080817
+}
+.bottom-nav button{
+ border:0;background:transparent;color:#12d8f5;
+ font-size:24px;padding:5px 10px
+}
+.bottom-nav button:active{color:#b46aff}
+
+.section{display:none;margin-top:18px}
+.section.tile{
+ background:#1c1931;border:1px solid #514477;
+ border-radius:18px;padding:18px
+}
+.section-title{font-size:22px;margin:18px 0}
+.homeBack{color:#15d9ef;cursor:pointer;margin:10px 0;display:inline-block}
 .row{
  display:flex;align-items:center;gap:12px;padding:13px 4px;
  border-bottom:1px solid #383149
@@ -88,18 +178,18 @@ input{
 .accept{background:#14a879}
 .reject{background:#493d5c}
 .empty{color:#aaa;text-align:center;padding:20px}
-.logout{margin-top:25px}
-.homeBack{color:#15d9ef;cursor:pointer;margin:15px 0;display:inline-block}
 .invite-option{
- display:block;width:100%;padding:16px;margin:12px 0;
+ display:block;width:100%;padding:15px;margin:12px 0;
  border:1px solid #514477;border-radius:13px;
  background:#25203f;color:white;font-weight:bold;text-align:center
 }
+.logout{margin-top:20px}
 </style>
 </head>
 
 <body>
 
+<!-- WELCOME SCREEN -->
 <main class="screen" id="welcomeScreen">
  <div class="brand">
   <div class="logo">
@@ -113,9 +203,10 @@ input{
     <path d="M146 73Q168 100 146 124M55 73Q33 100 55 124" stroke="#12D8F5" stroke-width="5" stroke-linecap="round"/>
    </svg>
   </div>
-  <h1>Irfan<span>Talk</span></h1>
+  <h1>Irfan<span style="color:#12d8f5">Talk</span></h1>
   <div class="tagline">V O I C E&nbsp; C O N N E C T S</div>
  </div>
+
  <div class="auth-area">
   <button class="btn google" onclick="googleLogin()"><span class="google-mark">G</span> Sign up with Google</button>
   <div class="or">Or</div>
@@ -125,6 +216,7 @@ input{
  </div>
 </main>
 
+<!-- EMAIL AUTH -->
 <section class="panel" id="authScreen">
  <h2 id="authHeading">Create Account</h2>
  <input id="nameInput" placeholder="Your name">
@@ -137,69 +229,65 @@ input{
  <p id="status"></p>
 </section>
 
+<!-- MAIN DASHBOARD -->
 <section class="dashboard" id="dashboard">
- <div style="background:#191919;color:white;min-height:100vh;padding:18px 12px 30px">
 
-  <header style="display:flex;align-items:center;justify-content:space-between;padding:12px">
-    <div onclick="openSection('profileSection')" style="font-size:25px">👤</div>
-    <div style="background:#343d20;color:#c4f45c;border-radius:25px;padding:12px 18px">
-      🔊 Autoplay
-    </div>
-    <div onclick="openSection('searchSection')" style="font-size:25px">🔍</div>
-    <div onclick="openSection('inviteSection')" style="font-size:25px">👤＋</div>
-  </header>
+ <header class="topbar">
+  <button class="top-icon" onclick="openSection('profileSection')">👤</button>
+  <div class="brand-name">Irfan<span>Talk</span></div>
+  <button class="autoplay" onclick="toggleAutoplay()" id="autoplayButton">🔊 Autoplay: Off</button>
+  <button class="top-icon" onclick="openSection('searchSection')">⌕</button>
+  <button class="top-icon" onclick="openSection('inviteSection')">＋</button>
+ </header>
 
-  <div style="background:#050505;border:2px solid #292929;border-radius:32px;padding:22px 12px;margin-top:18px">
+ <div class="friend-stage">
+  <div class="friend-circles">
 
-    <div style="display:flex;justify-content:space-around;align-items:center;text-align:center;gap:8px">
+   <div class="circle-item" onclick="openSection('searchSection')">
+    <div class="circle new">＋</div>
+    <div class="circle-label">New Chat</div>
+   </div>
 
-      <div onclick="openSection('searchSection')">
-        <div style="background:#292929;border-radius:50%;width:90px;height:90px;display:grid;place-items:center;font-size:35px">＋</div>
-        <p>New Chat</p>
-      </div>
+   <div class="circle-item" onclick="openSection('profileSection')">
+    <div class="circle you">👤</div>
+    <div class="circle-label" id="homeUserName">You</div>
+   </div>
 
-      <div onclick="openSection('friendsSection')">
-        <div style="background:#b9360b;border-radius:50%;width:125px;height:125px;display:grid;place-items:center;font-size:65px">👤</div>
-        <h3 id="homeUserName">You</h3>
-      </div>
-
-      <div onclick="openSection('friendsSection')">
-        <div style="background:#07545e;border-radius:50%;width:90px;height:90px;display:grid;place-items:center;font-size:35px">👥</div>
-        <p>Friends</p>
-      </div>
-
-    </div>
-
-    <div onclick="openSection('friendsSection')" style="background:#202020;border-radius:30px;padding:25px;margin-top:35px">
-      <p style="font-size:23px">Welcome to IrfanTalk</p>
-      <p style="color:#aaa">Your chats and voice calls will appear here.</p>
-      <p style="text-align:right;color:#aaa">Chat ›</p>
-    </div>
+   <div class="circle-item" onclick="openSection('friendsSection')">
+    <div class="circle friend">👥</div>
+    <div class="circle-label"><span class="online">●</span> Friends</div>
+   </div>
 
   </div>
 
-  <div style="display:flex;justify-content:center;margin:65px 0">
-    <button onclick="alert('Walkie-Talkie voice feature is coming next!')"
-      style="width:250px;height:250px;border:0;border-radius:50%;background:linear-gradient(135deg,#777,#292929);color:white;font-size:65px">
-      🎙️
-    </button>
+  <div class="activity-card">
+   <h2 id="activityTitle">Welcome to IrfanTalk</h2>
+   <p id="activityText">Your chats and voice calls will appear here.</p>
+   <div class="activity-footer">
+    <span id="activityTime">Your connection starts here</span>
+    <button onclick="openSection('friendsSection')">Chat ›</button>
+   </div>
   </div>
-
-  <div style="background:#292929;border-radius:50px;padding:18px;display:flex;justify-content:space-around;font-size:27px">
-    <span onclick="openSection('friendsSection')">👥</span>
-    <span onclick="openSection('friendsSection')">🎙️</span>
-    <span onclick="openSection('requestsSection')">🔔</span>
-    <span onclick="openSection('inviteSection')">▦</span>
-    <span onclick="openSection('profileSection')">＋</span>
-  </div>
-
-</div>
-
- <div class="tile">
-  <h3>Welcome to IrfanTalk!</h3>
-  <p>Your friends and conversations will appear inside the app.</p>
  </div>
 
+ <div class="mic-area">
+  <button class="mic-button" id="micButton"
+   onpointerdown="micDown(event)"
+   onpointerup="micUp(event)"
+   onpointercancel="micUp(event)"
+   oncontextmenu="return false">🎙️</button>
+  <div class="mic-caption" id="micCaption">HOLD TO TALK</div>
+ </div>
+
+ <nav class="bottom-nav">
+  <button title="Friends" onclick="openSection('friendsSection')">👥</button>
+  <button title="Walkie-Talkie" onclick="showMicInfo()">🎙️</button>
+  <button title="Requests" onclick="openSection('requestsSection')">🔔</button>
+  <button title="Invite" onclick="openSection('inviteSection')">▦</button>
+  <button title="More" onclick="openSection('profileSection')">＋</button>
+ </nav>
+
+ <!-- INVITE -->
  <div class="section tile" id="inviteSection">
   <span class="homeBack" onclick="showHome()">← Home</span>
   <h2 class="section-title">Invite Friends</h2>
@@ -211,33 +299,39 @@ input{
   <p id="inviteStatus" class="message"></p>
  </div>
 
+ <!-- FIND FRIENDS -->
  <div class="section tile" id="searchSection">
   <span class="homeBack" onclick="showHome()">← Home</span>
   <h2 class="section-title">Find Friends</h2>
   <input id="searchEmail" type="email" placeholder="Enter friend's registered email">
   <button class="action" onclick="searchFriend()">Search Friend</button>
+  <button class="invite-option" onclick="openContacts()">📱 Choose Phone Contacts</button>
+  <div id="contactsResult"></div>
   <div id="searchResult"></div>
  </div>
 
+ <!-- FRIEND REQUESTS -->
  <div class="section tile" id="requestsSection">
   <span class="homeBack" onclick="showHome()">← Home</span>
   <h2 class="section-title">Friend Requests</h2>
-  <div id="requestsList"><p class="empty">Loading requests...</p></div>
+  <div id="requestsList"><p class="empty">No requests loaded yet.</p></div>
  </div>
 
+ <!-- FRIENDS -->
  <div class="section tile" id="friendsSection">
   <span class="homeBack" onclick="showHome()">← Home</span>
   <h2 class="section-title">My Friends</h2>
   <div id="friendsList"><p class="empty">Loading friends...</p></div>
  </div>
 
+ <!-- PROFILE -->
  <div class="section tile" id="profileSection">
   <span class="homeBack" onclick="showHome()">← Home</span>
   <h2 class="section-title">My Profile</h2>
   <div id="profileInfo"></div>
+  <button class="action logout" onclick="logout()">Logout</button>
  </div>
 
- <button class="action logout" onclick="logout()">Logout</button>
 </section>
 
 <script>
@@ -254,8 +348,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth();
 const db=firebase.database();
+
 let mode="signup";
 let currentUser=null;
+let autoplay=false;
+let micActive=false;
 
 function showAuth(type){
  mode=type;
@@ -268,19 +365,35 @@ function showAuth(type){
  document.getElementById("switchLink").textContent=type==="signup"?"Already registered? Log in":"New here? Create Account";
  document.getElementById("status").textContent="";
 }
-function switchMode(){showAuth(mode==="signup"?"login":"signup")}
+
+function switchMode(){
+ showAuth(mode==="signup"?"login":"signup");
+}
+
 function backToWelcome(){
  document.getElementById("authScreen").style.display="none";
  document.getElementById("welcomeScreen").style.display="flex";
 }
+
 async function emailAuth(){
  const email=document.getElementById("emailInput").value.trim().toLowerCase();
  const password=document.getElementById("passwordInput").value;
  const name=document.getElementById("nameInput").value.trim();
  const status=document.getElementById("status");
- if(!email||!password){status.textContent="Enter your email and password.";return}
- if(password.length<6){status.textContent="Password must be at least 6 characters.";return}
- if(mode==="signup"&&!name){status.textContent="Enter your name.";return}
+
+ if(!email||!password){
+  status.textContent="Enter your email and password.";
+  return;
+ }
+ if(password.length<6){
+  status.textContent="Password must be at least 6 characters.";
+  return;
+ }
+ if(mode==="signup"&&!name){
+  status.textContent="Enter your name.";
+  return;
+ }
+
  status.textContent="Please wait...";
  try{
   if(mode==="signup"){
@@ -289,112 +402,173 @@ async function emailAuth(){
   }else{
    await auth.signInWithEmailAndPassword(email,password);
   }
- }catch(error){status.textContent=error.message}
+ }catch(error){
+  status.textContent=error.message;
+ }
 }
+
 async function googleLogin(){
  try{
   await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
- }catch(error){alert(error.message)}
+ }catch(error){
+  alert(error.message);
+ }
 }
+
 async function forgotPassword(){
  const email=document.getElementById("emailInput").value.trim();
  const status=document.getElementById("status");
- if(!email){status.textContent="Enter your email address first.";return}
+ if(!email){
+  status.textContent="Enter your email address first.";
+  return;
+ }
  try{
   await auth.sendPasswordResetEmail(email);
   status.textContent="Password reset email sent. Check your inbox.";
- }catch(error){status.textContent=error.message}
+ }catch(error){
+  status.textContent=error.message;
+ }
+}
+
+function showHome(){
+ document.querySelectorAll(".section").forEach(el=>el.style.display="none");
 }
 
 function openSection(id){
  document.querySelectorAll(".section").forEach(el=>el.style.display="none");
- document.getElementById(id).style.display="block";
+ const section=document.getElementById(id);
+ if(section)section.style.display="block";
  if(id==="friendsSection")loadFriends();
  if(id==="requestsSection")loadRequests();
  if(id==="profileSection")showProfile();
 }
-function showHome(){
- document.querySelectorAll(".section").forEach(el=>el.style.display="none");
-}
-function safeText(value){
- return String(value||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
 
-/* INVITE FRIENDS */
 function inviteUrl(){
  return window.location.origin;
 }
+
 function inviteMessage(){
  return "Join me on IrfanTalk! Let's chat and talk together. Open IrfanTalk here: "+inviteUrl();
 }
+
 async function shareInvite(){
- const status=document.getElementById("inviteStatus");
  try{
   if(navigator.share){
-   await navigator.share({title:"Join IrfanTalk",text:inviteMessage(),url:inviteUrl()});
-   status.textContent="Invite shared!";
+   await navigator.share({
+    title:"Join IrfanTalk",
+    text:inviteMessage(),
+    url:inviteUrl()
+   });
   }else{
    await copyInvite();
   }
  }catch(error){
-  if(error.name!=="AbortError")status.textContent="Sharing was not completed. Try WhatsApp or Copy Link.";
- }
-}
-function whatsappInvite(){
- const url="https://wa.me/?text="+encodeURIComponent(inviteMessage());
- window.open(url,"_blank");
-}
-function smsInvite(){
- const body=encodeURIComponent(inviteMessage());
- window.location.href="sms:?body="+body;
-}
-async function copyInvite(){
- const status=document.getElementById("inviteStatus");
- try{
-  await navigator.clipboard.writeText(inviteUrl());
-  status.textContent="Invite link copied! Now share it with your friends.";
- }catch(error){
-  status.textContent="Please copy this link: "+inviteUrl();
+  if(error.name!=="AbortError")alert("Sharing was not completed.");
  }
 }
 
-/* FRIEND SEARCH */
+function whatsappInvite(){
+ window.open("https://wa.me/?text="+encodeURIComponent(inviteMessage()),"_blank");
+}
+
+function smsInvite(){
+ window.location.href="sms:?body="+encodeURIComponent(inviteMessage());
+}
+
+async function copyInvite(){
+ try{
+  await navigator.clipboard.writeText(inviteUrl());
+  document.getElementById("inviteStatus").textContent="Invite link copied!";
+ }catch(error){
+  document.getElementById("inviteStatus").textContent="Copy this link: "+inviteUrl();
+ }
+}
+
+/* CONTACT PICKER: supported browsers only */
+async function openContacts(){
+ const output=document.getElementById("contactsResult");
+ if(!("contacts" in navigator)&&!("select" in (navigator.contacts||{}))){
+  output.textContent="Contact Picker is not supported in this browser. The Android app will provide full Contacts access.";
+  return;
+ }
+ try{
+  const contacts=await navigator.contacts.select(["name","tel"],{multiple:true});
+  output.textContent=contacts.length+" contact(s) selected. Account matching will be added after secure phone verification is set up.";
+ }catch(error){
+  output.textContent=error.name==="AbortError"?"Contact selection cancelled.":"Could not open contacts: "+error.message;
+ }
+}
+
+/* FIND FRIEND BY EMAIL */
 async function searchFriend(){
  const email=document.getElementById("searchEmail").value.trim().toLowerCase();
  const result=document.getElementById("searchResult");
- result.innerHTML="";
- if(!email||!email.includes("@")){result.textContent="Please enter a valid email address.";return}
- if(!currentUser||email===currentUser.email.toLowerCase()){result.textContent="This is your own email address.";return}
+ result.textContent="";
+
+ if(!email||!email.includes("@")){
+  result.textContent="Please enter a valid email address.";
+  return;
+ }
+ if(!currentUser||email===currentUser.email.toLowerCase()){
+  result.textContent="This is your own email address.";
+  return;
+ }
+
  result.textContent="Searching...";
  try{
-  const snapshot=await db.ref("publicUsers").orderByChild("email").equalTo(email).limitToFirst(1).once("value");
-  if(!snapshot.exists()){result.textContent="No IrfanTalk account found with this email.";return}
+  const snapshot=await db.ref("publicUsers")
+   .orderByChild("email").equalTo(email).limitToFirst(1).once("value");
+
+  if(!snapshot.exists()){
+   result.textContent="No IrfanTalk account found with this email. Check profile database permissions.";
+   return;
+  }
+
   const uid=Object.keys(snapshot.val())[0];
   const person=snapshot.val()[uid];
+
   const already=await db.ref("friends/"+currentUser.uid+"/"+uid).once("value");
-  if(already.exists()){result.textContent="You are already friends.";return}
+  if(already.exists()){
+   result.textContent="You are already friends.";
+   return;
+  }
+
   const pending=await db.ref("friendRequests/"+uid+"/"+currentUser.uid).once("value");
-  if(pending.exists()){result.textContent="Friend request already sent.";return}
+  if(pending.exists()){
+   result.textContent="Friend request already sent.";
+   return;
+  }
+
   const row=document.createElement("div");
   row.className="row";
+
   const avatar=document.createElement("div");
   avatar.className="avatar";
   avatar.textContent=(person.name||"F").charAt(0).toUpperCase();
+
   const personBox=document.createElement("div");
   personBox.className="person";
+
   const strong=document.createElement("strong");
   strong.textContent=person.name||"Friend";
+
   const small=document.createElement("small");
   small.textContent=person.email||"";
+
   const add=document.createElement("button");
   add.className="small-btn";
   add.textContent="Add";
   add.onclick=()=>sendRequest(uid);
+
   personBox.append(strong,small);
   row.append(avatar,personBox,add);
   result.appendChild(row);
- }catch(error){result.textContent="Search failed: "+error.message}
+
+ }catch(error){
+  result.textContent="Search failed: "+error.message;
+ }
 }
+
 async function sendRequest(uid){
  const result=document.getElementById("searchResult");
  try{
@@ -406,127 +580,13 @@ async function sendRequest(uid){
    createdAt:firebase.database.ServerValue.TIMESTAMP
   });
   result.textContent="Friend request sent!";
- }catch(error){result.textContent="Could not send request: "+error.message}
+ }catch(error){
+  result.textContent="Could not send request: "+error.message;
+ }
 }
+
 async function loadRequests(){
  const list=document.getElementById("requestsList");
  list.innerHTML="<p class='empty'>Loading...</p>";
  try{
-  const snap=await db.ref("friendRequests/"+currentUser.uid).once("value");
-  list.innerHTML="";
-  if(!snap.exists()){list.innerHTML="<p class='empty'>No incoming requests yet.</p>";return}
-  snap.forEach(child=>{
-   const req=child.val();
-   if(req.status!=="pending")return;
-   const sender=child.key;
-   const row=document.createElement("div");
-   row.className="row";
-   const avatar=document.createElement("div");
-   avatar.className="avatar";
-   avatar.textContent=(req.senderName||"F").charAt(0).toUpperCase();
-   const person=document.createElement("div");
-   person.className="person";
-   const strong=document.createElement("strong");
-   strong.textContent=req.senderName||"Friend";
-   const small=document.createElement("small");
-   small.textContent=req.senderEmail||"";
-   person.append(strong,small);
-   const accept=document.createElement("button");
-   accept.className="small-btn accept";
-   accept.textContent="Accept";
-   accept.onclick=()=>respondRequest(sender,"accepted");
-   const reject=document.createElement("button");
-   reject.className="small-btn reject";
-   reject.textContent="Reject";
-   reject.onclick=()=>respondRequest(sender,"rejected");
-   row.append(avatar,person,accept,reject);
-   list.appendChild(row);
-  });
-  if(!list.children.length)list.innerHTML="<p class='empty'>No pending requests.</p>";
- }catch(error){list.textContent="Could not load requests: "+error.message}
-}
-async function respondRequest(sender,status){
- try{
-  const requestRef=db.ref("friendRequests/"+currentUser.uid+"/"+sender);
-  const snap=await requestRef.once("value");
-  if(!snap.exists()){alert("Request not found.");return}
-  const req=snap.val();
-  if(status==="accepted"){
-   await requestRef.update({status:"accepted"});
-   const myRecord={uid:sender,name:req.senderName||"Friend",email:req.senderEmail||""};
-   const theirRecord={uid:currentUser.uid,name:currentUser.displayName||"Friend",email:currentUser.email.toLowerCase()};
-   await db.ref("friends/"+currentUser.uid+"/"+sender).set(myRecord);
-   await db.ref("friends/"+sender+"/"+currentUser.uid).set(theirRecord);
-  }else{
-   await requestRef.update({status:"rejected"});
-  }
-  loadRequests();
- }catch(error){alert("Could not update request: "+error.message)}
-}
-async function loadFriends(){
- const list=document.getElementById("friendsList");
- list.innerHTML="<p class='empty'>Loading...</p>";
- try{
-  const snap=await db.ref("friends/"+currentUser.uid).once("value");
-  list.innerHTML="";
-  if(!snap.exists()){list.innerHTML="<p class='empty'>No friends yet. Invite a friend to join IrfanTalk.</p>";return}
-  snap.forEach(child=>{
-   const friend=child.val();
-   const row=document.createElement("div");
-   row.className="row";
-   const avatar=document.createElement("div");
-   avatar.className="avatar";
-   avatar.textContent=(friend.name||"F").charAt(0).toUpperCase();
-   const person=document.createElement("div");
-   person.className="person";
-   const strong=document.createElement("strong");
-   strong.textContent=friend.name||"Friend";
-   const small=document.createElement("small");
-   small.textContent=friend.email||"";
-   person.append(strong,small);
-   row.append(avatar,person);
-   list.appendChild(row);
-  });
- }catch(error){list.textContent="Could not load friends: "+error.message}
-}
-function showProfile(){
- document.getElementById("profileInfo").textContent=
-  "Name: "+(currentUser.displayName||"Friend")+" | Email: "+currentUser.email;
-}
-async function syncPublicProfile(user){
- const profile={
-  name:user.displayName||user.email.split("@")[0],
-  email:user.email.toLowerCase()
- };
- try{await db.ref("publicUsers/"+user.uid).set(profile)}
- catch(error){console.error("Profile sync failed:",error)}
-}auth.getRedirectResult().catch(error=>{
- console.error("Google login error:",error);
- alert("Google Login Error: "+error.message);
-});
-
-auth.onAuthStateChanged(async user=>{
- currentUser=user;
-
- if(user){
-  document.getElementById("welcomeScreen").style.display="none";
-  document.getElementById("authScreen").style.display="none";
-  document.getElementById("dashboard").style.display="block";
-
-  document.getElementById("welcomeName").textContent=
-   "Hello, "+(user.displayName||"Friend")+"!";
-
-  await syncPublicProfile(user);
- }else{
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("authScreen").style.display="none";
-  document.getElementById("welcomeScreen").style.display="flex";
- }
-});
-
-function logout(){
- auth.signOut();
-}
-</script>
-</body>
-</html>
+  const snap=await db.ref("friendRequests/"+currentUse
