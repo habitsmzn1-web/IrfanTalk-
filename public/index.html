@@ -352,12 +352,27 @@ auth.onAuthStateChanged(function(user) {
   const loginScreen = document.getElementById("loginScreen");
 
   if (user) {
-    db.ref("publicUsers/" + user.uid).update({
-        email: user.email || "",
-        name: user.displayName || (user.email ? user.email.split("@")[0] : "IrfanTalk User")
-    }).catch(function(error) {
-        console.error("Profile save error:", error);
+    db.ref("users/" + user.uid).once("value").then(function(snapshot) {
+    const oldProfile = snapshot.val() || {};
+
+    const displayName =
+        user.displayName ||
+        oldProfile.displayName ||
+        oldProfile.name ||
+        "IrfanTalk User";
+
+    const username = user.email
+        ? user.email.split("@")[0]
+        : "";
+
+    return db.ref("publicUsers/" + user.uid).update({
+        name: displayName,
+        username: username,
+        email: user.email || ""
     });
+}).catch(function(error) {
+    console.error("Profile save error:", error);
+});
 
     loginScreen.style.display = "none";
     document.querySelectorAll(
