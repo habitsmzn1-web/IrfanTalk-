@@ -331,7 +331,19 @@ box-shadow:0 0 30px #08c9e899;
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script>
 const socket = io();
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",
+  authDomain: "irfantalk.firebaseapp.com",
+  databaseURL: "https://irfantalk-default-rtdb.firebaseio.com",
+  projectId: "irfantalk",
+  storageBucket: "irfantalk.firebasestorage.app",
+  messagingSenderId: "218169866517",
+  appId: "1:218169866517:web:447670dc6a565e1e7b511c"
+};
 
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 const chatForm = document.getElementById("chatForm");
 const messageInput = document.getElementById("messageInput");
 const chatMessages = document.getElementById("chatMessages");
