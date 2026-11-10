@@ -401,6 +401,224 @@ searchFriend.addEventListener("input", function() {
 });
 
 showFriends();
+
+// ===== IRFANTALK WALKIE-TALKIE VOICE SYSTEM =====
+
+const talkButton = document.getElementById("talkButton");
+const talkStatus = document.getElementById("talkStatus");
+
+const voiceSocket = io();
+const VOICE_ROOM = "irfantalk-test-room";
+
+const peerConnections = {};
+let localVoiceStream = null;
+let isTalking = false;
+
+const iceServers = {
+    iceServers: [
+        { urls: "stun:stun.l.google.com:19302" }
+    ]
+};
+
+function updateTalkStatus(message, color) {
+    talkStatus.textContent = message;
+    talkStatus.style.color = color;
+}
+
+function createPeerConnection(peerId) {
+    if (peerConnections[peerId]) {
+        return peerConnections[peerId];
+    }
+
+    const pc = new RTCPeerConnection(iceServers);
+
+    const audioTransceiver = pc.addTransceiver("audio", {
+        direction: "sendrecv"
+    });
+
+    peerConnections[peerId] = {
+        pc: pc,
+        sender: audioTransceiver.sender,
+        pendingCandidates: []
+    };
+
+    pc.onicecandidate = function(event) {
+        if (event.candidate) {
+            voiceSocket.emit("voice-ice-candidate", {
+                target: peerId,
+                candidate: event.candidate
+            });
+        }
+    };
+
+    pc.ontrack = function(event) {
+        let audio = document.getElementById(
+            "voice-audio-" + peerId
+        );
+
+        if (!audio) {
+            audio = document.createElement("audio");
+            audio.id = "voice-audio-" + peerId;
+            audio.autoplay = true;
+            audio.playsInline = true;
+            document.body.appendChild(audio);
+        }
+
+        audio.srcObject = event.streams[0];
+        audio.play().catch(() => {});
+    };
+
+    pc.onconnectionstatechange = function() {
+        if (pc.connectionState === "connected") {
+            updateTalkStatus("Voice Connected", "#22c55e");
+        }
+    };
+
+    return pc;
+}
+
+async function startVoiceConnection(peerId) {
+    const peer = createPeerConnection(peerId);
+    const pc = peer.pc;
+
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+
+    voiceSocket.emit("voice-offer", {
+        target: peerId,
+        offer: pc.localDescription
+    });
+}
+
+voiceSocket.on("connect", function() {
+    voiceSocket.emit("join-voice-room", VOICE_ROOM);
+    updateTalkStatus("Voice room joined", "#22c55e");
+});
+
+voiceSocket.on("voice-room-users", async function(users) {
+    for (const peerId of users) {
+        await startVoiceConnection(peerId);
+    }
+});
+
+voiceSocket.on("voice-offer", async function(data) {
+    const peer = createPeerConnection(data.from);
+    const pc = peer.pc;
+
+    await pc.setRemoteDescription(data.offer);
+
+    for (const candidate of peer.pendingCandidates) {
+        await pc.addIceCandidate(candidate);
+    }
+    peer.pendingCandidates = [];
+
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+
+    voiceSocket.emit("voice-answer", {
+        target: data.from,
+        answer: pc.localDescription
+    });
+});
+
+voiceSocket.on("voice-answer", async function(data) {
+    const peer = peerConnections[data.from];
+    if (!peer) return;
+
+    await peer.pc.setRemoteDescription(data.answer);
+
+    for (const candidate of peer.pendingCandidates) {
+        await peer.pc.addIceCandidate(candidate);
+    }
+    peer.pendingCandidates = [];
+});
+
+voiceSocket.on("voice-ice-candidate", async function(data) {
+    const peer = peerConnections[data.from];
+    if (!peer) return;
+
+    if (peer.pc.remoteDescription) {
+        await peer.pc.addIceCandidate(data.candidate);
+    } else {
+        peer.pendingCandidates.push(data.candidate);
+    }
+});
+
+voiceSocket.on("voice-user-left", function(data) {
+    const peer = peerConnections[data.userId];
+
+    if (peer) {
+        peer.pc.close();
+        delete peerConnections[data.userId];
+    }
+
+    const audio = document.getElementById(
+        "voice-audio-" + data.userId
+    );
+
+    if (audio) audio.remove();
+
+    updateTalkStatus("Friend disconnected", "#f59e0b");
+});
+
+async function pressToTalk() {
+    isTalking = true;
+
+    try {
+        if (!localVoiceStream) {
+            localVoiceStream = await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
+
+            const microphoneTrack =
+                localVoiceStream.getAudioTracks()[0];
+
+            for (const peerId in peerConnections) {
+                await peerConnections[peerId].sender
+                    .replaceTrack(microphoneTrack);
+            }
+        }
+
+        const track = localVoiceStream.getAudioTracks()[0];
+        track.enabled = isTalking;
+
+        updateTalkStatus("TRANSMITTING... 🎙️", "#22c55e");
+
+    } catch (error) {
+        isTalking = false;
+        updateTalkStatus(
+            "Microphone permission required",
+            "#ef4444"
+        );
+        alert("Microphone permission allow karein.");
+    }
+}
+
+function releaseTalk() {
+    isTalking = false;
+
+    if (localVoiceStream) {
+        localVoiceStream.getAudioTracks().forEach(track => {
+            track.enabled = false;
+        });
+    }
+
+    updateTalkStatus("Ready to Talk", "#22c55e");
+}
+
+talkButton.addEventListener("pointerdown", function(event) {
+    event.preventDefault();
+    pressToTalk();
+});
+
+talkButton.addEventListener("pointerup", releaseTalk);
+talkButton.addEventListener("pointercancel", releaseTalk);
+talkButton.addEventListener("lostpointercapture", releaseTalk);
+
+updateTalkStatus("Connecting to voice room...", "#f59e0b");
+
+// ===== END IRFANTALK VOICE SYSTEM =====
+
 </script>
 
 </body>
