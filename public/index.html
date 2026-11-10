@@ -202,3 +202,40 @@
 </head>
 
 <body>
+
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+    const socket = io();
+
+    const chatForm = document.getElementById("chatForm");
+    const messageInput = document.getElementById("messageInput");
+    const chatMessages = document.getElementById("chatMessages");
+
+    chatForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const message = messageInput.value.trim();
+
+      if (message === "") return;
+
+      socket.emit("chat message", message);
+      messageInput.value = "";
+    });
+
+    socket.on("chat message", function(message) {
+      const msg = document.createElement("p");
+
+      msg.textContent = message;
+      msg.style.padding = "10px";
+      msg.style.margin = "8px 0";
+      msg.style.background = "#263b55";
+      msg.style.borderRadius = "10px";
+
+      chatMessages.appendChild(msg);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+  </script>
+
+</body>
+</html>
