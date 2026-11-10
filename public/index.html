@@ -344,6 +344,61 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
+
+ // Show app after successful login
+auth.onAuthStateChanged(function(user) {
+  const loginScreen = document.getElementById("loginScreen");
+
+  if (user) {
+    loginScreen.style.display = "none";
+
+    document.querySelectorAll(
+      "body > header, body > main, body > section"
+    ).forEach(function(element) {
+      element.style.display = "block";
+    });
+  } else {
+    loginScreen.style.display = "flex";
+  }
+});
+
+// Google Login
+document.getElementById("googleLogin").addEventListener("click", function() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  auth.signInWithPopup(provider).catch(function(error) {
+    alert("Google Login Error: " + error.message);
+  });
+});
+
+// Email Signup
+document.getElementById("emailSignup").addEventListener("click", function() {
+  const email = prompt("Enter your email:");
+  if (!email) return;
+
+  const password = prompt("Create a password (at least 6 characters):");
+  if (!password) return;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .catch(function(error) {
+      alert("Signup Error: " + error.message);
+    });
+});
+
+// Email Login
+document.getElementById("loginLink").addEventListener("click", function() {
+  const email = prompt("Enter your email:");
+  if (!email) return;
+
+  const password = prompt("Enter your password:");
+  if (!password) return;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .catch(function(error) {
+      alert("Login Error: " + error.message);
+    });
+});
+
 const chatForm = document.getElementById("chatForm");
 const messageInput = document.getElementById("messageInput");
 const chatMessages = document.getElementById("chatMessages");
