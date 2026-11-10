@@ -237,6 +237,58 @@ socket.on("chat message", function(message) {
 socket.on("connect_error", function() {
     console.log("Chat server connection failed");
 });
+
+
+const addFriendBtn = document.getElementById("addFriend");
+const friendsList = document.getElementById("friendsList");
+const searchFriend = document.getElementById("searchFriend");
+
+let friends = JSON.parse(localStorage.getItem("irfantalkFriends") || "[]");
+
+function showFriends(filter = "") {
+    friendsList.innerHTML = "";
+
+    const filtered = friends.filter(name =>
+        name.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    if (filtered.length === 0) {
+        friendsList.textContent = "No friends found.";
+        return;
+    }
+
+    filtered.forEach(name => {
+        const item = document.createElement("p");
+        item.textContent = "👤 " + name;
+        item.style.padding = "12px";
+        item.style.margin = "8px 0";
+        item.style.background = "#263b55";
+        item.style.borderRadius = "10px";
+        friendsList.appendChild(item);
+    });
+}
+
+addFriendBtn.addEventListener("click", function() {
+    const name = prompt("Enter your friend's name:");
+    if (!name || !name.trim()) return;
+
+    const cleanName = name.trim();
+
+    if (friends.includes(cleanName)) {
+        alert("Friend already exists.");
+        return;
+    }
+
+    friends.push(cleanName);
+    localStorage.setItem("irfantalkFriends", JSON.stringify(friends));
+    showFriends(searchFriend.value);
+});
+
+searchFriend.addEventListener("input", function() {
+    showFriends(searchFriend.value);
+});
+
+showFriends();
 </script>
 
 </body>
