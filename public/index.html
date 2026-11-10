@@ -7,7 +7,85 @@
   <meta name="theme-color" content="#101827">
   <title>IrfanTalk</title>
 
-  <style>
+<style>/* IrfanTalk Purple-Cyan Login Design */
+
+body {
+    background: linear-gradient(160deg, #21103f, #080713 75%);
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+#loginScreen {
+    min-height: 100vh;
+    padding: 35px 6% 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.it-logo {
+    width: 170px;
+    height: 170px;
+    border: 3px solid #8b45ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 85px;
+    color: #08d8f5;
+    box-shadow: 0 0 30px #792cff55;
+    margin: 35px auto;
+}
+
+.it-brand {
+    font-size: 38px;
+    font-weight: bold;
+}
+
+.it-brand span {
+    color: #08d8f5;
+}
+
+.it-tagline {
+    letter-spacing: 7px;
+    color: #aaa;
+    margin-top: 12px;
+}
+
+.it-auth {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 40px;
+}
+
+.it-auth button {
+    width: 100%;
+    padding: 19px;
+    margin: 10px 0;
+    border: 0;
+    border-radius: 18px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.it-google {
+    background: white;
+    color: #171326;
+}
+
+.it-email {
+    background: linear-gradient(90deg, #792cff, #08c9e8);
+    color: white;
+}
+
+.it-login-link {
+    color: #08d8f5;
+    margin: 22px 0;
+}
+</style>
+<style>
     * {
       margin: 0;
       padding: 0;
@@ -16,7 +94,7 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: #101827;
+      background: linear-gradient(160deg, #21103f, #080713 75%);
       color: #ffffff;
       min-height: 100vh;
     }
@@ -28,13 +106,48 @@
     button {
       cursor: pointer;
     }
+
+body > header,
+body > main,
+body > section {
+    display: none;
+}
+
   </style>
 </head>
 
 <body>
 
+<div id="loginScreen">
+  <div class="it-logo">
+    <div style="font-size:75px;">📻</div>
+  </div>
+
+  <div class="it-brand">
+    Irfan<span>Talk</span>
+  </div>
+
+  <div class="it-tagline">VOICE CONNECTS</div>
+
+  <div class="it-auth">
+    <button class="it-google" id="googleLogin">
+      G Sign up with Google
+    </button>
+
+    <p>Or</p>
+
+    <button class="it-email" id="emailSignup">
+      ✉ Sign Up with Email
+    </button>
+
+    <p class="it-login-link">
+      Already have an account?
+      <span id="loginLink">Log in</span>
+    </p>
+  </div>
+</div>
   <header style="
-    background:#182438;
+    background:linear-gradient(90deg,#21103f,#351568);
     padding:18px;
     display:flex;
     align-items:center;
@@ -49,7 +162,7 @@
     </div>
 
     <button id="profileBtn" style="
-      background:#263b55;
+      background:linear-gradient(90deg,#792cff,#08c9e8);
       color:white;
       border:0;
       border-radius:50%;
@@ -67,7 +180,7 @@
         Welcome to IrfanTalk
       </h3>
     </section>
-  </main>
+  
 
   <section id="friends" style="padding:20px;">
     <h3 style="margin-bottom:15px;">
@@ -83,7 +196,7 @@
         padding:13px;
         border-radius:10px;
         border:1px solid #35445a;
-        background:#182438;
+        background:#21103f;
         color:white;
         margin-bottom:15px;
       "
@@ -91,7 +204,7 @@
 
     <button id="addFriend" style="
       padding:12px 18px;
-      background:#2563eb;
+      background:linear-gradient(90deg,#792cff,#08c9e8);
       color:white;
       border:0;
       border-radius:9px;
@@ -109,7 +222,7 @@
   <section id="walkieTalkie" style="
     padding:25px 20px;
     text-align:center;
-    background:#182438;
+    background:linear-gradient(145deg,#21103f,#351568);
     margin:15px;
     border-radius:18px;
   ">
@@ -123,11 +236,10 @@
       width:160px;
       height:160px;
       border-radius:50%;
-      border:6px solid #60a5fa;
-      background:#2563eb;
-      color:white;
-      font-size:48px;
-      box-shadow:0 0 25px #2563eb66;
+      
+      border:6px solid #a855f7;
+background:linear-gradient(135deg,#792cff,#08c9e8);
+box-shadow:0 0 30px #08c9e899;
       touch-action:none;
     ">
       🎤
@@ -144,7 +256,7 @@
   <section id="chatSection" style="
     margin:15px;
     padding:20px;
-    background:#182438;
+    background:linear-gradient(145deg,#21103f,#351568);
     border-radius:18px;
   ">
     <h2>💬 IrfanTalk Chat</h2>
@@ -154,7 +266,7 @@
       overflow-y:auto;
       margin-top:18px;
       padding:12px;
-      background:#101827;
+      background:#160d29;
       border-radius:12px;
     ">
       <p style="color:#9ca3af;">
@@ -177,14 +289,14 @@
           padding:13px;
           border:0;
           border-radius:10px;
-          background:#263b55;
+          background:#21103f;
           color:white;
         "
       >
 
       <button type="submit" style="
         padding:12px;
-        background:#2563eb;
+        background:linear-gradient(90deg,#792cff,#08c9e8);
         color:white;
         border:0;
         border-radius:10px;
@@ -194,7 +306,7 @@
     </form>
   </section>
 
- 
+ </main>
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
@@ -226,7 +338,7 @@ socket.on("chat message", function(message) {
     msg.textContent = message;
     msg.style.padding = "10px";
     msg.style.margin = "8px 0";
-    msg.style.background = "#263b55";
+    msg.style.background = "linear-gradient(90deg, #792cff, #08c9e8)";
     msg.style.borderRadius = "10px";
     msg.style.color = "white";
 
