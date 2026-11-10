@@ -352,8 +352,14 @@ auth.onAuthStateChanged(function(user) {
   const loginScreen = document.getElementById("loginScreen");
 
   if (user) {
-    loginScreen.style.display = "none";
+    db.ref("publicUsers/" + user.uid).update({
+        email: user.email || "",
+        name: user.displayName || (user.email ? user.email.split("@")[0] : "IrfanTalk User")
+    }).catch(function(error) {
+        console.error("Profile save error:", error);
+    });
 
+    loginScreen.style.display = "none";
     document.querySelectorAll(
       "body > header, body > main, body > section"
     ).forEach(function(element) {
