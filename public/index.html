@@ -1,65 +1,223 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#100d20">
-<title>IrfanTalk — Voice Connects</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#100d20">
+<title>IrfanTalk — Direct Chat</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
-:root{--bg:#0b0917;--panel:#171329;--panel2:#211a39;--purple:#8b4cff;--cyan:#13d7ed;--muted:#aaa5bd;--line:#39314f;--good:#27c995;--bad:#ff6b83}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#261044 0,#0b0917 52%);color:#fff;font:15px Arial,sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}.shell{width:min(100%,520px);min-height:100vh;margin:auto;padding:22px 18px 100px}.auth{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px 22px}.brand{text-align:center;margin-bottom:28px}.logo{width:112px;height:112px;border:2px solid var(--cyan);border-radius:32px;display:grid;place-items:center;margin:auto;box-shadow:0 0 38px #8137f455;background:linear-gradient(145deg,#24163e,#100d20)}.logo svg{width:76px}.brand h1{font-size:38px;margin:14px 0 6px}.brand h1 span{color:var(--cyan)}.tag{letter-spacing:4px;font-size:10px;color:#aaa5bd}.auth-card,.card{background:linear-gradient(145deg,#211a39,#151225);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 15px 40px #0003}.auth-card{width:min(100%,420px)}h2{font-size:20px;margin:0 0 14px}.muted{color:var(--muted)}.field{width:100%;padding:14px 15px;border:1px solid #494064;border-radius:13px;background:#100d20;color:white;margin:7px 0;outline:none}.field:focus{border-color:var(--cyan)}.btn{border:0;border-radius:13px;padding:14px 16px;font-weight:700;color:#fff;background:linear-gradient(100deg,#792cff,#4654ed,#08cce9)}.btn.full{width:100%;margin-top:10px}.btn.google{background:#fff;color:#201a30}.btn.ghost{background:#28213d;border:1px solid #51446f}.btn.small{padding:9px 12px;font-size:12px}.link{color:var(--cyan);cursor:pointer}.auth-foot{text-align:center;margin-top:16px;color:var(--muted);font-size:13px}.status{min-height:20px;color:var(--cyan);font-size:13px;margin-top:10px;overflow-wrap:anywhere}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 22px}.user{display:flex;align-items:center;gap:11px;min-width:0}.avatar{width:44px;height:44px;flex:none;border-radius:16px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;font-weight:bold;font-size:18px}.user strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.user small{color:var(--muted)}.icon{width:42px;height:42px;border-radius:14px;background:#211a39;border:1px solid var(--line);color:white}.hero{padding:20px;border-radius:22px;border:1px solid #4a3672;background:radial-gradient(circle at 100% 0,#493078,#211738 55%,#171329);margin-bottom:22px}.hero .eyebrow{font-size:11px;letter-spacing:2px;color:var(--cyan)}.hero h2{font-size:25px;margin:9px 0}.hero p{color:#c4bdd5;line-height:1.5;margin:0}.section-head{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 10px}.section-head h3{margin:0;font-size:17px}.section-head button{border:0;background:none;color:var(--cyan)}.strip{display:flex;gap:12px;overflow:auto;padding:4px 0 10px}.friend{min-width:66px;text-align:center;font-size:11px;color:#d9d4e7}.friend .avatar{margin:0 auto 6px;width:48px;height:48px;border-radius:50%}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:18px 0}.tab{padding:11px 4px;border:1px solid var(--line);border-radius:13px;background:#171329;color:#aaa5bd;font-size:12px}.tab.active{color:var(--cyan);border-color:#69509b;background:#251b40}.view{display:none}.view.active{display:block}.row{display:flex;align-items:center;gap:11px;padding:12px 2px;border-bottom:1px solid #ffffff12}.row:last-child{border-bottom:0}.row .meta{flex:1;min-width:0}.row strong{display:block;overflow-wrap:anywhere}.row small{display:block;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}.empty{text-align:center;padding:22px 8px;color:var(--muted);line-height:1.5}.bubble{max-width:86%;padding:11px 13px;border-radius:15px;background:#29213f;margin:9px 0;overflow-wrap:anywhere}.bubble.mine{margin-left:auto;background:linear-gradient(120deg,#6234b6,#245b85)}.bubble small{display:block;color:#d2cbe2;font-size:10px;margin-top:5px}.chat-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.messages{height:44vh;min-height:260px;overflow:auto;padding:10px;background:#100d20;border:1px solid var(--line);border-radius:16px}.compose{display:flex;gap:8px;margin-top:10px}.compose input{flex:1;min-width:0;margin:0}.bottom{position:fixed;z-index:5;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#100d20ee;border-top:1px solid var(--line);backdrop-filter:blur(14px)}.bottom button{border:0;background:none;color:#928ba9;font-size:11px;padding:5px}.bottom button span{display:block;font-size:20px;margin-bottom:4px}.bottom button.active{color:var(--cyan)}.note{font-size:12px;color:var(--muted);line-height:1.5}.danger{color:var(--bad)}@media(min-width:600px){.shell{padding-top:28px}}
-</style></head><body>
-<section id="authScreen" class="auth"><div class="brand"><div class="logo"><svg viewBox="0 0 100 100" fill="none"><rect x="27" y="18" width="46" height="64" rx="12" stroke="#13d7ed" stroke-width="4"/><rect x="36" y="28" width="28" height="20" rx="4" stroke="#a66aff" stroke-width="3"/><path d="M38 39h6l4-7 5 13 4-6h5M38 59h24M38 68h16" stroke="#13d7ed" stroke-width="3" stroke-linecap="round"/><path d="M20 32q-12 18 0 36M80 32q12 18 0 36" stroke="#13d7ed" stroke-width="3" stroke-linecap="round"/></svg></div><h1>Irfan<span>Talk</span></h1><div class="tag">VOICE CONNECTS</div></div><div class="auth-card"><h2 id="authTitle">Welcome to IrfanTalk</h2><div id="nameWrap" class="hidden"><input id="nameInput" class="field" placeholder="Your name" autocomplete="name"></div><input id="emailInput" class="field" type="email" placeholder="Email address" autocomplete="email"><input id="passwordInput" class="field" type="password" placeholder="Password (minimum 6 characters)" autocomplete="current-password"><button id="authSubmit" class="btn full">Log in</button><button id="googleBtn" class="btn google full">Continue with Google</button><div class="auth-foot"><span id="authSwitchText">New to IrfanTalk?</span> <span id="authSwitch" class="link">Create account</span><br><span id="forgotBtn" class="link">Forgot password?</span></div><div id="authStatus" class="status"></div></div></section>
-<div id="appShell" class="shell hidden"><header class="top"><div class="user"><div id="myAvatar" class="avatar">I</div><div style="min-width:0"><strong id="myName">Hello!</strong><small>Ready to connect</small></div></div><button id="logoutBtn" class="icon" title="Sign out">↪</button></header><section class="hero"><div class="eyebrow">YOUR SPACE • YOUR PEOPLE</div><h2>Stay close, wherever you are.</h2><p>Chat privately with friends. Voice features are being prepared for the next build.</p></section><div class="section-head"><h3>Your people</h3><button data-view="friends">See all</button></div><div id="friendStrip" class="strip"><div class="empty">Your friends will appear here.</div></div>
-<div class="tabs"><button class="tab active" data-view="home">⌂ Home</button><button class="tab" data-view="friends">♧ Friends</button><button class="tab" data-view="requests">♡ Requests</button><button class="tab" data-view="profile">◎ Profile</button></div>
-<section id="view-home" class="view active"><div class="card"><h2>Welcome to IrfanTalk</h2><p class="note">Start by finding a friend using their registered email address. Once the request is accepted, you can open a private conversation.</p><button class="btn full" data-view="friends">Find friends</button></div><div class="card" style="margin-top:12px"><h2>Walkie-Talkie</h2><p class="note">The previous voice-room code is only a signaling prototype. We will enable reliable private push-to-talk after the friend and chat foundation is tested on both phones.</p><button class="btn full ghost" disabled>Voice feature — next phase</button></div></section>
-<section id="view-friends" class="view"><div class="card"><h2>Find a friend</h2><input id="friendEmail" class="field" type="email" placeholder="Friend's registered email"><button id="searchBtn" class="btn full">Search account</button><div id="searchResult" class="status"></div></div><div class="section-head"><h3>My friends</h3></div><div id="friendsList" class="card"><div class="empty">Loading friends…</div></div></section>
-<section id="view-requests" class="view"><div class="card"><h2>Friend requests</h2><div id="requestsList"><div class="empty">Loading requests…</div></div></div></section>
-<section id="view-chat" class="view"><div class="chat-head"><button id="backFriends" class="icon">←</button><div class="avatar" id="chatAvatar">F</div><div><strong id="chatName">Friend</strong><small class="muted">Private conversation</small></div></div><div id="messages" class="messages"><div class="empty">Select a friend to start chatting.</div></div><form id="messageForm" class="compose"><input id="messageInput" class="field" maxlength="2000" placeholder="Write a message…" autocomplete="off"><button class="btn">Send</button></form><div id="chatStatus" class="status"></div></section>
-<section id="view-profile" class="view"><div class="card"><h2>My profile</h2><div id="profileDetails" class="note"></div><button id="profileLogout" class="btn full ghost">Sign out</button></div></section></div>
-<nav id="bottomNav" class="bottom hidden"><button class="active" data-view="home"><span>⌂</span>Home</button><button data-view="friends"><span>♧</span>Friends</button><button data-view="requests"><span>♡</span>Requests</button><button data-view="profile"><span>◎</span>Profile</button></nav>
-<script>
-const firebaseConfig={apiKey:"AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",authDomain:"irfantalk.firebaseapp.com",databaseURL:"https://irfantalk-default-rtdb.firebaseio.com",projectId:"irfantalk",storageBucket:"irfantalk.firebasestorage.app",messagingSenderId:"218169866517",appId:"1:218169866517:web:447670dc6a565e1e7b511c"};
-firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),db=firebase.database();let currentUser=null,authMode='login',activeFriend=null,messageRef=null,messageListener=null;
-const $=id=>document.getElementById(id);const clean=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function setAuthMode(mode){authMode=mode;$('authTitle').textContent=mode==='signup'?'Create your account':'Welcome back';$('nameWrap').classList.toggle('hidden',mode!=='signup');$('authSubmit').textContent=mode==='signup'?'Create account':'Log in';$('authSwitchText').textContent=mode==='signup'?'Already registered?':'New to IrfanTalk?';$('authSwitch').textContent=mode==='signup'?'Log in':'Create account';$('authStatus').textContent=''}
-$('authSwitch').onclick=()=>setAuthMode(authMode==='signup'?'login':'signup');$('authSubmit').onclick=async()=>{const email=$('emailInput').value.trim().toLowerCase(),password=$('passwordInput').value,name=$('nameInput').value.trim();$('authStatus').textContent='Please wait…';try{if(!email||!password)throw Error('Enter email and password.');if(password.length<6)throw Error('Password must be at least 6 characters.');if(authMode==='signup'){if(!name)throw Error('Enter your name.');const cred=await auth.createUserWithEmailAndPassword(email,password);await cred.user.updateProfile({displayName:name});}else await auth.signInWithEmailAndPassword(email,password);}catch(e){$('authStatus').textContent=e.message}};
-$('googleBtn').onclick=async()=>{try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())}catch(e){$('authStatus').textContent=e.message}};$('forgotBtn').onclick=async()=>{const email=$('emailInput').value.trim();if(!email){$('authStatus').textContent='Enter your email first.';return}try{await auth.sendPasswordResetEmail(email);$('authStatus').textContent='Password reset email sent.'}catch(e){$('authStatus').textContent=e.message}};
-function showView(view){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+view));document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));if(view==='friends')loadFriends();if(view==='requests')loadRequests();if(view==='profile')showProfile();}
-document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));$('backFriends').onclick=()=>showView('friends');$('logoutBtn').onclick=$('profileLogout').onclick=()=>auth.signOut();
-async function syncProfile(user){const email=(user.email||'').toLowerCase(),name=user.displayName||email.split('@')[0]||'Friend';const profile={name,username:email.split('@')[0],email};await db.ref('publicUsers/'+user.uid).update(profile);}
-function friendChatPath(otherUid){const pair=[currentUser.uid,otherUid].sort();return 'privateChats/'+pair[0]+'/'+pair[1]+'/messages'}
-async function searchFriend(){const email=$('friendEmail').value.trim().toLowerCase();$('searchResult').textContent='Searching…';if(!email.includes('@')){$('searchResult').textContent='Enter a valid email address.';return}if(email===String(currentUser.email||'').toLowerCase()){$('searchResult').textContent='That is your own email.';return}try{const snap=await db.ref('publicUsers').orderByChild('email').equalTo(email).limitToFirst(1).once('value');if(!snap.exists()){$('searchResult').textContent='No IrfanTalk account found.';return}const uid=Object.keys(snap.val())[0],p=snap.val()[uid];const f=await db.ref('friends/'+currentUser.uid+'/'+uid).once('value');if(f.exists()){$('searchResult').textContent='You are already friends.';return}const req=await db.ref('friendRequests/'+uid+'/'+currentUser.uid).once('value');if(req.exists()&&req.val().status==='pending'){$('searchResult').textContent='Friend request already sent.';return}const wrap=document.createElement('div');wrap.className='row';wrap.innerHTML=`<div class="avatar">${clean((p.name||'F').charAt(0).toUpperCase())}</div><div class="meta"><strong>${clean(p.name||'Friend')}</strong><small>${clean(p.email)}</small></div><button class="btn small">Add</button>`;wrap.querySelector('button').onclick=async()=>{try{await db.ref('friendRequests/'+uid+'/'+currentUser.uid).set({senderUid:currentUser.uid,senderName:currentUser.displayName||currentUser.email.split('@')[0],senderEmail:currentUser.email.toLowerCase(),status:'pending',createdAt:firebase.database.ServerValue.TIMESTAMP});$('searchResult').textContent='Friend request sent.'}catch(e){$('searchResult').textContent=e.message}};$('searchResult').replaceChildren(wrap)}catch(e){$('searchResult').textContent='Search failed: '+e.message}}
-$('searchBtn').onclick=searchFriend;
-async function loadFriends(){const list=$('friendsList'),strip=$('friendStrip');list.innerHTML='<div class="empty">Loading…</div>';try{const snap=await db.ref('friends/'+currentUser.uid).once('value');list.replaceChildren();strip.replaceChildren();const add=document.createElement('button');add.className='friend';add.innerHTML='<div class="avatar">＋</div>Add';add.onclick=()=>$('friendEmail').focus();strip.append(add);if(!snap.exists()){list.innerHTML='<div class="empty">No friends yet. Search by email to add your first friend.</div>';return}snap.forEach(ch=>{const f=ch.val(),uid=ch.key,name=f.name||'Friend';const row=document.createElement('div');row.className='row';row.innerHTML=`<div class="avatar">${clean(name[0].toUpperCase())}</div><div class="meta"><strong>${clean(name)}</strong><small>${clean(f.email||'IrfanTalk friend')}</small></div><button class="btn small">Chat</button>`;row.querySelector('button').onclick=()=>openChat(uid,name);list.append(row);const chip=document.createElement('button');chip.className='friend';chip.innerHTML=`<div class="avatar">${clean(name[0].toUpperCase())}</div>${clean(name.split(' ')[0])}`;chip.onclick=()=>openChat(uid,name);strip.append(chip)})}catch(e){list.textContent='Could not load friends: '+e.message}}
-async function loadRequests(){const list=$('requestsList');list.innerHTML='<div class="empty">Loading…</div>';try{const snap=await db.ref('friendRequests/'+currentUser.uid).once('value');list.replaceChildren();let count=0;if(snap.exists())snap.forEach(ch=>{const r=ch.val();if(r.status!=='pending')return;count++;const uid=ch.key,row=document.createElement('div');row.className='row';row.innerHTML=`<div class="avatar">${clean((r.senderName||'F')[0].toUpperCase())}</div><div class="meta"><strong>${clean(r.senderName||'Friend')}</strong><small>${clean(r.senderEmail||'')}</small></div><button class="btn small">Accept</button><button class="btn small ghost">Decline</button>`;row.children[2].onclick=()=>respondRequest(uid,r,'accepted');row.children[3].onclick=()=>respondRequest(uid,r,'rejected');list.append(row)});if(!count)list.innerHTML='<div class="empty">No pending friend requests.</div>'}catch(e){list.textContent='Could not load requests: '+e.message}}
-async function 
- respondRequest(sender,r,status){
-  try{
-    await db.ref('friendRequests/'+currentUser.uid+'/'+sender+'/status').set(status);
-    if(status==='accepted'){
-      const updates={};
-      updates['friends/'+currentUser.uid+'/'+sender]={
-        uid:sender,
-        name:r.senderName||'Friend',
-        email:r.senderEmail||''
-      };
-      updates['friends/'+sender+'/'+currentUser.uid]={
-        uid:currentUser.uid,
-        name:currentUser.displayName||currentUser.email.split('@')[0],
-        email:(currentUser.email||'').toLowerCase()
-      };
-      await db.ref().update(updates);
-    }
-    await loadRequests();
-    await loadFriends();
-  }catch(e){
-    alert('Request update failed: '+e.message);
-  }
-}
+:root{--bg:#0b0917;--panel:#171329;--panel2:#211a39;--purple:#8b4cff;--cyan:#13d7ed;--muted:#aaa5bd;--line:#39314f}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#261044 0,#0b0917 52%);color:#fff;font:15px Arial,sans-serif;min-height:100vh}
+button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.shell{width:min(100%,560px);min-height:100vh;margin:auto;padding:22px 16px 35px}
+.auth{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:25px 18px;transform:translateY(-34px)}
+.brand{text-align:center;margin-bottom:28px}.logo{width:112px;height:112px;border:2px solid var(--cyan);border-radius:32px;display:grid;place-items:center;margin:auto;box-shadow:0 0 38px #8137f455;background:linear-gradient(145deg,#24163e,#100d20)}.logo svg{width:76px}
+.brand h1{font-size:38px;margin:14px 0 6px}.brand h1 span{color:var(--cyan)}.tag{letter-spacing:4px;font-size:10px;color:#aaa5bd}
+.card,.auth-card{background:linear-gradient(145deg,#211a39,#151225);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:0 15px 40px #0003}
+.auth-card{width:min(100%,420px)}h2{font-size:20px;margin:0 0 14px}
+.field{width:100%;padding:14px;border:1px solid #494064;border-radius:13px;background:#100d20;color:white;margin:7px 0;outline:none}.field:focus{border-color:var(--cyan)}
+.btn{border:0;border-radius:13px;padding:13px 15px;font-weight:700;color:#fff;background:linear-gradient(100deg,#792cff,#4654ed,#08cce9)}.btn.full{width:100%;margin-top:9px}.btn.google{background:#fff;color:#201a30}.btn.ghost{background:#28213d;border:1px solid #51446f}.btn.small{padding:9px 12px;font-size:12px}
+.link{color:var(--cyan);cursor:pointer}.auth-foot{text-align:center;margin-top:15px;color:var(--muted);font-size:13px;line-height:2}
+.status{min-height:20px;color:var(--cyan);font-size:13px;margin-top:9px;overflow-wrap:anywhere}
+.top{display:flex;align-items:center;justify-content:space-between;margin:5px 0 20px}.user{display:flex;align-items:center;gap:10px;min-width:0}.avatar{width:44px;height:44px;flex:none;border-radius:15px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;font-weight:bold;font-size:18px;color:white}
+.user strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.muted,small{color:var(--muted)}.hero{padding:18px;border-radius:20px;border:1px solid #4a3672;background:radial-gradient(circle at 100% 0,#493078,#211738 55%,#171329);margin-bottom:17px}.hero h2{font-size:23px;margin:8px 0}.hero p{color:#c4bdd5;line-height:1.45;margin:0}
+.search{display:flex;gap:8px}.search input{flex:1;min-width:0}.list{margin-top:12px}.row{display:flex;align-items:center;gap:10px;padding:12px 2px;border-bottom:1px solid #ffffff12}.row:last-child{border:0}.meta{flex:1;min-width:0}.meta strong{display:block;overflow-wrap:anywhere}.meta small{display:block;margin-top:4px}.empty{text-align:center;padding:22px 8px;color:var(--muted);line-height:1.5}
+.chat-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.chat-head .meta{flex:1}.icon{width:42px;height:42px;border-radius:13px;background:#211a39;border:1px solid var(--line);color:white}
+.messages{height:55vh;min-height:300px;max-height:600px;overflow:auto;padding:10px;background:#100d20;border:1px solid var(--line);border-radius:16px}
+.bubble{max-width:86%;padding:11px 13px;border-radius:15px;background:#29213f;margin:9px 0;overflow-wrap:anywhere;white-space:pre-wrap}.bubble.mine{margin-left:auto;background:linear-gradient(120deg,#6234b6,#245b85)}.bubble small{display:block;color:#d2cbe2;font-size:10px;margin-top:5px}
+.compose{display:flex;gap:8px;margin-top:10px}.compose input{flex:1;min-width:0;margin:0}
+.footer-note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
+@media(min-width:600px){.shell{padding-top:28px}}
+</style>
+</head>
+<body>
+<section id="authScreen" class="auth">
+ <div class="brand"><div class="logo"><svg viewBox="0 0 100 100" fill="none"><rect x="27" y="18" width="46" height="64" rx="12" stroke="#13d7ed" stroke-width="4"/><rect x="36" y="28" width="28" height="20" rx="4" stroke="#a66aff" stroke-width="3"/><path d="M38 39h6l4-7 5 13 4-6h5M38 59h24M38 68h16" stroke="#13d7ed" stroke-width="3" stroke-linecap="round"/><path d="M20 32q-12 18 0 36M80 32q12 18 0 36" stroke="#13d7ed" stroke-width="3" stroke-linecap="round"/></svg></div><h1>Irfan<span>Talk</span></h1><div class="tag">VOICE CONNECTS</div></div>
+ <div class="auth-card">
+  <h2 id="authTitle">Welcome to IrfanTalk</h2>
+  <div id="nameWrap" class="hidden"><input id="nameInput" class="field" placeholder="Your name" autocomplete="name"></div>
+  <input id="emailInput" class="field" type="email" placeholder="Email address" autocomplete="email">
+  <input id="passwordInput" class="field" type="password" placeholder="Password (minimum 6 characters)" autocomplete="current-password">
+  <button id="authSubmit" class="btn full">Log in</button>
+  <button id="googleBtn" class="btn google full">Continue with Google</button>
+  <div class="auth-foot"><span id="authSwitchText">New to IrfanTalk?</span> <span id="authSwitch" class="link">Create account</span><br><span id="forgotBtn" class="link">Forgot password?</span></div>
+  <div id="authStatus" class="status"></div>
+ </div>
+</section>
 
-async function openChat(uid,name){activeFriend={uid,name};$('chatName').textContent=name;$('chatAvatar').textContent=(name||'F')[0].toUpperCase();showView('chat');if(messageRef&&messageListener)messageRef.off('value',messageListener);messageRef=db.ref(friendChatPath(uid));messageListener=snap=>{const box=$('messages');box.replaceChildren();if(!snap.exists()){box.innerHTML='<div class="empty">Say hello and start your conversation.</div>';return}snap.forEach(ch=>{const m=ch.val(),el=document.createElement('div');el.className='bubble'+(m.senderUid===currentUser.uid?' mine':'');el.textContent=m.text||'';const meta=document.createElement('small');meta.textContent=(m.senderUid===currentUser.uid?'You':'Friend')+' · '+(m.createdAt?new Date(m.createdAt).toLocaleString():'');el.append(meta);box.append(el)});box.scrollTop=box.scrollHeight};messageRef.limitToLast(100).on('value',messageListener,e=>$('chatStatus').textContent='Chat load error: '+e.message)}
-$('messageForm').onsubmit=async e=>{e.preventDefault();if(!activeFriend)return;const text=$('messageInput').value.trim();if(!text)return;const path=friendChatPath(activeFriend.uid);try{await db.ref(path).push({senderUid:currentUser.uid,text,createdAt:firebase.database.ServerValue.TIMESTAMP});$('messageInput').value='';$('chatStatus').textContent=''}catch(err){$('chatStatus').textContent='Message not sent: '+err.message}};
-function showProfile(){$('profileDetails').textContent='Name: '+(currentUser.displayName||'Friend')+' · Email: '+(currentUser.email||'')}
-auth.onAuthStateChanged(async user=>{currentUser=user;if(user){$('authScreen').classList.add('hidden');$('appShell').classList.remove('hidden');$('bottomNav').classList.remove('hidden');const name=user.displayName||user.email?.split('@')[0]||'Friend';$('myName').textContent=name;$('myAvatar').textContent=name[0].toUpperCase();try{await syncProfile(user)}catch(e){console.error('Profile sync failed',e)}showView('home');loadFriends()}else{$('appShell').classList.add('hidden');$('bottomNav').classList.add('hidden');$('authScreen').classList.remove('hidden');if(messageRef&&messageListener)messageRef.off('value',messageListener);activeFriend=null}});
-</script></body></html>
+<main id="appShell" class="shell hidden">
+ <header class="top"><div class="user"><div id="myAvatar" class="avatar">I</div><div><strong id="myName">Hello!</strong><small>Direct connections</small></div></div><button id="logoutBtn" class="icon" title="Sign out">↪</button></header>
+ <section class="hero"><div class="tag">IRFANTALK • DIRECT CHAT</div><h2>Talk without friend requests.</h2><p>Choose any registered IrfanTalk user and start a private conversation.</p></section>
+ <section id="usersView" class="card">
+  <h2>People on IrfanTalk</h2>
+  <div class="search"><input id="userSearch" class="field" placeholder="Search by name or username" autocomplete="off"><button id="refreshBtn" class="btn">Refresh</button></div>
+  <div id="usersStatus" class="status"></div><div id="usersList" class="list"><div class="empty">Sign in to see registered users.</div></div>
+  <div class="footer-note">Only public display names and usernames are shown. Email addresses are not displayed in this list.</div>
+ </section>
+ <section id="chatView" class="hidden">
+  <div class="chat-head"><button id="backBtn" class="icon">←</button><div id="chatAvatar" class="avatar">U</div><div class="meta"><strong id="chatName">User</strong><small>Private conversation</small></div></div>
+  <div id="messages" class="messages"><div class="empty">Say hello to start chatting.</div></div>
+  <form id="messageForm" class="compose"><input id="messageInput" class="field" maxlength="2000" placeholder="Write a message…" autocomplete="off"><button class="btn">Send</button></form>
+  <div id="chatStatus" class="status"></div>
+ </section>
+</main>
+
+<script>
+const firebaseConfig = {
+ apiKey:"AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",
+ authDomain:"irfantalk.firebaseapp.com",
+ databaseURL:"https://irfantalk-default-rtdb.firebaseio.com",
+ projectId:"irfantalk",
+ storageBucket:"irfantalk.firebasestorage.app",
+ messagingSenderId:"218169866517",
+ appId:"1:218169866517:web:447670dc6a565e1e7b511c"
+};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth(), db=firebase.database();
+let currentUser=null, authMode="login", activeUser=null, chatRef=null, chatListener=null, allUsers=[];
+const $=id=>document.getElementById(id);
+const safe=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function setAuthMode(mode){
+ authMode=mode;
+ $("authTitle").textContent=mode==="signup"?"Create your account":"Welcome to IrfanTalk";
+ $("nameWrap").classList.toggle("hidden",mode!=="signup");
+ $("authSubmit").textContent=mode==="signup"?"Create account":"Log in";
+ $("authSwitchText").textContent=mode==="signup"?"Already registered?":"New to IrfanTalk?";
+ $("authSwitch").textContent=mode==="signup"?"Log in":"Create account";
+ $("authStatus").textContent="";
+}
+$("authSwitch").onclick=()=>setAuthMode(authMode==="signup"?"login":"signup");
+$("authSubmit").onclick=async()=>{
+ const email=$("emailInput").value.trim().toLowerCase(), password=$("passwordInput").value, name=$("nameInput").value.trim();
+ $("authStatus").textContent="Please wait…";
+ try{
+  if(!email||!password)throw Error("Enter email and password.");
+  if(password.length<6)throw Error("Password must be at least 6 characters.");
+  if(authMode==="signup"){
+   if(!name)throw Error("Enter your name.");
+   const cred=await auth.createUserWithEmailAndPassword(email,password);
+   await cred.user.updateProfile({displayName:name});
+  }else await auth.signInWithEmailAndPassword(email,password);
+ }catch(e){$("authStatus").textContent=e.message;}
+};
+$("googleBtn").onclick=async()=>{
+ try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());}
+ catch(e){$("authStatus").textContent=e.message;}
+};
+$("forgotBtn").onclick=async()=>{
+ const email=$("emailInput").value.trim();
+ if(!email){$("authStatus").textContent="Enter your registered email first.";return;}
+ try{await auth.sendPasswordResetEmail(email);$("authStatus").textContent="Password reset link sent. Check your inbox and spam folder.";}
+ catch(e){$("authStatus").textContent=e.message;}
+};
+$("logoutBtn").onclick=()=>auth.signOut();
+$("backBtn").onclick=closeChat;
+
+function pairPath(otherUid){
+ const pair=[currentUser.uid,otherUid].sort();
+ return "privateChats/"+pair[0]+"/"+pair[1]+"/messages";
+}
+async function syncDirectory(user){
+ const email=(user.email||"").toLowerCase();
+ const name=(user.displayName||email.split("@")[0]||"IrfanTalk user").trim();
+ const username=email?email.split("@")[0]:"";
+ const profile={name,username,updatedAt:firebase.database.ServerValue.TIMESTAMP};
+ await db.ref("userDirectory/"+user.uid).update(profile);
+}
+async function loadUsers(){
+ $("usersStatus").textContent="Loading registered users…";
+ $("usersList").innerHTML='<div class="empty">Please wait…</div>';
+ try{
+  const snap=await db.ref("userDirectory").once("value");
+  allUsers=[];
+  snap.forEach(child=>{
+   if(child.key!==currentUser.uid){
+    const p=child.val()||{};
+    allUsers.push({uid:child.key,name:p.name||"IrfanTalk user",username:p.username||""});
+   }
+  });
+  renderUsers();
+  $("usersStatus").textContent=allUsers.length?allUsers.length+" other registered account(s).":"No other registered users found yet.";
+ }catch(e){
+  $("usersList").innerHTML='<div class="empty">Could not load users: '+safe(e.message)+'</div>';
+  $("usersStatus").textContent="Check Firebase Database Rules.";
+ }
+}
+function renderUsers(){
+ const q=$("userSearch").value.trim().toLowerCase();
+ const filtered=allUsers.filter(u=>(u.name+" "+u.username).toLowerCase().includes(q));
+ const list=$("usersList");list.replaceChildren();
+ if(!filtered.length){list.innerHTML='<div class="empty">No matching IrfanTalk users found.</div>';return;}
+ filtered.forEach(u=>{
+  const row=document.createElement("div");row.className="row";
+  const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=(u.name[0]||"U").toUpperCase();
+  const meta=document.createElement("div");meta.className="meta";
+  const strong=document.createElement("strong");strong.textContent=u.name;
+  const small=document.createElement("small");small.textContent=u.username?"@"+u.username:"IrfanTalk user";
+  meta.append(strong,small);
+  const btn=document.createElement("button");btn.className="btn small";btn.textContent="Chat";btn.onclick=()=>openChat(u);
+  row.append(avatar,meta,btn);list.append(row);
+ });
+}
+$("userSearch").addEventListener("input",renderUsers);
+$("refreshBtn").onclick=loadUsers;
+
+async function openChat(person){
+ activeUser=person;
+ $("usersView").classList.add("hidden");$("chatView").classList.remove("hidden");
+ $("chatName").textContent=person.name;$("chatAvatar").textContent=(person.name[0]||"U").toUpperCase();
+ if(chatRef&&chatListener)chatRef.off("value",chatListener);
+ chatRef=db.ref(pairPath(person.uid)).limitToLast(100);
+ chatListener=snap=>{
+  const box=$("messages");box.replaceChildren();
+  if(!snap.exists()){box.innerHTML='<div class="empty">Say hello and start your conversation.</div>';return;}
+  snap.forEach(child=>{
+   const m=child.val()||{},bubble=document.createElement("div");
+   bubble.className="bubble"+(m.senderUid===currentUser.uid?" mine":"");
+   bubble.textContent=m.text||"";
+   const meta=document.createElement("small");
+   meta.textContent=(m.senderUid===currentUser.uid?"You":person.name)+" · "+(m.createdAt?new Date(m.createdAt).toLocaleString():"");
+   bubble.append(meta);box.append(bubble);
+  });
+  box.scrollTop=box.scrollHeight;
+ };
+ chatRef.on("value",chatListener,e=>$("chatStatus").textContent="Chat load error: "+e.message);
+}
+function closeChat(){
+ if(chatRef&&chatListener)chatRef.off("value",chatListener);
+ chatRef=null;chatListener=null;activeUser=null;
+ $("chatView").classList.add("hidden");$("usersView").classList.remove("hidden");
+}
+$("messageForm").onsubmit=async e=>{
+ e.preventDefault();
+ if(!activeUser)return;
+ const text=$("messageInput").value.trim();if(!text)return;
+ $("chatStatus").textContent="Sending…";
+ try{
+  await db.ref(pairPath(activeUser.uid)).push({
+   senderUid:currentUser.uid,text,
+   createdAt:firebase.database.ServerValue.TIMESTAMP
+  });
+  $("messageInput").value="";$("chatStatus").textContent="";
+ }catch(err){$("chatStatus").textContent="Message not sent: "+err.message;}
+};
+auth.onAuthStateChanged(async user=>{
+ currentUser=user;
+ if(user){
+  $("authScreen").classList.add("hidden");$("appShell").classList.remove("hidden");
+  const name=user.displayName||user.email?.split("@")[0]||"Friend";
+  $("myName").textContent=name;$("myAvatar").textContent=name[0].toUpperCase();
+  try{await syncDirectory(user);await loadUsers();}
+  catch(e){$("usersStatus").textContent="Profile sync failed: "+e.message;}
+ }else{
+  $("appShell").classList.add("hidden");$("authScreen").classList.remove("hidden");
+  if(chatRef&&chatListener)chatRef.off("value",chatListener);
+  chatRef=null;chatListener=null;activeUser=null;
+ }
+});
+</script>
+</body>
+</html>
