@@ -290,9 +290,22 @@ async function loadFriends(){
  }catch(error){list.textContent="Could not load friends: "+error.message}
 }
 function showProfile(){document.getElementById("profileInfo").textContent="Name: "+(currentUser.displayName||"Friend")+" | Email: "+currentUser.email}
-async function syncPublicProfile(user){
- const profile={name:user.displayName||user.email.split("@")[0],email:user.email.toLowerCase()};
- try{await db.ref("publicUsers/"+user.uid).set(profile)}catch(error){console.error("Profile sync failed:",error)}
+async function syncPublicProfile(user) {
+    const email = (user.email || "").toLowerCase();
+
+    const profile = {
+        name: email === "habitsmzn1@gmail.com"
+            ? "Irfan"
+            : (user.displayName || email.split("@")[0] || "Friend"),
+        username: email.split("@")[0],
+        email: email
+    };
+
+    try {
+        await db.ref("publicUsers/" + user.uid).update(profile);
+    } catch (error) {
+        console.error("Profile sync failed:", error);
+    }
 }
 auth.getRedirectResult().catch(error=>console.error(error));
 auth.onAuthStateChanged(async user=>{
