@@ -125,9 +125,91 @@ app.post('/api/otp/verify', (req, res) => {
   }
 
   otpStore.delete(email);
-  res.json({ success: true, verified: true });
-});
 
+const expiresAt = Date.now() + 10 * 60 * 1000;
+
+const payload = Buffer.from(
+  JSON.stringify({ email, expiresAt })
+).toString('base64url');
+
+const signature = crypto
+  .createHmac('sha256', process.env.OTP_VERIFICATION_SECRET)
+  .update(payload)
+  .digest('hex');
+
+const verificationToken = `${payload}.${signature}`;
+
+res.json({
+  success: true,
+  verified: true,
+  verificationToken
+});
+});
+app.post('/api/signup', async (req, res) => {
+  try {
+    const email = String(req.body.email || '').trim().toLowerCase();
+    const password = String(req.body.password || '');
+    const name = String(req.body.name || '').trim();
+    const token = String(req.body.verificationToken || '');
+
+    if (!email || !password || !name || !token) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters.' });
+    }
+
+    const parts = token.split('.');
+    if (parts.length !== 2) {
+      return res.status(401).json({ error: 'Invalid verification token.' });
+    }
+
+    const [payload, signature] = parts;
+
+    const expected = crypto
+      .createHmac('sha256', process.env.OTP_VERIFICATION_SECRET)
+      .update(payload)
+      .digest('hex');
+
+    const a = Buffer.from(signature, 'hex');
+    const b = Buffer.from(expected, 'hex');
+
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+      return res.status(401).json({ error: 'Invalid verification token.' });
+    }
+
+    const verified = JSON.parse(
+      Buffer.from(payload, 'base64url').toString()
+    );
+
+    if (
+      verified.email !== email ||
+      Date.now() > verified.expiresAt
+    ) {
+      return res.status(401).json({ error: 'Verification expired. Verify again.' });
+    }
+
+    const user = await admin.auth().createUser({
+      email,
+      password,
+      displayName: name,
+      emailVerified: true
+    });
+
+    await db.ref('userDirectory/' + user.uid).set({
+      name,
+      username: email.split('@')[0],
+      updatedAt: Date.now()
+    });
+
+    res.json({ success: true, uid: user.uid });
+
+  } catch (error) {
+    console.error('Signup error:', error.message);
+    res.status(400).json({ error: 'Account creation failed.' });
+  }
+});
 // Voice signaling
 io.on('connection', socket => {
   socket.emit('connected', { socketId: socket.id });
