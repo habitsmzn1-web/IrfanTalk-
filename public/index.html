@@ -306,12 +306,17 @@ $("messageForm").onsubmit=async e=>{
 auth.onAuthStateChanged(async user=>{
  currentUser=user;
  if(user){
+ connectVoiceSocket(user);
   $("authScreen").classList.add("hidden");$("appShell").classList.remove("hidden");
   const name=user.displayName||user.email?.split("@")[0]||"Friend";
   $("myName").textContent=name;$("myAvatar").textContent=name[0].toUpperCase();
   try{await syncDirectory(user);await loadUsers();}
   catch(e){$("usersStatus").textContent="Profile sync failed: "+e.message;}
  }else{
+ if(voiceSocket){
+  voiceSocket.disconnect();
+  voiceSocket=null;
+}
   $("appShell").classList.add("hidden");$("authScreen").classList.remove("hidden");
   if(chatRef&&chatListener)chatRef.off("value",chatListener);
   chatRef=null;chatListener=null;activeUser=null;
