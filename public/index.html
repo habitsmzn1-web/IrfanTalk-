@@ -82,32 +82,98 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth(), db=firebase.database();
-let currentUser=null, authMode="login", activeUser=null, chatRef=null, chatListener=null, allUsers=[];
+let currentUser=null, authMode="login", otpSentFor="", activeUser=null, chatRef=null, chatListener=null, allUsers=[];
 const $=id=>document.getElementById(id);
 const safe=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function setAuthMode(mode){
  authMode=mode;
  $("authTitle").textContent=mode==="signup"?"Create your account":"Welcome to IrfanTalk";
  $("nameWrap").classList.toggle("hidden",mode!=="signup");
+$("otpWrap").classList.toggle("hidden",mode!=="signup");
+$("otpInput").value="";
+otpSentFor="";
  $("authSubmit").textContent=mode==="signup"?"Create account":"Log in";
  $("authSwitchText").textContent=mode==="signup"?"Already registered?":"New to IrfanTalk?";
  $("authSwitch").textContent=mode==="signup"?"Log in":"Create account";
  $("authStatus").textContent="";
 }
 $("authSwitch").onclick=()=>setAuthMode(authMode==="signup"?"login":"signup");
+
 $("authSubmit").onclick=async()=>{
- const email=$("emailInput").value.trim().toLowerCase(), password=$("passwordInput").value, name=$("nameInput").value.trim();
+ const email=$("emailInput").value.trim().toLowerCase();
+ const password=$("passwordInput").value;
+ const name=$("nameInput").value.trim();
+
  $("authStatus").textContent="Please wait…";
+
  try{
   if(!email||!password)throw Error("Enter email and password.");
   if(password.length<6)throw Error("Password must be at least 6 characters.");
+
   if(authMode==="signup"){
    if(!name)throw Error("Enter your name.");
-   const cred=await auth.createUserWithEmailAndPassword(email,password);
-   await cred.user.updateProfile({displayName:name});
-  }else await auth.signInWithEmailAndPassword(email,password);
- }catch(e){$("authStatus").textContent=e.message;}
+
+   // First click: send OTP
+   if(otpSentFor!==email){
+    const response=await fetch("/api/otp/send",{
+     method:"POST",
+     headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({email})
+    });
+
+    const result=await response.json();
+    if(!response.ok)throw Error(result.error||"Could not send OTP.");
+
+    otpSentFor=email;
+    $("otpWrap").classList.remove("hidden");
+    $("authStatus").textContent="OTP sent. Enter the 6-digit code and click Sign Up again.";
+    return;
+   }
+
+   // Second click: verify OTP
+   const code=$("otpInput").value.trim();
+
+   if(!/^\d{6}$/.test(code)){
+    throw Error("Enter the 6-digit OTP.");
+   }
+
+   const verifyResponse=await fetch("/api/otp/verify",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({email,code})
+   });
+
+   const verification=await verifyResponse.json();
+   if(!verifyResponse.ok)throw Error(verification.error||"OTP verification failed.");
+
+   // Create account after OTP verification
+   const signupResponse=await fetch("/api/signup",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+     email,
+     password,
+     name,
+     verificationToken:verification.verificationToken
+    })
+   });
+
+   const signupResult=await signupResponse.json();
+   if(!signupResponse.ok)throw Error(signupResult.error||"Signup failed.");
+
+   otpSentFor="";
+   $("otpInput").value="";
+   await auth.signInWithEmailAndPassword(email,password);
+
+  }else{
+   await auth.signInWithEmailAndPassword(email,password);
+  }
+
+ }catch(e){
+  $("authStatus").textContent=e.message;
+ }
 };
+
 $("googleBtn").onclick=async()=>{
  try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());}
  catch(e){$("authStatus").textContent=e.message;}
