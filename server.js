@@ -2,10 +2,21 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const admin = require("firebase-admin");
 const path = require('path');
 const crypto = require('crypto');
 
 const app = express();
+const serviceAccount = JSON.parse(
+  process.env.FIREBASE_SERVICE_ACCOUNT
+);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://irfantalk-default-rtdb.firebaseio.com"
+});
+
+const db = admin.database();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: '*', methods: ['GET', 'POST'] }
