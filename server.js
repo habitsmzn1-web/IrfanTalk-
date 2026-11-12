@@ -21,7 +21,22 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: '*', methods: ['GET', 'POST'] }
 });
+io.use(async (socket, next) => {
+  try {
+    const token = socket.handshake.auth?.token;
 
+    if (!token) {
+      return next(new Error('Authentication required'));
+    }
+
+    const decoded = await admin.auth().verifyIdToken(token);
+    socket.data.uid = decoded.uid;
+
+    next();
+  } catch (error) {
+    next(new Error('Invalid authentication'));
+  }
+});
 app.use(express.json({ limit: '10kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
