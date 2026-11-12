@@ -64,6 +64,16 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
  </section>
  <section id="chatView" class="hidden">
   <div class="chat-head"><button id="backBtn" class="icon">←</button><div id="chatAvatar" class="avatar">U</div><div class="meta"><strong id="chatName">User</strong><small>Private conversation</small></div></div>
+<div class="card" style="text-align:center;margin:12px 0">
+  <h2>🎙️ Private Walkie-Talkie</h2>
+  <button id="talkBtn" class="btn"
+    style="width:180px;height:70px;border-radius:20px;font-size:18px">
+    Hold to Talk
+  </button>
+  <div id="voiceStatus" class="status">
+    Ready to talk
+  </div>
+</div>
   <div id="messages" class="messages"><div class="empty">Say hello to start chatting.</div></div>
   <form id="messageForm" class="compose"><input id="messageInput" class="field" maxlength="2000" placeholder="Write a message…" autocomplete="off"><button class="btn">Send</button></form>
   <div id="chatStatus" class="status"></div>
