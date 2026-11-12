@@ -41,6 +41,11 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
   <div id="nameWrap" class="hidden"><input id="nameInput" class="field" placeholder="Your name" autocomplete="name"></div>
   <input id="emailInput" class="field" type="email" placeholder="Email address" autocomplete="email">
   <input id="passwordInput" class="field" type="password" placeholder="Password (minimum 6 characters)" autocomplete="current-password">
+<div id="otpWrap" class="hidden">
+  <input id="otpInput" class="field"
+    type="text" inputmode="numeric"
+    maxlength="6" placeholder="Enter 6-digit email OTP">
+</div>
   <button id="authSubmit" class="btn full">Log in</button>
   <button id="googleBtn" class="btn google full">Continue with Google</button>
   <div class="auth-foot"><span id="authSwitchText">New to IrfanTalk?</span> <span id="authSwitch" class="link">Create account</span><br><span id="forgotBtn" class="link">Forgot password?</span></div>
