@@ -85,6 +85,32 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth(), db=firebase.database();
 let currentUser=null, authMode="login", otpSentFor="", activeUser=null, chatRef=null, chatListener=null, allUsers=[];
+let voiceSocket = null;
+
+async function connectVoiceSocket(user) {
+  try {
+    if (voiceSocket) {
+      voiceSocket.disconnect();
+    }
+
+    const token = await user.getIdToken();
+
+    voiceSocket = io({
+      auth: { token }
+    });
+
+    voiceSocket.on("connect", () => {
+      console.log("Secure voice connection ready");
+    });
+
+    voiceSocket.on("connect_error", error => {
+      console.error("Voice connection:", error.message);
+    });
+
+  } catch (error) {
+    console.error("Voice setup failed:", error);
+  }
+}
 const $=id=>document.getElementById(id);
 const safe=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function setAuthMode(mode){
