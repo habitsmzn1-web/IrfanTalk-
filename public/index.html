@@ -276,6 +276,7 @@ $("refreshBtn").onclick=loadUsers;
 
 async function openChat(person){
  activeUser=person;
+ joinPrivateVoice(person.uid);
  $("usersView").classList.add("hidden");$("chatView").classList.remove("hidden");
  $("chatName").textContent=person.name;$("chatAvatar").textContent=(person.name[0]||"U").toUpperCase();
  if(chatRef&&chatListener)chatRef.off("value",chatListener);
@@ -300,6 +301,191 @@ function closeChat(){
  chatRef=null;chatListener=null;activeUser=null;
  $("chatView").classList.add("hidden");$("usersView").classList.remove("hidden");
 }
+ let voicePeers = new Map();
+let localVoiceStream = null;
+let voiceRoomTarget = null;
+
+async function createVoicePeer(peerId, makeOffer) {
+  if (voicePeers.has(peerId)) {
+    return voicePeers.get(peerId);
+  }
+
+  const pc = new RTCPeerConnection({
+    iceServers: [
+      { urls: "stun:stun.l.google.com:19302" }
+    ]
+  });
+
+  voicePeers.set(peerId, pc);
+
+  const audio = document.createElement("audio");
+  audio.autoplay = true;
+  audio.playsInline = true;
+  document.body.appendChild(audio);
+
+pc.ontrack = event => {
+  const stream = event.streams[0] || new MediaStream([event.track]);
+  audio.srcObject = stream;
+  audio.play().catch(() => {});
+};
+
+  pc.onicecandidate = event => {
+    if (event.candidate && voiceSocket) {
+      voiceSocket.emit("voice-ice-candidate", {
+        target: peerId,
+        candidate: event.candidate
+      });
+    }
+  };
+
+  const transceiver = pc.addTransceiver("audio", {
+    direction: "sendrecv"
+  });
+
+  if (localVoiceStream) {
+    await transceiver.sender.replaceTrack(
+      localVoiceStream.getAudioTracks()[0]
+    );
+  }
+
+  if (makeOffer) {
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+
+    voiceSocket.emit("voice-offer", {
+      target: peerId,
+      offer
+    });
+  }
+
+  return pc;
+}
+
+function joinPrivateVoice(targetUid) {
+  if (!voiceSocket || !targetUid) return;
+
+  voiceRoomTarget = targetUid;
+
+  voiceSocket.off("voice-room-users");
+
+  voiceSocket.on("voice-room-users", async peers => {
+    for (const peerId of peers) {
+      await createVoicePeer(peerId, true);
+    }
+  });
+
+  voiceSocket.off("voice-offer");
+
+  voiceSocket.on("voice-offer", async data => {
+    const peerId = data.from;
+    if (!peerId || !data.offer) return;
+
+    const pc = await createVoicePeer(peerId, false);
+    await pc.setRemoteDescription(data.offer);
+
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+
+    voiceSocket.emit("voice-answer", {
+      target: peerId,
+      answer
+    });
+  });
+
+  voiceSocket.off("voice-answer");
+
+  voiceSocket.on("voice-answer", async data => {
+    const pc = voicePeers.get(data.from);
+    if (pc && data.answer) {
+      await pc.setRemoteDescription(data.answer);
+    }
+  });
+
+  voiceSocket.off("voice-ice-candidate");
+
+  voiceSocket.on("voice-ice-candidate", async data => {
+    const pc = voicePeers.get(data.from);
+    if (pc && data.candidate) {
+      await pc.addIceCandidate(data.candidate);
+    }
+  });
+
+  voiceSocket.emit("join-private-voice", targetUid);
+}
+ const talkButton = $("talkBtn");
+const voiceStatus = $("voiceStatus");
+let talkPressActive = false;
+
+async function startTalking() {
+  if (!voiceSocket || !voiceSocket.connected) {
+    voiceStatus.textContent = "Voice connection not ready";
+    return;
+  }
+
+  try {
+    if (!localVoiceStream) {
+      localVoiceStream = await navigator.mediaDevices.getUserMedia({
+        audio: true
+      });
+    }
+
+    if (!talkPressActive) {
+      localVoiceStream.getTracks().forEach(track => track.stop());
+      localVoiceStream = null;
+      return;
+    }
+
+    const track = localVoiceStream.getAudioTracks()[0];
+    track.enabled = true;
+
+    for (const pc of voicePeers.values()) {
+      const sender = pc.getSenders().find(
+        s => s.track?.kind === "audio" || 
+             pc.getTransceivers().some(
+               t => t.sender === s && t.receiver.track.kind === "audio"
+             )
+      );
+
+      if (sender) await sender.replaceTrack(track);
+    }
+
+    voiceStatus.textContent = "🎙️ Transmitting...";
+  } catch (error) {
+    voiceStatus.textContent = "Microphone permission required";
+    console.error("Microphone error:", error);
+  }
+}
+
+async function stopTalking() {
+  talkPressActive = false;
+
+  if (localVoiceStream) {
+    localVoiceStream.getTracks().forEach(track => track.stop());
+    localVoiceStream = null;
+  }
+
+  for (const pc of voicePeers.values()) {
+    const sender = pc.getSenders().find(
+      s => pc.getTransceivers().some(
+        t => t.sender === s && t.receiver.track.kind === "audio"
+      )
+    );
+
+    if (sender) await sender.replaceTrack(null);
+  }
+
+  voiceStatus.textContent = "Ready to talk";
+}
+
+talkButton.addEventListener("pointerdown", async event => {
+  event.preventDefault();
+  talkPressActive = true;
+  await startTalking();
+});
+
+talkButton.addEventListener("pointerup", stopTalking);
+talkButton.addEventListener("pointercancel", stopTalking);
+talkButton.addEventListener("lostpointercapture", stopTalking);
 $("messageForm").onsubmit=async e=>{
  e.preventDefault();
  if(!activeUser)return;
