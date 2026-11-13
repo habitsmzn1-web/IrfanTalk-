@@ -405,12 +405,21 @@ snap.forEach(child=>{
   if (m.senderUid === currentUser.uid) {
     const actions = document.createElement("div");
     actions.style.marginTop = "8px";
+    actions.style.display = "none";
+    actions.style.gap = "8px";
 
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
     editBtn.type = "button";
 
     editBtn.onclick = async () => {
+      const age = Date.now() - Number(m.createdAt || 0);
+
+      if (age > 15 * 60 * 1000) {
+        alert("Edit time expired. You can edit within 15 minutes.");
+        return;
+      }
+
       const updatedText = prompt("Edit your message:", m.text || "");
       if (updatedText === null || !updatedText.trim()) return;
 
@@ -425,10 +434,17 @@ snap.forEach(child=>{
     };
 
     const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
+    deleteBtn.textContent = "Delete for everyone";
     deleteBtn.type = "button";
 
     deleteBtn.onclick = async () => {
+      const age = Date.now() - Number(m.createdAt || 0);
+
+      if (age > 24 * 60 * 60 * 1000) {
+        alert("Delete time expired. You can delete within 24 hours.");
+        return;
+      }
+
       if (!confirm("Delete this message for everyone?")) return;
 
       try {
@@ -440,7 +456,36 @@ snap.forEach(child=>{
 
     actions.append(editBtn, deleteBtn);
     bubble.append(actions);
+
+    let pressTimer = null;
+
+    const showActions = () => {
+      actions.style.display = "flex";
+    };
+
+    const clearPress = () => {
+      clearTimeout(pressTimer);
+    };
+
+    bubble.addEventListener("touchstart", () => {
+      pressTimer = setTimeout(showActions, 500);
+    }, { passive: true });
+
+    bubble.addEventListener("touchend", clearPress);
+    bubble.addEventListener("touchmove", clearPress);
+    bubble.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      showActions();
+    });
+
+    bubble.addEventListener("mousedown", () => {
+      pressTimer = setTimeout(showActions, 500);
+    });
+
+    bubble.addEventListener("mouseup", clearPress);
+    bubble.addEventListener("mouseleave", clearPress);
   }
+
 
   box.append(bubble);
 });
