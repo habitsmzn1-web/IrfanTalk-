@@ -573,6 +573,7 @@ $("messageForm").onsubmit=async e=>{
    senderUid:currentUser.uid,text,
    createdAt:firebase.database.ServerValue.TIMESTAMP
   });
+  playIrfanChatSound();
   $("messageInput").value="";$("chatStatus").textContent="";
  }catch(err){$("chatStatus").textContent="Message not sent: "+err.message;}
 };
