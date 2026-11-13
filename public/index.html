@@ -294,50 +294,43 @@ document.addEventListener("pointerdown", () => {
   }
 }, { once: true });
 
+
 function playIrfanChatSound() {
   try {
-    if (!irfanChatAudio || irfanChatAudio.state !== "running") return;
+    if (!irfanChatAudio ||
+        irfanChatAudio.state !== "running") return;
 
     const now = irfanChatAudio.currentTime;
 
-    const notes = [
-  { frequency: 1250, start: 0 },
-  { frequency: 900, start: 0.045 }
-];
+    const oscillator = irfanChatAudio.createOscillator();
+    const gain = irfanChatAudio.createGain();
 
-    notes.forEach(note => {
-      const oscillator = irfanChatAudio.createOscillator();
-      const gain = irfanChatAudio.createGain();
+    oscillator.type = "triangle";
 
-      oscillator.type = "triangle";
-      oscillator.frequency.setValueAtTime(
-        note.frequency,
-        now + note.start
-      );
+    oscillator.frequency.setValueAtTime(1450, now);
+    oscillator.frequency.exponentialRampToValueAtTime(
+      620, now + 0.075
+    );
 
-      gain.gain.setValueAtTime(0.0001, now + note.start);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(
+      0.075, now + 0.004
+    );
+    gain.gain.exponentialRampToValueAtTime(
+      0.0001, now + 0.09
+    );
 
-gain.gain.exponentialRampToValueAtTime(
-  0.08,
-  now + note.start + 0.008
-);
+    oscillator.connect(gain);
+    gain.connect(irfanChatAudio.destination);
 
-gain.gain.exponentialRampToValueAtTime(
-  0.0001,
-  now + note.start + 0.075
-);
-
-      oscillator.connect(gain);
-      gain.connect(irfanChatAudio.destination);
-
-      oscillator.start(now + note.start);
-      oscillator.stop(now + note.start + 0.085);
-    });
+    oscillator.start(now);
+    oscillator.stop(now + 0.095);
 
   } catch (error) {
     console.log("Notification sound error:", error);
   }
 }
+
 async function openChat(person){
  activeUser=person;
  joinPrivateVoice(person.uid);
