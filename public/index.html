@@ -302,29 +302,38 @@ function playIrfanChatSound() {
 
     const now = irfanChatAudio.currentTime;
 
-    const oscillator = irfanChatAudio.createOscillator();
-    const gain = irfanChatAudio.createGain();
+    function makeTap(freq, start, duration, volume, type) {
+      const osc = irfanChatAudio.createOscillator();
+      const gain = irfanChatAudio.createGain();
 
-    oscillator.type = "triangle";
+      const time = now + start;
 
-    oscillator.frequency.setValueAtTime(1450, now);
-    oscillator.frequency.exponentialRampToValueAtTime(
-      620, now + 0.075
-    );
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, time);
+      osc.frequency.exponentialRampToValueAtTime(
+        freq * 0.60, time + duration
+      );
 
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(
-      0.075, now + 0.004
-    );
-    gain.gain.exponentialRampToValueAtTime(
-      0.0001, now + 0.09
-    );
+      gain.gain.setValueAtTime(0.0001, time);
+      gain.gain.exponentialRampToValueAtTime(
+        volume, time + 0.004
+      );
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001, time + duration
+      );
 
-    oscillator.connect(gain);
-    gain.connect(irfanChatAudio.destination);
+      osc.connect(gain);
+      gain.connect(irfanChatAudio.destination);
 
-    oscillator.start(now);
-    oscillator.stop(now + 0.095);
+      osc.start(time);
+      osc.stop(time + duration + 0.01);
+    }
+
+    // Main crisp notification
+    makeTap(1450, 0, 0.11, 0.28, "triangle");
+
+    // Bright click layer
+    makeTap(2200, 0, 0.045, 0.09, "sine");
 
   } catch (error) {
     console.log("Notification sound error:", error);
