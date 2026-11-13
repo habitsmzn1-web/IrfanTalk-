@@ -229,8 +229,19 @@ app.post('/api/signup', async (req, res) => {
 io.on('connection', socket => {
   socket.emit('connected', { socketId: socket.id });
 
-  socket.on('join-voice-room', roomId => {
-    if (!roomId || typeof roomId !== 'string') return;
+  socket.on('join-private-voice', async (targetUid) => {
+  try {
+    if (
+      typeof targetUid !== 'string' ||
+      !targetUid ||
+      targetUid === socket.data.uid
+    ) return;
+
+    await admin.auth().getUser(targetUid);
+
+    const pair = [socket.data.uid, targetUid].sort();
+    const roomId = 'private-voice:' + pair.join(':');
+
     socket.join(roomId);
 
     const room = io.sockets.adapter.rooms.get(roomId);
@@ -239,28 +250,72 @@ io.on('connection', socket => {
       : [];
 
     socket.emit('voice-room-users', peers);
+
     socket.to(roomId).emit('voice-user-joined', {
       userId: socket.id
     });
-  });
+
+  } catch (error) {
+    socket.emit('voice-error', 'Could not join private voice room.');
+  }
+});
 
   socket.on('voice-offer', ({ target, offer } = {}) => {
-    if (target) io.to(target).emit('voice-offer', {
-      from: socket.id, offer
-    });
-  });
+  if (!target || !offer) return;
 
-  socket.on('voice-answer', ({ target, answer } = {}) => {
-    if (target) io.to(target).emit('voice-answer', {
-      from: socket.id, answer
-    });
-  });
+  const targetSocket = io.sockets.sockets.get(target);
+  if (!targetSocket) return;
 
-  socket.on('voice-ice-candidate', ({ target, candidate } = {}) => {
-    if (target) io.to(target).emit('voice-ice-candidate', {
-      from: socket.id, candidate
-    });
+  const sharedRoom = [...socket.rooms].find(room =>
+    room.startsWith('private-voice:') &&
+    targetSocket.rooms.has(room)
+  );
+
+  if (!sharedRoom) return;
+
+  targetSocket.emit('voice-offer', {
+    from: socket.id,
+    offer
   });
+});
+
+socket.on('voice-answer', ({ target, answer } = {}) => {
+  if (!target || !answer) return;
+
+  const targetSocket = io.sockets.sockets.get(target);
+  if (!targetSocket) return;
+
+  const sharedRoom = [...socket.rooms].find(room =>
+    room.startsWith('private-voice:') &&
+    targetSocket.rooms.has(room)
+  );
+
+  if (!sharedRoom) return;
+
+  targetSocket.emit('voice-answer', {
+    from: socket.id,
+    answer
+  });
+});
+
+socket.on('voice-ice-candidate', ({ target, candidate } = {}) => {
+  if (!target || !candidate) return;
+
+  const targetSocket = io.sockets.sockets.get(target);
+  if (!targetSocket) return;
+
+  const sharedRoom = [...socket.rooms].find(room =>
+    room.startsWith('private-voice:') &&
+    targetSocket.rooms.has(room)
+  );
+
+  if (!sharedRoom) return;
+
+  targetSocket.emit('voice-ice-candidate', {
+    from: socket.id,
+    candidate
+  });
+});
 
   socket.on('disconnect', () => {
     for (const roomId of socket.rooms) {
