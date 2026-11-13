@@ -382,14 +382,69 @@ let chatHasLoaded = false;
 chatHasLoaded = true;
   const box=$("messages");box.replaceChildren();
   if(!snap.exists()){box.innerHTML='<div class="empty">Say hello and start your conversation.</div>';return;}
-  snap.forEach(child=>{
-   const m=child.val()||{},bubble=document.createElement("div");
-   bubble.className="bubble"+(m.senderUid===currentUser.uid?" mine":"");
-   bubble.textContent=m.text||"";
-   const meta=document.createElement("small");
-   meta.textContent=(m.senderUid===currentUser.uid?"You":person.name)+" · "+(m.createdAt?new Date(m.createdAt).toLocaleString():"");
-   bubble.append(meta);box.append(bubble);
-  });
+  
+snap.forEach(child=>{
+  const m = child.val() || {};
+  const messageRef = db.ref(pairPath(person.uid)).child(child.key);
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble" +
+    (m.senderUid === currentUser.uid ? " mine" : "");
+
+  bubble.textContent = m.text || "";
+
+  const meta = document.createElement("small");
+  meta.textContent =
+    (m.senderUid === currentUser.uid ? "You" : person.name) +
+    " · " +
+    (m.createdAt ? new Date(m.createdAt).toLocaleString() : "") +
+    (m.edited ? " · edited" : "");
+
+  bubble.append(meta);
+
+  if (m.senderUid === currentUser.uid) {
+    const actions = document.createElement("div");
+    actions.style.marginTop = "8px";
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.type = "button";
+
+    editBtn.onclick = async () => {
+      const updatedText = prompt("Edit your message:", m.text || "");
+      if (updatedText === null || !updatedText.trim()) return;
+
+      try {
+        await messageRef.update({
+          text: updatedText.trim(),
+          edited: true
+        });
+      } catch (error) {
+        alert("Edit failed: " + error.message);
+      }
+    };
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.type = "button";
+
+    deleteBtn.onclick = async () => {
+      if (!confirm("Delete this message for everyone?")) return;
+
+      try {
+        await messageRef.remove();
+      } catch (error) {
+        alert("Delete failed: " + error.message);
+      }
+    };
+
+    actions.append(editBtn, deleteBtn);
+    bubble.append(actions);
+  }
+
+  box.append(bubble);
+});
+
   box.scrollTop=box.scrollHeight;
  };
  chatRef.on("value",chatListener,e=>$("chatStatus").textContent="Chat load error: "+e.message);
