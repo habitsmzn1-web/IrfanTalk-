@@ -120,15 +120,59 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
   </section>
 
   <!-- BOTTOM TOOLBAR -->
-  <section style="display:flex;justify-content:space-around;
-    align-items:center;background:#211a35;border-radius:40px;
-    padding:17px 10px;margin:12px 0 20px">
-    <span style="font-size:23px">☺</span>
-    <span style="font-size:23px">🎙</span>
-    <span style="font-size:23px">👥</span>
-    <span style="font-size:23px">▣</span>
-    <span style="font-size:25px">＋</span>
-  </section>
+ 
+<<section style="display:flex;justify-content:space-around;
+align-items:center;background:#292929;border-radius:60px;
+width: min(100%, 790px); box-sizing:border-box;
+padding:17px 20px;margin:12px auto 20px">
+  <!-- Emoji -->
+  <span style="display:flex;align-items:center;justify-content:center">
+    <svg width="42" height="42" viewBox="0 0 48 48" fill="white">
+      <circle cx="21" cy="24" r="17"/>
+      <circle cx="15" cy="19" r="2.5" fill="#292929"/>
+      <circle cx="27" cy="19" r="2.5" fill="#292929"/>
+      <path d="M13 27 Q21 38 30 27" fill="none" stroke="#292929" stroke-width="3" stroke-linecap="round"/>
+      <path d="M41 16 Q48 24 41 32 M36 19 Q41 24 36 29" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </span>
+
+  <!-- Voice Effects -->
+  <span style="display:flex;align-items:center;justify-content:center">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="white">
+      <rect x="19" y="12" width="10" height="22" rx="5"/>
+      <path d="M13 25 Q13 39 24 39 Q35 39 35 25 M24 39 V45" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+      <path d="M10 5 L12 10 L17 12 L12 14 L10 19 L8 14 L3 12 L8 10Z M37 4 L39 9 L44 11 L39 13 L37 18 L35 13 L30 11 L35 9Z" />
+    </svg>
+  </span>
+
+  <!-- People -->
+  <span style="display:flex;align-items:center;justify-content:center">
+    <svg width="44" height="44" viewBox="0 0 48 48" fill="white">
+      <circle cx="24" cy="21" r="17"/>
+      <circle cx="19" cy="18" r="5" fill="#292929"/>
+      <circle cx="30" cy="20" r="4" fill="#292929"/>
+      <path d="M10 32 Q11 24 19 24 Q27 24 28 32Z M25 27 Q34 23 38 32 Q38 34 34 34 H27Z" fill="#292929"/>
+      <path d="M15 38 Q24 44 33 38" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </span>
+
+  <!-- Video -->
+  <span style="display:flex;align-items:center;justify-content:center">
+    <svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="4" stroke-linejoin="round">
+      <rect x="5" y="5" width="38" height="38" rx="2"/>
+      <path d="M15 5 V43 M33 5 V43 M5 15 H43 M5 33 H43"/>
+    </svg>
+  </span>
+
+  <!-- More -->
+  <span style="display:flex;align-items:center;justify-content:center">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="white" stroke-width="4" stroke-linecap="round">
+      <path d="M24 7 V41 M7 24 H41"/>
+    </svg>
+  </span>
+
+</section>
+
 
 
  <section id="chatView" class="hidden">
