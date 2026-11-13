@@ -301,35 +301,37 @@ function playIrfanChatSound() {
     const now = irfanChatAudio.currentTime;
 
     const notes = [
-      { frequency: 784, start: 0 },
-      { frequency: 1046, start: 0.16 }
-    ];
+  { frequency: 1250, start: 0 },
+  { frequency: 900, start: 0.045 }
+];
 
     notes.forEach(note => {
       const oscillator = irfanChatAudio.createOscillator();
       const gain = irfanChatAudio.createGain();
 
-      oscillator.type = "sine";
+      oscillator.type = "triangle";
       oscillator.frequency.setValueAtTime(
         note.frequency,
         now + note.start
       );
 
       gain.gain.setValueAtTime(0.0001, now + note.start);
-      gain.gain.exponentialRampToValueAtTime(
-        0.10,
-        now + note.start + 0.02
-      );
-      gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        now + note.start + 0.22
-      );
+
+gain.gain.exponentialRampToValueAtTime(
+  0.08,
+  now + note.start + 0.008
+);
+
+gain.gain.exponentialRampToValueAtTime(
+  0.0001,
+  now + note.start + 0.075
+);
 
       oscillator.connect(gain);
       gain.connect(irfanChatAudio.destination);
 
       oscillator.start(now + note.start);
-      oscillator.stop(now + note.start + 0.24);
+      oscillator.stop(now + note.start + 0.085);
     });
 
   } catch (error) {
