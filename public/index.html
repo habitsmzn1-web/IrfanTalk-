@@ -300,45 +300,62 @@ function playIrfanChatSound() {
     if (!irfanChatAudio ||
         irfanChatAudio.state !== "running") return;
 
-    const now = irfanChatAudio.currentTime;
+    const ctx = irfanChatAudio;
+    const now = ctx.currentTime;
 
-    function makeTap(freq, start, duration, volume, type) {
-      const osc = irfanChatAudio.createOscillator();
-      const gain = irfanChatAudio.createGain();
+    // Sharp click sound
+    const length = Math.floor(ctx.sampleRate * 0.045);
+    const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
 
-      const time = now + start;
-
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, time);
-      osc.frequency.exponentialRampToValueAtTime(
-        freq * 0.60, time + duration
-      );
-
-      gain.gain.setValueAtTime(0.0001, time);
-      gain.gain.exponentialRampToValueAtTime(
-        volume, time + 0.004
-      );
-      gain.gain.exponentialRampToValueAtTime(
-        0.0001, time + duration
-      );
-
-      osc.connect(gain);
-      gain.connect(irfanChatAudio.destination);
-
-      osc.start(time);
-      osc.stop(time + duration + 0.01);
+    for (let i = 0; i < length; i++) {
+      data[i] = (Math.random() * 2 - 1) *
+        Math.pow(1 - i / length, 3);
     }
 
-    // Main crisp notification
-    makeTap(1450, 0, 0.11, 0.28, "triangle");
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
 
-    // Bright click layer
-    makeTap(2200, 0, 0.045, 0.09, "sine");
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.value = 1800;
+    filter.Q.value = 0.8;
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.0001, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.30, now + 0.003);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+
+    noise.start(now);
+    noise.stop(now + 0.05);
+
+    // Short low tone for the tak effect
+    const osc = ctx.createOscillator();
+    const toneGain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(950, now);
+    osc.frequency.exponentialRampToValueAtTime(480, now + 0.07);
+
+    toneGain.gain.setValueAtTime(0.0001, now);
+    toneGain.gain.exponentialRampToValueAtTime(0.22, now + 0.004);
+    toneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
+
+    osc.connect(toneGain);
+    toneGain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.08);
 
   } catch (error) {
     console.log("Notification sound error:", error);
   }
 }
+
 
 async function openChat(person){
  activeUser=person;
