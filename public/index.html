@@ -58,27 +58,30 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 <main id="appShell" class="shell hidden">
 
   <!-- TOP BAR -->
-  <header class="top" style="display:flex;align-items:center;gap:12px">
-    <div class="user">
-      <div id="myAvatar" class="avatar">I</div>
-      <div>
-        <strong id="myName">Hello!</strong>
-        <small>Direct connections</small>
-      </div>
-    </div>
-    <button id="logoutBtn" class="icon" title="Sign out">↪</button>
-  </header>
+ 
+<!-- IRFANTALK TOP BAR -->
+<header class="top" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 4px">
 
-  <!-- HOME CONTROLS -->
-  <section style="display:flex;align-items:center;justify-content:space-between;padding:14px 4px">
-    <div style="background:#29213f;border-radius:30px;padding:10px 16px;color:#22c9e5">
-      🔇 Quiet Mode ▾
-    </div>
-    <div style="display:flex;gap:18px;font-size:25px">
-      <span>⌕</span>
-      <span>♙+</span>
-    </div>
-  </section>
+  <!-- Profile -->
+  <div style="display:flex;align-items:center">
+    <div id="myAvatar" class="avatar">I</div>
+   <span id="myName" style="display:none">Hello!</span>
+  </div>
+
+  <!-- Quiet Mode -->
+  <button type="button" style="background:#29213f;border:0;border-radius:30px;padding:10px 13px;color:#22c9e5;font-size:13px">
+    🔇 Quiet Mode ▾
+  </button>
+
+  <!-- Search and Add Contact -->
+  <div style="display:flex;align-items:center;gap:16px">
+    <button type="button" class="icon" title="Search">⌕</button>
+    <button type="button" class="icon" title="Add Contact">♙+</button>
+    <button id="logoutBtn" class="icon" title="Sign out">↪</button>
+  </div>
+
+</header>
+
 
   <!-- CONTACTS -->
   <section id="usersView" class="card" style="padding:18px 12px">
