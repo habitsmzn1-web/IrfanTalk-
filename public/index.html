@@ -277,7 +277,43 @@ function renderUsers(){
 }
 $("userSearch").addEventListener("input",renderUsers);
 $("refreshBtn").onclick=loadUsers;
+let irfanChatAudio = null;
 
+document.addEventListener("pointerdown", () => {
+  try {
+    const AudioClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioClass && !irfanChatAudio) {
+      irfanChatAudio = new AudioClass();
+    }
+    if (irfanChatAudio?.state === "suspended") {
+      irfanChatAudio.resume();
+    }
+  } catch (error) {
+    console.log("Chat audio unavailable:", error);
+  }
+}, { once: true });
+
+function playIrfanChatSound() {
+  try {
+    if (!irfanChatAudio || irfanChatAudio.state !== "running") return;
+
+    const oscillator = irfanChatAudio.createOscillator();
+    const gain = irfanChatAudio.createGain();
+
+    oscillator.frequency.value = 880;
+    gain.gain.setValueAtTime(0.12, irfanChatAudio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+      0.001, irfanChatAudio.currentTime + 0.2
+    );
+
+    oscillator.connect(gain);
+    gain.connect(irfanChatAudio.destination);
+    oscillator.start();
+    oscillator.stop(irfanChatAudio.currentTime + 0.2);
+  } catch (error) {
+    console.log("Notification sound error:", error);
+  }
+}
 async function openChat(person){
  activeUser=person;
  joinPrivateVoice(person.uid);
@@ -285,7 +321,22 @@ async function openChat(person){
  $("chatName").textContent=person.name;$("chatAvatar").textContent=(person.name[0]||"U").toUpperCase();
  if(chatRef&&chatListener)chatRef.off("value",chatListener);
  chatRef=db.ref(pairPath(person.uid)).limitToLast(100);
+ let knownChatMessages = new Set();
+let chatHasLoaded = false;
  chatListener=snap=>{
+  snap.forEach(child => {
+  if (!knownChatMessages.has(child.key)) {
+    const message = child.val() || {};
+
+    if (chatHasLoaded && message.senderUid !== currentUser.uid) {
+      playIrfanChatSound();
+    }
+
+    knownChatMessages.add(child.key);
+  }
+});
+
+chatHasLoaded = true;
   const box=$("messages");box.replaceChildren();
   if(!snap.exists()){box.innerHTML='<div class="empty">Say hello and start your conversation.</div>';return;}
   snap.forEach(child=>{
