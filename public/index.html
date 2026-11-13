@@ -328,22 +328,47 @@ async function loadUsers(){
   $("usersStatus").textContent="Check Firebase Database Rules.";
  }
 }
+
 function renderUsers(){
  const q=$("userSearch").value.trim().toLowerCase();
  const filtered=allUsers.filter(u=>(u.name+" "+u.username).toLowerCase().includes(q));
- const list=$("usersList");list.replaceChildren();
- if(!filtered.length){list.innerHTML='<div class="empty">No matching IrfanTalk users found.</div>';return;}
+ const list=$("usersList");
+ list.replaceChildren();
+
+ if(!filtered.length){
+  list.innerHTML='<div class="empty">No matching IrfanTalk users found.</div>';
+  return;
+ }
+
+ const grid=document.createElement("div");
+ grid.style.cssText="display:flex;flex-wrap:wrap;justify-content:center;gap:24px 18px;padding:20px 4px;";
+
  filtered.forEach(u=>{
-  const row=document.createElement("div");row.className="row";
-  const avatar=document.createElement("div");avatar.className="avatar";avatar.textContent=(u.name[0]||"U").toUpperCase();
-  const meta=document.createElement("div");meta.className="meta";
-  const strong=document.createElement("strong");strong.textContent=u.name;
-  const small=document.createElement("small");small.textContent=u.username?"@"+u.username:"IrfanTalk user";
-  meta.append(strong,small);
-  const btn=document.createElement("button");btn.className="btn small";btn.textContent="Chat";btn.onclick=()=>openChat(u);
-  row.append(avatar,meta,btn);list.append(row);
+  const item=document.createElement("button");
+  item.type="button";
+  item.style.cssText="border:0;background:transparent;color:inherit;display:flex;flex-direction:column;align-items:center;gap:9px;width:105px;cursor:pointer;padding:6px;";
+
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent=(u.name[0]||"U").toUpperCase();
+  avatar.style.cssText="width:82px;height:82px;min-width:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;background:linear-gradient(145deg,#6738f4,#12bfe0);";
+
+  const name=document.createElement("strong");
+  name.textContent=u.name;
+  name.style.cssText="text-align:center;font-size:14px;";
+
+  const chat=document.createElement("small");
+  chat.textContent="Chat";
+  chat.style.cssText="color:#20c5e0;font-size:12px;";
+
+  item.append(avatar,name,chat);
+  item.onclick=()=>openChat(u);
+  grid.append(item);
  });
+
+ list.append(grid);
 }
+
 $("userSearch").addEventListener("input",renderUsers);
 $("refreshBtn").onclick=loadUsers;
 let irfanChatAudio = null;
