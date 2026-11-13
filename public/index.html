@@ -54,15 +54,76 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
  </div>
 </section>
 
+ 
 <main id="appShell" class="shell hidden">
- <header class="top"><div class="user"><div id="myAvatar" class="avatar">I</div><div><strong id="myName">Hello!</strong><small>Direct connections</small></div></div><button id="logoutBtn" class="icon" title="Sign out">↪</button></header>
- <section class="hero"><div class="tag">IRFANTALK • DIRECT CHAT</div><h2>Talk without friend requests.</h2><p>Choose any registered IrfanTalk user and start a private conversation.</p></section>
- <section id="usersView" class="card">
-  <h2>People on IrfanTalk</h2>
-  <div class="search"><input id="userSearch" class="field" placeholder="Search by name or username" autocomplete="off"><button id="refreshBtn" class="btn">Refresh</button></div>
-  <div id="usersStatus" class="status"></div><div id="usersList" class="list"><div class="empty">Sign in to see registered users.</div></div>
-  <div class="footer-note">Only public display names and usernames are shown. Email addresses are not displayed in this list.</div>
- </section>
+
+  <!-- TOP BAR -->
+  <header class="top" style="display:flex;align-items:center;gap:12px">
+    <div class="user">
+      <div id="myAvatar" class="avatar">I</div>
+      <div>
+        <strong id="myName">Hello!</strong>
+        <small>Direct connections</small>
+      </div>
+    </div>
+    <button id="logoutBtn" class="icon" title="Sign out">↪</button>
+  </header>
+
+  <!-- HOME CONTROLS -->
+  <section style="display:flex;align-items:center;justify-content:space-between;padding:14px 4px">
+    <div style="background:#29213f;border-radius:30px;padding:10px 16px;color:#22c9e5">
+      🔇 Quiet Mode ▾
+    </div>
+    <div style="display:flex;gap:18px;font-size:25px">
+      <span>⌕</span>
+      <span>♙+</span>
+    </div>
+  </section>
+
+  <!-- CONTACTS -->
+  <section id="usersView" class="card" style="padding:18px 12px">
+    <h2 style="text-align:center">Your Connections</h2>
+
+    <div class="search">
+      <input id="userSearch" class="field"
+        placeholder="Search people..." autocomplete="off">
+      <button id="refreshBtn" class="btn">↻</button>
+    </div>
+
+    <div id="usersStatus" class="status"></div>
+    <div id="usersList" class="list">
+      <div class="empty">Sign in to see registered users.</div>
+    </div>
+
+    <div class="footer-note">
+      Your IrfanTalk connections
+    </div>
+  </section>
+
+  <!-- HOME MICROPHONE DISPLAY -->
+  <section style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 10px;gap:14px">
+    <div style="width:190px;height:190px;border-radius:50%;
+      background:linear-gradient(145deg,#6738f4,#12bfe0);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 0 35px #5429a855">
+      <span style="font-size:70px;color:white">🎙</span>
+    </div>
+    <strong style="color:#20c5e0;font-size:16px">Push to Talk</strong>
+    <small style="color:#aaa">Voice connects everyone</small>
+  </section>
+
+  <!-- BOTTOM TOOLBAR -->
+  <section style="display:flex;justify-content:space-around;
+    align-items:center;background:#211a35;border-radius:40px;
+    padding:17px 10px;margin:12px 0 20px">
+    <span style="font-size:23px">☺</span>
+    <span style="font-size:23px">🎙</span>
+    <span style="font-size:23px">👥</span>
+    <span style="font-size:23px">▣</span>
+    <span style="font-size:25px">＋</span>
+  </section>
+
+
  <section id="chatView" class="hidden">
   <div class="chat-head"><button id="backBtn" class="icon">←</button><div id="chatAvatar" class="avatar">U</div><div class="meta"><strong id="chatName">User</strong><small>Private conversation</small></div></div>
   
