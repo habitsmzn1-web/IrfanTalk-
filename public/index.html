@@ -98,41 +98,50 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
   content: "";
   position: absolute;
   z-index: -1;
-  top: 220px;
-  left: -20%;
-  width: 140%;
-  height: 180px;
-  border-top: 1px solid #dedede;
-  border-radius: 50%;
-  box-shadow:
-    0 -9px 0 -8px #e5e5e5,
-    0 -18px 0 -17px #eaeaea,
-    0 -27px 0 -26px #dedede,
-    0 -36px 0 -35px #eeeeee;
-  transform: rotate(-5deg);
+  top: 330px;
+  left: -30%;
+  width: 160%;
+  height: 300px;
   pointer-events: none;
+  background:
+    radial-gradient(ellipse 75% 65% at 50% 100%,
+      transparent 54%,
+      #eeeeee 55%,
+      #eeeeee 56%,
+      transparent 57%),
+    radial-gradient(ellipse 78% 68% at 50% 100%,
+      transparent 59%,
+      #e5e5e5 60%,
+      #e5e5e5 61%,
+      transparent 62%),
+    radial-gradient(ellipse 82% 70% at 50% 100%,
+      transparent 64%,
+      #f0f0f0 65%,
+      #f0f0f0 66%,
+      transparent 67%);
 }
-
 
 #welcomeScreen::after {
   content: "";
   position: absolute;
   z-index: -1;
-  top: 245px;
-  left: -20%;
-  width: 140%;
-  height: 180px;
-  border-top: 1px solid #e3e3e3;
-  border-radius: 50%;
-  box-shadow:
-    0 -9px 0 -8px #e9e9e9,
-    0 -18px 0 -17px #dedede,
-    0 -27px 0 -26px #eeeeee,
-    0 -36px 0 -35px #e5e5e5;
-  transform: rotate(5deg);
+  top: 350px;
+  left: -30%;
+  width: 160%;
+  height: 300px;
   pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 65% at 50% 100%,
+      transparent 55%,
+      #e3e3e3 56%,
+      #e3e3e3 57%,
+      transparent 58%),
+    radial-gradient(ellipse 85% 70% at 50% 100%,
+      transparent 61%,
+      #eeeeee 62%,
+      #eeeeee 63%,
+      transparent 64%);
 }
-
 
  
 @media(min-width:600px){.shell{padding-top:28px}}
