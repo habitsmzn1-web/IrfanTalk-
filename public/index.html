@@ -104,53 +104,91 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
   background: #fff;
 }
 
+
+/* IRFANTALK BLACK & SILVER PREMIUM DESIGN */
+
+#welcomeScreen {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(145deg, #ffffff, #eeeeee);
+}
+
+/* Top-left black silver stripes */
 #welcomeScreen::before {
   content: "";
   position: absolute;
-  z-index: -1;
-  top: 170px;
-  left: -10%;
-  width: 120%;
-  height: 300px;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 48%;
+  height: 240px;
+  background: repeating-linear-gradient(
+    135deg,
+    #111 0px,
+    #111 8px,
+    #777 9px,
+    #f5f5f5 11px
+  );
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  border-bottom: 3px solid #aaa;
   pointer-events: none;
-
-  background-image:
-    radial-gradient(circle, #999 1px, transparent 1.5px);
-  background-size: 9px 9px;
-
-  -webkit-mask-image:
-    radial-gradient(ellipse 75% 32% at 15% 45%,
-      transparent 35%, #000 48%, transparent 70%),
-    radial-gradient(ellipse 75% 32% at 85% 55%,
-      transparent 35%, #000 48%, transparent 70%);
-  mask-image:
-    radial-gradient(ellipse 75% 32% at 15% 45%,
-      transparent 35%, #000 48%, transparent 70%),
-    radial-gradient(ellipse 75% 32% at 85% 55%,
-      transparent 35%, #000 48%, transparent 70%);
 }
 
+/* Bottom-right black silver stripes */
 #welcomeScreen::after {
   content: "";
   position: absolute;
-  z-index: -1;
-  top: 185px;
-  left: -10%;
-  width: 120%;
-  height: 300px;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  width: 48%;
+  height: 240px;
+  background: repeating-linear-gradient(
+    135deg,
+    #111 0px,
+    #111 8px,
+    #777 9px,
+    #f5f5f5 11px
+  );
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  border-top: 3px solid #aaa;
   pointer-events: none;
-
-  background-image:
-    radial-gradient(circle, #c4c4c4 1px, transparent 1.5px);
-  background-size: 7px 7px;
-
-  -webkit-mask-image:
-    radial-gradient(ellipse 80% 30% at 50% 55%,
-      transparent 35%, #000 48%, transparent 68%);
-  mask-image:
-    radial-gradient(ellipse 80% 30% at 50% 55%,
-      transparent 35%, #000 48%, transparent 68%);
 }
+
+/* Keep content above decorations */
+#welcomeScreen .brand,
+#welcomeScreen .auth-card {
+  position: relative;
+  z-index: 1;
+}
+
+/* Silver microphone logo border */
+#welcomeScreen .logo {
+  border: 3px solid #bfc0c2 !important;
+  box-shadow: 0 5px 15px #00000030;
+}
+
+/* Premium silver login card */
+#welcomeScreen .auth-card {
+  background: #fff;
+  border: 2px solid #bfc0c2;
+  box-shadow: 0 10px 28px #00000020;
+}
+
+/* Black buttons with silver borders */
+#welcomeScreen .auth-card button {
+  background: linear-gradient(145deg, #111, #292929);
+  color: #fff;
+  border: 2px solid #bfc0c2;
+  box-shadow: 0 5px 12px #00000025;
+}
+
+/* Keep Google logo visible */
+#welcomeScreen .auth-card button:first-of-type {
+  color: #fff;
+}
+
 
 
  
