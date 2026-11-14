@@ -85,78 +85,12 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
   margin: 0 0 28px;
 }
  
-/* Soft flowing grey waves */
 #welcomeScreen {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   background: #fff;
 }
-
-
-
-/* IrfanTalk - Premium Grey Dotted Sound Waves */
-
-#welcomeScreen {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background: #fff;
-}
-
-
-/* IRFANTALK BLACK & SILVER PREMIUM DESIGN */
-
-#welcomeScreen {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background: linear-gradient(145deg, #ffffff, #eeeeee);
-}
-
-/* Top-left black silver stripes */
-#welcomeScreen::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 0;
-  width: 48%;
-  height: 240px;
-  background: repeating-linear-gradient(
-    135deg,
-    #111 0px,
-    #111 8px,
-    #777 9px,
-    #f5f5f5 11px
-  );
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-  border-bottom: 3px solid #aaa;
-  pointer-events: none;
-}
-
-/* Bottom-right black silver stripes */
-#welcomeScreen::after {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  right: 0;
-  bottom: 0;
-  width: 48%;
-  height: 240px;
-  background: repeating-linear-gradient(
-    135deg,
-    #111 0px,
-    #111 8px,
-    #777 9px,
-    #f5f5f5 11px
-  );
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  border-top: 3px solid #aaa;
-  pointer-events: none;
-}
-
-/* Keep content above decorations */
 #welcomeScreen .brand,
 #welcomeScreen .auth-card {
   position: relative;
