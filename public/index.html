@@ -94,54 +94,64 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 }
 
 
+
+/* IrfanTalk - Premium Grey Dotted Sound Waves */
+
+#welcomeScreen {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #fff;
+}
+
 #welcomeScreen::before {
   content: "";
   position: absolute;
   z-index: -1;
   top: 170px;
-  left: -30%;
-  width: 160%;
+  left: -10%;
+  width: 120%;
   height: 300px;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse 75% 65% at 50% 100%,
-      transparent 54%,
-      #eeeeee 55%,
-      #eeeeee 56%,
-      transparent 57%),
-    radial-gradient(ellipse 78% 68% at 50% 100%,
-      transparent 59%,
-      #e5e5e5 60%,
-      #e5e5e5 61%,
-      transparent 62%),
-    radial-gradient(ellipse 82% 70% at 50% 100%,
-      transparent 64%,
-      #f0f0f0 65%,
-      #f0f0f0 66%,
-      transparent 67%);
+
+  background-image:
+    radial-gradient(circle, #999 1px, transparent 1.5px);
+  background-size: 9px 9px;
+
+  -webkit-mask-image:
+    radial-gradient(ellipse 75% 32% at 15% 45%,
+      transparent 35%, #000 48%, transparent 70%),
+    radial-gradient(ellipse 75% 32% at 85% 55%,
+      transparent 35%, #000 48%, transparent 70%);
+  mask-image:
+    radial-gradient(ellipse 75% 32% at 15% 45%,
+      transparent 35%, #000 48%, transparent 70%),
+    radial-gradient(ellipse 75% 32% at 85% 55%,
+      transparent 35%, #000 48%, transparent 70%);
 }
 
 #welcomeScreen::after {
   content: "";
   position: absolute;
   z-index: -1;
-  top: 190px;
-  left: -30%;
-  width: 160%;
+  top: 185px;
+  left: -10%;
+  width: 120%;
   height: 300px;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse 80% 65% at 50% 100%,
-      transparent 55%,
-      #e3e3e3 56%,
-      #e3e3e3 57%,
-      transparent 58%),
-    radial-gradient(ellipse 85% 70% at 50% 100%,
-      transparent 61%,
-      #eeeeee 62%,
-      #eeeeee 63%,
-      transparent 64%);
+
+  background-image:
+    radial-gradient(circle, #c4c4c4 1px, transparent 1.5px);
+  background-size: 7px 7px;
+
+  -webkit-mask-image:
+    radial-gradient(ellipse 80% 30% at 50% 55%,
+      transparent 35%, #000 48%, transparent 68%);
+  mask-image:
+    radial-gradient(ellipse 80% 30% at 50% 55%,
+      transparent 35%, #000 48%, transparent 68%);
 }
+
 
  
 @media(min-width:600px){.shell{padding-top:28px}}
