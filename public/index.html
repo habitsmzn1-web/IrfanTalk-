@@ -14,7 +14,7 @@
 *{box-sizing:border-box;font-weight:700}body{margin:0;background:#f5f5f5;color:#222;font:15px Arial,sans-serif;min-height:100vh}
 button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 .shell{width:min(100%,560px);min-height:100vh;margin:auto;padding:22px 16px 35px}
-.auth{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:25px 18px;transform:translateY(-34px)}
+.auth{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:25px 18px;transform:translateY(0px)}
 .brand{text-align:center;margin-bottom:28px}.logo{width:112px;height:112px;border:2px solid #222222;border-radius:32px;display:grid;place-items:center;margin:auto;box-shadow:0 8px 24px #00000018;background:#eeeeee}.logo svg{width:76px}
 .brand h1{font-size:38px;margin:14px 0 6px}.brand h1 span{color:var(--cyan)}.tag{letter-spacing:4px;font-size:10px;color:#777777}
 .card,.auth-card{background:#ffffff;border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:0 8px 24px #00000012}
@@ -31,12 +31,53 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 .bubble{max-width:86%;padding:11px 13px;border-radius:15px;background:#eeeeee;color:#222222;margin:9px 0;overflow-wrap:anywhere;white-space:pre-wrap}.bubble.mine{margin-left:auto;background:#222222;color:#ffffff}.bubble small{display:block;color:#777777;font-size:10px;margin-top:5px}
 .compose{display:flex;gap:8px;margin-top:10px}.compose input{flex:1;min-width:0;margin:0}
 .footer-note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
+ #authTitle {
+  text-align: center;
+  width: 100%;
+        }
 @media(min-width:600px){.shell{padding-top:28px}}
 </style>
 </head>
 <body>
-<section id="authScreen" class="auth">
- <div class="brand"><div class="logo"><svg viewBox="0 0 100 100" fill="none"><rect x="27" y="18" width="46" height="64" rx="12" stroke="#222222" stroke-width="4"/><rect x="36" y="28" width="28" height="20" rx="4" stroke="222222" stroke-width="3"/><path d="M38 39h6l4-7 5 13 4-6h5M38 59h24M38 68h16" stroke="#222222" stroke-width="3" stroke-linecap="round"/><path d="M20 32q-12 18 0 36M80 32q12 18 0 36" stroke="#222222 stroke-width="3" stroke-linecap="round"/></svg></div><h1>Irfan<span>Talk</span></h1><div class="tag">VOICE CONNECTS</div></div>
+ 
+<section id="welcomeScreen" class="auth">
+  <div class="brand">
+    <div class="logo" style="background:#000;border:0;">
+      <svg viewBox="0 0 100 100" fill="none">
+        <rect x="39" y="17" width="22" height="42" rx="11" fill="#ffffff"/>
+        <path d="M27 45v5a23 23 0 0 0 46 0v-5M50 73v12M39 85h22"
+          stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h1>Irfan<span>Talk</span></h1>
+    <div class="tag">VOICE CONNECTS</div>
+  </div>
+  <div class="auth-card">
+    <h2>Welcome to IrfanTalk</h2>
+    <button id="welcomeGoogleBtn" class="btn google full">Continue with Google</button>
+    <button id="welcomeEmailBtn" class="btn full">Sign up with Email</button>
+    <button id="welcomePhoneBtn" class="btn full">Use Phone Number</button>
+    <div class="auth-foot">
+      Already have an account?
+      <span id="welcomeLoginBtn" class="link">Log In</span>
+    </div>
+  </div>
+</section>
+ 
+<section id="authScreen" class="auth hidden">
+ 
+<div class="brand">
+  <div class="logo" style="background:#000;border:0;">
+    <svg viewBox="0 0 100 100" fill="none">
+      <rect x="39" y="17" width="22" height="42" rx="11" fill="#fff"/>
+      <path d="M27 45v5a23 23 0 0 0 46 0v-5M50 73v12M39 85h22"
+        stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <h1>Irfan<span>Talk</span></h1>
+  <div class="tag">VOICE CONNECTS</div>
+</div>
+ 
  <div class="auth-card">
   <h2 id="authTitle">Welcome to IrfanTalk</h2>
   <div id="nameWrap" class="hidden"><input id="nameInput" class="field" placeholder="Your name" autocomplete="name"></div>
@@ -344,6 +385,29 @@ $("forgotBtn").onclick=async()=>{
  try{await auth.sendPasswordResetEmail(email);$("authStatus").textContent="Password reset link sent. Check your inbox and spam folder.";}
  catch(e){$("authStatus").textContent=e.message;}
 };
+ 
+// Welcome screen buttons
+$("welcomeEmailBtn").onclick=()=>{
+  $("welcomeScreen").classList.add("hidden");
+  $("authScreen").classList.remove("hidden");
+  setAuthMode("signup");
+};
+
+$("welcomeLoginBtn").onclick=()=>{
+  $("welcomeScreen").classList.add("hidden");
+  $("authScreen").classList.remove("hidden");
+  setAuthMode("login");
+};
+
+$("welcomeGoogleBtn").onclick=()=>{
+  $("welcomeScreen").classList.add("hidden");
+  $("authScreen").classList.remove("hidden");
+  setAuthMode("login");
+  $("googleBtn").click();
+};
+
+// Phone login will be enabled later
+ 
 $("logoutBtn").onclick=()=>auth.signOut();
 $("backBtn").onclick=closeChat;
 
