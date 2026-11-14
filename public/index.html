@@ -35,7 +35,88 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
   text-align: center;
   width: 100%;
         }
+ 
+/* Welcome screen reference layout */
+#welcomeScreen {
+  min-height: 100svh;
+  justify-content: flex-start;
+  padding: 105px 18px 25px;
+  transform: none;
+}
+
+#welcomeScreen .brand {
+  margin-bottom: 0;
+}
+
+#welcomeScreen .logo {
+  width: 125px;
+  height: 125px;
+  border-radius: 32px;
+  background: #000;
+  border: 0;
+}
+
+#welcomeScreen .logo svg {
+  width: 76px;
+}
+
+#welcomeScreen .brand h1 {
+  font-size: 42px;
+  margin: 14px 0 6px;
+  color: #000;
+}
+
+#welcomeScreen .tag {
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: #222;
+}
+
+#welcomeScreen .auth-card {
+  width: 100%;
+  max-width: 420px;
+  margin-top: auto;
+  padding: 25px 17px;
+  border-radius: 28px;
+}
+
+#welcomeScreen .auth-card h2 {
+  text-align: center;
+  margin: 0 0 28px;
+}
+ 
 @media(min-width:600px){.shell{padding-top:28px}}
+
+/* Welcome buttons styling */
+#welcomeScreen .auth-card button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-height: 64px;
+  margin: 14px 0;
+  border-radius: 40px;
+  background: #fff;
+  color: #111;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 5px 12px #00000012;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+#welcomeScreen .auth-card button:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+/* Soft grey wave background */
+#welcomeScreen {
+  background-color: #fff;
+  background-image:
+    radial-gradient(ellipse at 0% 48%, #eeeeee 0%, transparent 35%),
+    radial-gradient(ellipse at 100% 55%, #eeeeee 0%, transparent 35%);
+}
+ 
 </style>
 </head>
 <body>
@@ -54,10 +135,22 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
   </div>
   <div class="auth-card">
     <h2>Welcome to IrfanTalk</h2>
-    <button id="welcomeGoogleBtn" class="btn google full">Continue with Google</button>
-    <button id="welcomeEmailBtn" class="btn full">Sign up with Email</button>
-    <button id="welcomePhoneBtn" class="btn full">Use Phone Number</button>
-    <div class="auth-foot">
+    
+<button id="welcomeGoogleBtn" class="btn google full">
+  <span style="color:#4285F4;font-size:25px;font-weight:800;">G</span>
+  Continue with Google
+</button>
+
+<button id="welcomeEmailBtn" class="btn full">
+  <span style="font-size:23px;">✉</span>
+  Sign up with Email
+</button>
+
+<button id="welcomePhoneBtn" class="btn full" disabled>
+  <span style="font-size:23px;">☎</span>
+  Use Phone Number
+</button>
+ <div class="auth-foot">
       Already have an account?
       <span id="welcomeLoginBtn" class="link">Log In</span>
     </div>
