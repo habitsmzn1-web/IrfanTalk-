@@ -85,6 +85,47 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
   margin: 0 0 28px;
 }
  
+/* Soft flowing grey waves */
+#welcomeScreen {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #fff;
+}
+
+#welcomeScreen::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 145px;
+  left: -25%;
+  width: 150%;
+  height: 300px;
+  background:
+    radial-gradient(ellipse at 50% 0%, #e5e5e5 0%, transparent 65%),
+    linear-gradient(170deg, transparent 35%, #eeeeee 50%, transparent 68%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+#welcomeScreen::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 190px;
+  left: -25%;
+  width: 150%;
+  height: 300px;
+  background: linear-gradient(
+    185deg,
+    transparent 35%,
+    #f1f1f1 52%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+}
+ 
 @media(min-width:600px){.shell{padding-top:28px}}
 
 /* Welcome buttons styling */
