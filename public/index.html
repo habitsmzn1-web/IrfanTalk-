@@ -245,27 +245,43 @@ border: 2px solid #aeb4bb !important;
   <!-- TOP BAR -->
  
 <!-- IRFANTALK TOP BAR -->
-<header class="top" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 4px">
 
-  <!-- Profile -->
-  <div style="display:flex;align-items:center">
-    <div id="myAvatar" class="avatar">I</div>
-   <span id="myName" style="display:none">Hello!</span>
+<header class="top" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:10px 0 18px">
+
+  <!-- Profile and Quiet Mode -->
+  <div style="display:flex;flex-direction:column;align-items:flex-start;gap:12px">
+    <div id="myAvatar" class="avatar" style="position:relative">I</div>
+    <span id="myName" style="display:none">Hello!</span>
+
+    <button type="button" style="background:#eeeeee;border:1px solid #c0c0c0;border-radius:30px;padding:9px 12px;color:#111;font-size:13px;white-space:nowrap">
+      🔇 Quiet ▾
+    </button>
   </div>
 
-  <!-- Quiet Mode -->
-  <button type="button" style="background:#eeeeee;border:1px solid #dddddd;border-radius:30px;padding:10px 13px;color:#222222;font-size:13px">
-    🔇 Quiet Mode ▾
-  </button>
+  <!-- IrfanTalk Brand -->
+  <div style="display:flex;align-items:center;gap:8px;justify-content:center">
+    <div style="width:44px;height:44px;flex:none;background:#000;border:2px solid #bfc0c2;border-radius:13px;display:grid;place-items:center">
+      <svg width="29" height="29" viewBox="0 0 100 100" fill="none">
+        <rect x="39" y="17" width="22" height="42" rx="11" fill="white"/>
+        <path d="M27 45v5a23 23 0 0 0 46 0v-5M50 73v10M38 83h24"
+          stroke="white" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div style="text-align:left;white-space:nowrap">
+      <div style="font-size:19px;font-weight:800;color:#000">IrfanTalk</div>
+      <div style="font-size:10px;letter-spacing:1px;color:#333">VOICE CONNECTS</div>
+    </div>
+  </div>
 
-  <!-- Search and Add Contact -->
-  <div style="display:flex;align-items:center;gap:16px">
+  <!-- Search, Add Contact and Logout -->
+  <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px">
     <button type="button" class="icon" title="Search">⌕</button>
     <button type="button" class="icon" title="Add Contact">♙+</button>
     <button id="logoutBtn" class="icon" title="Sign out">↪</button>
   </div>
 
 </header>
+
 
  
   <!-- CONTACTS -->
@@ -286,23 +302,22 @@ border: 2px solid #aeb4bb !important;
     <div class="footer-note">
       Your IrfanTalk connections
     </div>
-  
-
+  </section>
+ 
   <!-- HOME MICROPHONE DISPLAY -->
   <section style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 10px;gap:20px">
-  
-<div style="<div id="homeTalkBtn" style="width:200px;width:200px;height:200px;border-radius:50%;
-background:radial-gradient(circle at 35% 25%,#333333 0%,#111111 55%,#000000 100%);
-border:7px solid #f5f5f5;
-display:flex;align-items:center;justify-content:center;
-box-shadow:0 0 0 2px #bdbdbd,0 12px 28px #00000035;">
-  <svg width="38" height="38" viewBox="0 0 24 24"
-     fill="white" xmlns="http://www.w3.org/2000/svg">
-  <rect x="9" y="2" width="6" height="13" rx="3" fill="white"/>
-  <path d="M5 11a7 7 0 0 0 14 0" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M12 18v4M9 22h6" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-</svg>
-</div>
+  <div id="homeTalkBtn" style="width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#333333 0%,#111111 55%,#000000 100%);  
+border:7px solid #f5f5f5;  
+display:flex;align-items:center;justify-content:center;  
+box-shadow:0 0 0 2px #bdbdbd,0 12px 28px #00000035;">  
+  <svg width="38" height="38" viewBox="0 0 24 24"  
+     fill="white" xmlns="http://www.w3.org/2000/svg">  
+  <rect x="9" y="2" width="6" height="13" rx="3" fill="white"/>  
+  <path d="M5 11a7 7 0 0 0 14 0" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>  
+  <path d="M12 18v4M9 22h6" stroke="white" stroke-width="2.5" stroke-linecap="round"/>  
+</svg>  
+  </div>
+
 
   <!-- BOTTOM TOOLBAR -->
  
