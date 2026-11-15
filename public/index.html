@@ -37,6 +37,7 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
         }
  
 /* Welcome screen reference layout */
+ 
 #welcomeScreen {
   min-height: 100svh;
   justify-content: flex-start;
@@ -103,19 +104,21 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 }
 
 /* Silver microphone logo border */
+ 
 #welcomeScreen .logo {
   border: 3px solid #aeb4bb !important;
   box-shadow: 0 5px 15px #00000030;
 }
 
 /* Premium silver login card */
+ 
 #welcomeScreen .auth-card {
   background: #fff;
   border: 2px solid #bfc0c2;
   box-shadow: 0 10px 28px #00000020;
 }
 
-/* Black buttons with silver borders */
+ /* Black buttons with silver borders */
 #welcomeScreen .auth-card button {
   background: linear-gradient(145deg, #111, #292929);
   color: #fff;
@@ -123,14 +126,6 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
   box-shadow: 0 5px 12px #00000025;
 }
 
-/* Keep Google logo visible */
-#welcomeScreen .auth-card button:first-of-type {
-  color: #fff;
-}
-
-
-
- 
 @media(min-width:600px){.shell{padding-top:28px}}
 
 /* Welcome buttons styling */
@@ -160,7 +155,13 @@ border: 2px solid #aeb4bb !important;
   opacity: 1;
   cursor: not-allowed;
 }
-
+#welcomeScreen .auth-foot {
+  width: max-content;
+  max-width: 100%;
+  margin: 15px auto 0;
+  text-align: left;
+  line-height: 1.8;
+}
 
 </style>
 </head>
@@ -204,6 +205,8 @@ border: 2px solid #aeb4bb !important;
  <div class="auth-foot">
       Already have an account?
       <span id="welcomeLoginBtn" class="link">Log In</span>
+  <br>
+<span id="welcomeForgotBtn" class="link">Forgot password?</span>
     </div>
   </div>
 </section>
@@ -242,7 +245,6 @@ border: 2px solid #aeb4bb !important;
  
 <main id="appShell" class="shell hidden">
 
-  <!-- TOP BAR -->
  
 <!-- IRFANTALK TOP BAR -->
 
