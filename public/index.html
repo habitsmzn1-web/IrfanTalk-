@@ -477,6 +477,7 @@ $("authSubmit").onclick=async()=>{
    if(!name)throw Error("Enter your name.");
 
    // First click: send OTP
+   if (otpSentFor !== email) {
    const response = await fetch("/api/otp/send",{
      method:"POST",
      headers:{"Content-Type":"application/json"},
