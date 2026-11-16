@@ -163,6 +163,56 @@ border: 2px solid #aeb4bb !important;
   line-height: 1.8;
 }
 
+/* IrfanTalk - Compact Mobile Dashboard */
+@media (max-width: 600px) {
+  #appShell.shell {
+    height: 100svh;
+    min-height: 0;
+    padding: 6px 12px 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #appShell .top {
+    margin: 0 0 6px;
+    flex-shrink: 0;
+  }
+
+  #appShell #usersView {
+    padding: 9px 10px !important;
+    margin-bottom: 5px;
+    flex-shrink: 0;
+  }
+
+  #appShell #usersView h2 {
+    font-size: 18px;
+    margin: 0 0 7px;
+  }
+
+  #appShell #usersView .empty {
+    padding: 8px;
+  }
+
+  #appShell > section:has(#homeTalkBtn) {
+    padding: 5px 8px !important;
+    gap: 8px !important;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  #appShell #homeTalkBtn {
+    width: 150px !important;
+    height: 150px !important;
+  }
+
+  #appShell > section:last-of-type {
+    margin: 5px auto 0 !important;
+    padding: 12px !important;
+    flex-shrink: 0;
+  }
+}
+ 
 </style>
 </head>
 <body>
