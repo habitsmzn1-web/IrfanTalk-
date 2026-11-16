@@ -391,13 +391,14 @@ box-shadow:0 0 0 2px #bdbdbd,0 12px 28px #00000035;">
   </span>
    
   <!-- Voice Effects -->
-  <span style="display:flex;align-items:center;justify-content:center">
-    <svg width="16" height="16" viewBox="0 0 48 48" fill="white">
-      <rect x="19" y="12" width="10" height="22" rx="5"/>
-      <path d="M13 25 Q13 39 24 39 Q35 39 35 25 M24 39 V45" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
-      <path d="M10 5 L12 10 L17 12 L12 14 L10 19 L8 14 L3 12 L8 10Z M37 4 L39 9 L44 11 L39 13 L37 18 L35 13 L30 11 L35 9Z" />
-    </svg>
-  </span>
+<button id="controlStudioBtn" type="button" aria-label="Control Studio"
+style="display:flex;align-items:center;justify-content:center;background:transparent;border:0;padding:0;color:white;cursor:pointer">
+  <svg width="16" height="16" viewBox="0 0 48 48" fill="white">
+    <rect x="19" y="12" width="10" height="22" rx="5"/>
+    <path d="M13 25 Q13 39 24 39 Q35 39 35 25 M24 39 V45" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <path d="M10 5 L12 10 L17 12 L12 14 L10 19 L8 14 L3 12 L8 10Z M37 4 L39 9 L44 11 L39 13 L37 18 L35 13 L30 11 L35 9Z" />
+  </svg>
+</button>
 
   <!-- People -->
   <span style="display:flex;align-items:center;justify-content:center">
@@ -426,7 +427,24 @@ box-shadow:0 0 0 2px #bdbdbd,0 12px 28px #00000035;">
   </span>
 
   </section>
+<!-- CONTROL STUDIO PANEL -->
+<div id="controlStudioPanel" class="hidden"
+style="background:#fff;border:1px solid #ddd;border-radius:20px;padding:20px;margin:15px 0;box-shadow:0 5px 18px #00000012;">
 
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+    <h2 style="margin:0;color:#111;">Control Studio</h2>
+    <button id="closeControlStudio" type="button"
+    style="background:#222;color:#fff;border:0;border-radius:10px;padding:8px 14px;font-size:18px;">✕</button>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <button type="button" id="voiceEffectsSetting" class="btn">🎙️ Voice Effects</button>
+    <button type="button" id="notificationSetting" class="btn">🔔 Notification Sound</button>
+    <button type="button" id="privacySetting" class="btn">🔒 Privacy Settings</button>
+  </div>
+
+</div>
+<!-- END CONTROL STUDIO PANEL -->
 
  <section id="chatView" class="hidden">
   <div class="chat-head"><button id="backBtn" class="icon">←</button><div id="chatAvatar" class="avatar">U</div><div class="meta"><strong id="chatName">User</strong><small>Private conversation</small></div></div>
@@ -1143,6 +1161,19 @@ $("welcomeScreen").classList.remove("hidden");
   chatRef=null;chatListener=null;activeUser=null;
  }
 });
+ const controlStudioBtn = $("controlStudioBtn");
+const controlsStudioPanel = $("controlsStudioPanel");
+const closeControlStudio = $("closeControlStudio");
+
+if (controlStudioBtn && controlsStudioPanel && closeControlStudio) {
+  controlStudioBtn.onclick = () => {
+    controlsStudioPanel.classList.toggle("hidden");
+  };
+
+  closeControlStudio.onclick = () => {
+    controlsStudioPanel.classList.add("hidden");
+  };
+}
 </script>
 </body>
 </html>
