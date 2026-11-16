@@ -213,6 +213,140 @@ border: 2px solid #aeb4bb !important;
   }
 }
  
+/* IRFANTALK - CONTROL STUDIO CIRCULAR LAYOUT */
+
+#controlStudioPanel {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2000 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.88) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+#controlStudioRing {
+  position: relative !important;
+  width: min(94vw, 360px) !important;
+  height: min(94vw, 360px) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Both rotating rings */
+.control-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.inner-ring {
+  animation: innerClockwise 18s linear infinite;
+}
+
+.outer-ring {
+  animation: outerAnticlockwise 26s linear infinite;
+}
+
+/* Inner ring buttons */
+.inner-ring button {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(145deg,#303030,#050505);
+  color: white;
+  border: 2px solid #c0c0c0;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  box-shadow: 0 5px 15px #0004;
+  animation: innerButtonCounter 18s linear infinite;
+}
+
+/* Inner ring positions */
+.inner-ring button:nth-child(1) {left:50%;top:5%;transform:translate(-50%,-50%);}
+.inner-ring button:nth-child(2) {left:82%;top:18%;transform:translate(-50%,-50%);}
+.inner-ring button:nth-child(3) {left:95%;top:50%;transform:translate(-50%,-50%);}
+.inner-ring button:nth-child(4) {left:82%;top:82%;transform:translate(-50%,-50%);}
+.inner-ring button:nth-child(5) {left:50%;top:95%;transform:translate(-50%,-50%);}
+.inner-ring button:nth-child(6) {left:18%;top:82%;transform:translate(-50%,-50%);}
+.inner-ring button:nth-child(7) {left:5%;top:50%;transform:translate(-50%,-50%);}
+.inner-ring button:nth-child(8) {left:18%;top:18%;transform:translate(-50%,-50%);}
+
+/* Outer ring buttons */
+.outer-ring button {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(145deg,#303030,#050505);
+  color: white;
+  border: 2px solid #c0c0c0;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  box-shadow: 0 5px 15px #0004;
+  animation: outerButtonCounter 26s linear infinite;
+}
+
+/* Outer ring positions */
+.outer-ring button:nth-child(1) {left:50%;top:1%;transform:translate(-50%,-50%);}
+.outer-ring button:nth-child(2) {left:93%;top:27%;transform:translate(-50%,-50%);}
+.outer-ring button:nth-child(3) {left:93%;top:73%;transform:translate(-50%,-50%);}
+.outer-ring button:nth-child(4) {left:50%;top:99%;transform:translate(-50%,-50%);}
+.outer-ring button:nth-child(5) {left:7%;top:73%;transform:translate(-50%,-50%);}
+.outer-ring button:nth-child(6) {left:7%;top:27%;transform:translate(-50%,-50%);}
+
+/* Rotation */
+@keyframes innerClockwise {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(360deg);}
+}
+
+@keyframes outerAnticlockwise {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(-360deg);}
+}
+
+@keyframes innerButtonCounter {
+  from {rotate:0deg;}
+  to {rotate:-360deg;}
+}
+
+@keyframes outerButtonCounter {
+  from {rotate:0deg;}
+  to {rotate:360deg;}
+}
+
+/* Centre X */
+#closeControlStudio {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%,-50%) !important;
+  width: 68px !important;
+  height: 68px !important;
+  border-radius: 50% !important;
+  background: #111 !important;
+  color: white !important;
+  border: 3px solid #c0c0c0 !important;
+  font-size: 36px !important;
+  z-index: 10;
+  box-shadow: 0 0 20px #aaa;
+}
+
+.control-ring button:active {
+  box-shadow: 0 0 18px #aaa;
+ }
+ 
 </style>
 </head>
 <body>
@@ -448,64 +582,41 @@ box-shadow:0 0 0 2px #bdbdbd,0 12px 28px #00000035;">
 
   </section>
 
-<!-- CONTROL STUDIO PANEL -->
-<div id="controlStudioPanel" class="hidden"
-style="position:fixed;inset:0;z-index:2000;
-background:rgba(0,0,0,.48);
-display:flex;align-items:center;justify-content:center;">
 
-  <div id="controlStudioRing"
-  style="position:relative;width:300px;height:300px;
-  border-radius:50%;">
+<!-- IRFANTALK CONTROL STUDIO -->
+<div id="controlStudioPanel" class="hidden">
+  <div id="controlStudioRing">
 
-    <button type="button" title="Contacts"
-    style="position:absolute;top:8px;left:50%;transform:translateX(-50%);">
-      👥
-    </button>
+    <!-- OUTER ROTATING RING: 6 BUTTONS -->
+    <div id="outerControlRing" class="control-ring outer-ring">
+      <button type="button" data-control="privacy" title="Privacy Shield">🛡️</button>
+      <button type="button" data-control="noise" title="Noise Cancellation">🔇</button>
+      <button type="button" data-control="caption" title="Live Caption">💬</button>
+      <button type="button" data-control="backup" title="Backup & Restore">💾</button>
+      <button type="button" data-control="data" title="Data Saver">📊</button>
+      <button type="button" data-control="safety" title="Safety Center">🛡️</button>
+    </div>
 
-    <button type="button" title="AI Translator"
-    style="position:absolute;top:48px;right:12px;">
-      🌐
-    </button>
+    <!-- INNER ROTATING RING: 8 BUTTONS -->
+    <div id="innerControlRing" class="control-ring inner-ring">
+      <button type="button" data-control="voice" title="Voice Effects">🎙️</button>
+      <button type="button" data-control="sound" title="Notification Sound">🔔</button>
+      <button type="button" data-control="contacts" title="Contacts">👥</button>
+      <button type="button" data-control="translator" title="AI Translator">🌐</button>
+      <button type="button" data-control="camera" title="Camera">📷</button>
+      <button type="button" data-control="vault" title="Vault">🔐</button>
+      <button type="button" data-control="settings" title="App Settings">⚙️</button>
+      <button type="button" data-control="audio" title="Audio Control">🎧</button>
+    </div>
 
-    <button type="button" title="Camera"
-    style="position:absolute;top:50%;right:0;transform:translateY(-50%);">
-      📷
-    </button>
-
-    <button type="button" title="Vault"
-    style="position:absolute;bottom:48px;right:12px;">
-      🔐
-    </button>
-
-    <button type="button" title="Voice Effects"
-    style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);">
-      🎙️
-    </button>
-
-    <button type="button" title="Notification Sound"
-    style="position:absolute;bottom:48px;left:12px;">
-      🔔
-    </button>
-
-    <button type="button" title="Privacy Settings"
-    style="position:absolute;top:50%;left:0;transform:translateY(-50%);">
-      🔒
-    </button>
-
+    <!-- CENTRAL CLOSE BUTTON -->
     <button id="closeControlStudio" type="button"
-    aria-label="Close Control Studio"
-    style="position:absolute;top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    width:72px;height:72px;border-radius:50%;
-    background:#222;color:white;border:3px solid white;
-    font-size:32px;font-weight:bold;">
-      ×
-    </button>
+      aria-label="Close Control Studio">×</button>
 
   </div>
 </div>
 <!-- END CONTROL STUDIO PANEL -->
+ 
  
 
  <section id="chatView" class="hidden">
