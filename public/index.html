@@ -391,12 +391,32 @@ box-shadow:0 0 0 2px #bdbdbd,0 12px 28px #00000035;">
   </span>
    
   <!-- Voice Effects -->
-<button id="controlStudioBtn" type="button" aria-label="Control Studio"
-style="display:flex;align-items:center;justify-content:center;background:transparent;border:0;padding:0;color:white;cursor:pointer">
-  <svg width="16" height="16" viewBox="0 0 48 48" fill="white">
+<!-- MOVABLE CONTROL STUDIO BUTTON -->
+<button id="controlStudioBtn" type="button"
+  aria-label="Control Studio"
+  style="
+    position:fixed;
+    right:20px;
+    bottom:120px;
+    z-index:3000;
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#222;
+    border:3px solid #bbb;
+    color:white;
+    padding:0;
+    cursor:grab;
+    touch-action:none;
+    box-shadow:0 5px 18px #0004;
+  ">
+  <svg width="27" height="27" viewBox="0 0 48 48" fill="white">
     <rect x="19" y="12" width="10" height="22" rx="5"/>
-    <path d="M13 25 Q13 39 24 39 Q35 39 35 25 M24 39 V45" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
-    <path d="M10 5 L12 10 L17 12 L12 14 L10 19 L8 14 L3 12 L8 10Z M37 4 L39 9 L44 11 L39 13 L37 18 L35 13 L30 11 L35 9Z" />
+    <path d="M13 25 Q13 39 24 39 Q35 39 35 25 M24 39 V45"
+      fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
   </svg>
 </button>
 
@@ -427,24 +447,66 @@ style="display:flex;align-items:center;justify-content:center;background:transpa
   </span>
 
   </section>
+
 <!-- CONTROL STUDIO PANEL -->
 <div id="controlStudioPanel" class="hidden"
-style="background:#fff;border:1px solid #ddd;border-radius:20px;padding:20px;margin:15px 0;box-shadow:0 5px 18px #00000012;">
+style="position:fixed;inset:0;z-index:2000;
+background:rgba(0,0,0,.48);
+display:flex;align-items:center;justify-content:center;">
 
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
-    <h2 style="margin:0;color:#111;">Control Studio</h2>
+  <div id="controlStudioRing"
+  style="position:relative;width:300px;height:300px;
+  border-radius:50%;">
+
+    <button type="button" title="Contacts"
+    style="position:absolute;top:8px;left:50%;transform:translateX(-50%);">
+      👥
+    </button>
+
+    <button type="button" title="AI Translator"
+    style="position:absolute;top:48px;right:12px;">
+      🌐
+    </button>
+
+    <button type="button" title="Camera"
+    style="position:absolute;top:50%;right:0;transform:translateY(-50%);">
+      📷
+    </button>
+
+    <button type="button" title="Vault"
+    style="position:absolute;bottom:48px;right:12px;">
+      🔐
+    </button>
+
+    <button type="button" title="Voice Effects"
+    style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);">
+      🎙️
+    </button>
+
+    <button type="button" title="Notification Sound"
+    style="position:absolute;bottom:48px;left:12px;">
+      🔔
+    </button>
+
+    <button type="button" title="Privacy Settings"
+    style="position:absolute;top:50%;left:0;transform:translateY(-50%);">
+      🔒
+    </button>
+
     <button id="closeControlStudio" type="button"
-    style="background:#222;color:#fff;border:0;border-radius:10px;padding:8px 14px;font-size:18px;">✕</button>
-  </div>
+    aria-label="Close Control Studio"
+    style="position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:72px;height:72px;border-radius:50%;
+    background:#222;color:white;border:3px solid white;
+    font-size:32px;font-weight:bold;">
+      ×
+    </button>
 
-  <div style="display:flex;flex-direction:column;gap:12px;">
-    <button type="button" id="voiceEffectsSetting" class="btn">🎙️ Voice Effects</button>
-    <button type="button" id="notificationSetting" class="btn">🔔 Notification Sound</button>
-    <button type="button" id="privacySetting" class="btn">🔒 Privacy Settings</button>
   </div>
-
 </div>
 <!-- END CONTROL STUDIO PANEL -->
+ 
 
  <section id="chatView" class="hidden">
   <div class="chat-head"><button id="backBtn" class="icon">←</button><div id="chatAvatar" class="avatar">U</div><div class="meta"><strong id="chatName">User</strong><small>Private conversation</small></div></div>
@@ -1138,6 +1200,9 @@ $("messageForm").onsubmit=async e=>{
   $("messageInput").value="";$("chatStatus").textContent="";
  }catch(err){$("chatStatus").textContent="Message not sent: "+err.message;}
 };
+  const controlStudioBtn = $("controlStudioBtn");
+const controlStudioPanel = $("controlStudioPanel");
+const closeControlStudio = $("closeControlStudio");
 auth.onAuthStateChanged(async user=>{
  currentUser=user;
  if(user){
@@ -1145,14 +1210,77 @@ auth.onAuthStateChanged(async user=>{
   $("welcomeScreen").classList.add("hidden");
 $("authScreen").classList.add("hidden");
 $("appShell").classList.remove("hidden");
-  const name=user.displayName||user.email?.split("@")[0]||"Friend";
-  $("myName").textContent=name;$("myAvatar").textContent=name[0].toUpperCase();
-  try{await syncDirectory(user);await loadUsers();}
-  catch(e){$("usersStatus").textContent="Profile sync failed: "+e.message;}
- }else{
- if(voiceSocket){
-  voiceSocket.disconnect();
-  voiceSocket=null;
+  
+if (controlStudioBtn && controlStudioPanel && closeControlStudio) {
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let buttonStartX = 0;
+  let buttonStartY = 0;
+  let isDragging = false;
+  let hasMoved = false;
+
+  controlStudioBtn.addEventListener("pointerdown", event => {
+    event.preventDefault();
+
+    const rect = controlStudioBtn.getBoundingClientRect();
+    dragStartX = event.clientX;
+    dragStartY = event.clientY;
+    buttonStartX = rect.left;
+    buttonStartY = rect.top;
+    isDragging = true;
+    hasMoved = false;
+
+    controlStudioBtn.setPointerCapture(event.pointerId);
+  });
+
+  controlStudioBtn.addEventListener("pointermove", event => {
+    if (!isDragging) return;
+
+    const dx = event.clientX - dragStartX;
+    const dy = event.clientY - dragStartY;
+
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+      hasMoved = true;
+    }
+
+    if (hasMoved) {
+      const x = Math.max(0, Math.min(
+        window.innerWidth - controlStudioBtn.offsetWidth,
+        buttonStartX + dx
+      ));
+      const y = Math.max(0, Math.min(
+        window.innerHeight - controlStudioBtn.offsetHeight,
+        buttonStartY + dy
+      ));
+
+      controlStudioBtn.style.left = x + "px";
+      controlStudioBtn.style.top = y + "px";
+      controlStudioBtn.style.right = "auto";
+      controlStudioBtn.style.bottom = "auto";
+    }
+  });
+
+  controlStudioBtn.addEventListener("pointerup", () => {
+    isDragging = false;
+  });
+
+  controlStudioBtn.addEventListener("pointercancel", () => {
+    isDragging = false;
+  });
+
+  controlStudioBtn.addEventListener("click", () => {
+    if (hasMoved) {
+      hasMoved = false;
+      return;
+    }
+    controlStudioPanel.classList.toggle("hidden");
+  });
+
+  closeControlStudio.onclick = () => {
+    controlStudioPanel.classList.add("hidden");
+  };
+}
+  
 }
   $("appShell").classList.add("hidden");
 $("authScreen").classList.add("hidden");
@@ -1161,19 +1289,8 @@ $("welcomeScreen").classList.remove("hidden");
   chatRef=null;chatListener=null;activeUser=null;
  }
 });
- const controlStudioBtn = $("controlStudioBtn");
-const controlStudioPanel = $("controlStudioPanel");
-const closeControlStudio = $("closeControlStudio");
 
-if (controlStudioBtn && controlStudioPanel && closeControlStudio) {
-  controlStudioBtn.onclick = () => {
-    controlStudioPanel.classList.toggle("hidden");
-  };
 
-  closeControlStudio.onclick = () => {
-    controlStudioPanel.classList.add("hidden");
-  };
-}
 </script>
 </body>
 </html>
