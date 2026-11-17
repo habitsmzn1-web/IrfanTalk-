@@ -1609,6 +1609,76 @@ if (controlStudioBtn && controlStudioPanel) {
       setControlStudioOpen(!isOpen);
     });
 
+// CONTROL STUDIO - INDEPENDENT MANUAL RING ROTATION
+const manualRings = [
+  document.getElementById("innerControlRing"),
+  document.getElementById("outerControlRing")
+];
+manualRings.forEach((ring) => {
+  if (!ring || ring.dataset.manualRotationReady) return;
+  ring.dataset.manualRotationReady = "true";
+  let startAngle = 0;
+  let startRotation = 0;
+  let currentRotation = 0;
+  let activePointer = null;
+  let moved = false;
+  let suppressClick = false;
+  function getAngle(event) {
+    const rect = ring.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    return Math.atan2(
+      event.clientY - centerY,
+      event.clientX - centerX
+    ) * 180 / Math.PI;
+  }
+  function updateButtons() {
+    ring.querySelectorAll("button").forEach((button) => {
+      button.style.transform =
+        `translate(-50%, -50%) rotate(${-currentRotation}deg)`;
+    });
+  }
+  ring.addEventListener("pointerdown", (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    event.preventDefault();
+    activePointer = event.pointerId;
+    startAngle = getAngle(event);
+    startRotation = currentRotation;
+    moved = false;
+    button.setPointerCapture(event.pointerId);
+  });
+  ring.addEventListener("pointermove", (event) => {
+    if (activePointer !== event.pointerId) return;
+    const angle = getAngle(event);
+    let difference = angle - startAngle;
+    if (difference > 180) difference -= 360;
+    if (difference < -180) difference += 360;
+    if (Math.abs(difference) > 2) moved = true;
+    currentRotation = startRotation + difference;
+    ring.style.transform = `rotate(${currentRotation}deg)`;
+    updateButtons();
+  });
+  function stopRotation(event) {
+    if (activePointer !== event.pointerId) return;
+    activePointer = null;
+    if (moved) {
+      suppressClick = true;
+      setTimeout(() => {
+        suppressClick = false;
+      }, 300);
+    }
+  }
+  ring.addEventListener("pointerup", stopRotation);
+  ring.addEventListener("pointercancel", stopRotation);
+  ring.addEventListener("click", (event) => {
+    if (!suppressClick) return;
+    event.preventDefault();
+    event.stopPropagation();
+    suppressClick = false;
+  }, true);
+});
+         
     setControlStudioOpen(
       !controlStudioPanel.classList.contains("hidden")
     );
