@@ -1509,6 +1509,14 @@ rotationVelocity = 0;
     if (difference > 180) difference -= 360;
     if (difference < -180) difference += 360;
     if (Math.abs(difference) > 2) moved = true;
+   const now = performance.now();
+const elapsed = Math.max(now - lastMoveTime, 1);
+const rotationDelta =
+  difference * ROTATION_SENSITIVITY - lastRotationChange;
+
+rotationVelocity = rotationDelta / elapsed;
+lastRotationChange = difference * ROTATION_SENSITIVITY;
+lastMoveTime = now;
     currentRotation = startRotation +
 (difference * ROTATION_SENSITIVITY);
     ring.style.transform = `rotate(${currentRotation}deg)`;
@@ -1517,6 +1525,33 @@ rotationVelocity = 0;
   function stopRotation(event) {
     if (activePointer !== event.pointerId) return;
     activePointer = null;
+   if (inertiaFrame) {
+  cancelAnimationFrame(inertiaFrame);
+}
+
+let previousFrameTime = performance.now();
+
+function continueInertia(now) {
+  const elapsed = Math.min(now - previousFrameTime, 32);
+  previousFrameTime = now;
+
+  currentRotation += rotationVelocity * elapsed;
+
+  ring.style.transform = `rotate(${currentRotation}deg)`;
+  updateButtons();
+
+  rotationVelocity *= Math.pow(0.97, elapsed / 16);
+
+  if (Math.abs(rotationVelocity) > 0.015) {
+    inertiaFrame = requestAnimationFrame(continueInertia);
+  } else {
+    inertiaFrame = null;
+  }
+}
+
+if (Math.abs(rotationVelocity) > 0.04) {
+  inertiaFrame = requestAnimationFrame(continueInertia);
+}
     if (moved) {
       suppressClick = true;
       setTimeout(() => {
