@@ -215,17 +215,18 @@ border: 2px solid #aeb4bb !important;
  
 /* IRFANTALK CONTROL STUDIO - NEW DESIGN */
 
+/* IRFANTALK CONTROL STUDIO - BUTTON ANCHORED */
+
 #controlStudioPanel {
   position: fixed !important;
   inset: 0 !important;
   z-index: 2000 !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,0.94) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  overflow: hidden;
+  display: block;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: visible !important;
+  pointer-events: none;
   touch-action: none;
 }
 
@@ -234,11 +235,15 @@ border: 2px solid #aeb4bb !important;
 }
 
 #controlStudioRing {
-  position: relative !important;
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  transform: none !important;
   width: min(94vw, 380px) !important;
   height: min(94vw, 380px) !important;
   border: none !important;
   box-shadow: none !important;
+  pointer-events: none;
 }
 
 .control-ring {
@@ -1379,6 +1384,20 @@ if (controlStudioBtn && controlStudioPanel) {
 
     function setControlStudioOpen(open) {
       controlStudioPanel.classList.toggle("hidden", !open);
+     if (open) {
+  requestAnimationFrame(() => {
+    const studioRing = $("controlStudioRing");
+    const buttonRect = controlStudioBtn.getBoundingClientRect();
+
+    studioRing.style.left =
+      (buttonRect.left + buttonRect.width / 2 -
+      studioRing.offsetWidth / 2) + "px";
+
+    studioRing.style.top =
+      (buttonRect.top + buttonRect.height / 2 -
+      studioRing.offsetHeight / 2) + "px";
+  });
+     }
       controlStudioBtn.classList.toggle("is-open", open);
       controlStudioBtn.innerHTML = open ? "×" : originalButtonHTML;
 
