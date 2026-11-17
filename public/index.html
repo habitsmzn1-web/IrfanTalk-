@@ -1457,6 +1457,7 @@ if (controlStudioBtn && controlStudioPanel) {
 
 // CONTROL STUDIO - INDEPENDENT MANUAL RING ROTATION
 const ROTATION_SENSITIVITY = 50;
+   const manualRings = [
   document.getElementById("innerControlRing"),
   document.getElementById("outerControlRing")
 ];
@@ -1508,7 +1509,8 @@ rotationVelocity = 0;
     if (difference > 180) difference -= 360;
     if (difference < -180) difference += 360;
     if (Math.abs(difference) > 2) moved = true;
-    currentRotation = startRotation + (difference * 50);
+    currentRotation = startRotation +
+(difference * ROTATION_SENSITIVITY);
     ring.style.transform = `rotate(${currentRotation}deg)`;
     updateButtons();
   });
