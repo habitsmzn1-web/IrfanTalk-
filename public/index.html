@@ -1400,7 +1400,7 @@ if (controlStudioBtn && controlStudioPanel) {
      }
       controlStudioBtn.classList.toggle("is-open", open);
       controlStudioBtn.innerHTML = open ? "×" : originalButtonHTML;
-
+controlStudioBtn.style.fontSize = open ? "32px" : "";
       controlStudioBtn.setAttribute(
         "aria-label",
         open ? "Close Control Studio" : "Open Control Studio"
