@@ -1517,75 +1517,104 @@ auth.onAuthStateChanged(async user=>{
 $("authScreen").classList.add("hidden");
 $("appShell").classList.remove("hidden");
   
-if (controlStudioBtn && controlStudioPanel && closeControlStudio) {
-  let dragStartX = 0;
-  let dragStartY = 0;
-  let buttonStartX = 0;
-  let buttonStartY = 0;
-  let isDragging = false;
-  let hasMoved = false;
 
-  controlStudioBtn.addEventListener("pointerdown", event => {
-    event.preventDefault();
+if (controlStudioBtn && controlStudioPanel) {
+  if (!controlStudioBtn.dataset.controlStudioReady) {
+    controlStudioBtn.dataset.controlStudioReady = "true";
 
-    const rect = controlStudioBtn.getBoundingClientRect();
-    dragStartX = event.clientX;
-    dragStartY = event.clientY;
-    buttonStartX = rect.left;
-    buttonStartY = rect.top;
-    isDragging = true;
-    hasMoved = false;
+    const originalButtonHTML = controlStudioBtn.innerHTML;
 
-    controlStudioBtn.setPointerCapture(event.pointerId);
-  });
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let buttonStartX = 0;
+    let buttonStartY = 0;
+    let isDragging = false;
+    let hasMoved = false;
 
-  controlStudioBtn.addEventListener("pointermove", event => {
-    if (!isDragging) return;
+    function setControlStudioOpen(open) {
+      controlStudioPanel.classList.toggle("hidden", !open);
+      controlStudioBtn.classList.toggle("is-open", open);
+      controlStudioBtn.innerHTML = open ? "×" : originalButtonHTML;
 
-    const dx = event.clientX - dragStartX;
-    const dy = event.clientY - dragStartY;
+      controlStudioBtn.setAttribute(
+        "aria-label",
+        open ? "Close Control Studio" : "Open Control Studio"
+      );
 
-    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
-      hasMoved = true;
+      document.body.style.overflow = open ? "hidden" : "";
     }
 
-    if (hasMoved) {
-      const x = Math.max(0, Math.min(
-        window.innerWidth - controlStudioBtn.offsetWidth,
-        buttonStartX + dx
-      ));
-      const y = Math.max(0, Math.min(
-        window.innerHeight - controlStudioBtn.offsetHeight,
-        buttonStartY + dy
-      ));
-
-      controlStudioBtn.style.left = x + "px";
-      controlStudioBtn.style.top = y + "px";
-      controlStudioBtn.style.right = "auto";
-      controlStudioBtn.style.bottom = "auto";
+    if (closeControlStudio) {
+      closeControlStudio.style.display = "none";
     }
-  });
 
-  controlStudioBtn.addEventListener("pointerup", () => {
-    isDragging = false;
-  });
+    controlStudioBtn.addEventListener("pointerdown", event => {
+      event.preventDefault();
 
-  controlStudioBtn.addEventListener("pointercancel", () => {
-    isDragging = false;
-  });
-
-  controlStudioBtn.addEventListener("click", () => {
-    if (hasMoved) {
+      const rect = controlStudioBtn.getBoundingClientRect();
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+      buttonStartX = rect.left;
+      buttonStartY = rect.top;
+      isDragging = true;
       hasMoved = false;
-      return;
-    }
-    controlStudioPanel.classList.toggle("hidden");
-  });
 
-  closeControlStudio.onclick = () => {
-    controlStudioPanel.classList.add("hidden");
-  };
+      controlStudioBtn.setPointerCapture(event.pointerId);
+    });
+
+    controlStudioBtn.addEventListener("pointermove", event => {
+      if (!isDragging) return;
+
+      const dx = event.clientX - dragStartX;
+      const dy = event.clientY - dragStartY;
+
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+        hasMoved = true;
+      }
+
+      if (hasMoved) {
+        const x = Math.max(0, Math.min(
+          window.innerWidth - controlStudioBtn.offsetWidth,
+          buttonStartX + dx
+        ));
+
+        const y = Math.max(0, Math.min(
+          window.innerHeight - controlStudioBtn.offsetHeight,
+          buttonStartY + dy
+        ));
+
+        controlStudioBtn.style.left = x + "px";
+        controlStudioBtn.style.top = y + "px";
+        controlStudioBtn.style.right = "auto";
+        controlStudioBtn.style.bottom = "auto";
+      }
+    });
+
+    function stopControlStudioDrag() {
+      isDragging = false;
+    }
+
+    controlStudioBtn.addEventListener("pointerup", stopControlStudioDrag);
+    controlStudioBtn.addEventListener("pointercancel", stopControlStudioDrag);
+
+    controlStudioBtn.addEventListener("click", () => {
+      if (hasMoved) {
+        hasMoved = false;
+        return;
+      }
+
+      const isOpen =
+        !controlStudioPanel.classList.contains("hidden");
+
+      setControlStudioOpen(!isOpen);
+    });
+
+    setControlStudioOpen(
+      !controlStudioPanel.classList.contains("hidden")
+    );
+  }
 }
+  
   
 } else {
   $("appShell").classList.add("hidden");
