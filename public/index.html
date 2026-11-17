@@ -1508,7 +1508,7 @@ rotationVelocity = 0;
     if (difference > 180) difference -= 360;
     if (difference < -180) difference += 360;
     if (Math.abs(difference) > 2) moved = true;
-    currentRotation = startRotation + (difference * 1.8);
+    currentRotation = startRotation + (difference * 2.5);
     ring.style.transform = `rotate(${currentRotation}deg)`;
     updateButtons();
   });
