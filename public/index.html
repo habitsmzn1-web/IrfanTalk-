@@ -1414,6 +1414,7 @@ if (controlStudioBtn && controlStudioPanel) {
     }
 
     controlStudioBtn.addEventListener("pointerdown", event => {
+     if (controlStudioBtn.classList.contains("is-open")) return;
       event.preventDefault();
 
       const rect = controlStudioBtn.getBoundingClientRect();
