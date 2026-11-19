@@ -391,6 +391,17 @@ border: 2px solid #aeb4bb !important;
 #innerControlRing {
   inset: 18% !important;
 }
+ 
+/* Hide Home controls while Private Chat is open */
+#appShell:has(#chatView:not(.hidden)) > section:has(#homeTalkBtn) {
+  display: none !important;
+}
+
+#appShell:has(#chatView:not(.hidden)) #controlStudioBtn,
+#appShell:has(#chatView:not(.hidden)) #controlStudioPanel {
+  display: none !important;
+}
+ 
 </style>
 </head>
 <body>
