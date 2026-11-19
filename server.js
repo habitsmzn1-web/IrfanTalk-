@@ -4,6 +4,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const admin = require("firebase-admin");
 const path = require('path');
+const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
