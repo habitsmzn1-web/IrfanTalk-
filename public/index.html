@@ -715,21 +715,8 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
               aria-label="Close Control Studio">×</button>
     </div>
              </div>
- <!-- Profile -->
-<span style="display:flex;align-items:center;justify-content:center">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-       stroke="white" stroke-width="2" stroke-linecap="round"
-       stroke-linejoin="round">
-    <circle cx="12" cy="8" r="4"/>
-    <path d="M4 21a8 8 0 0 1 16 0"/>
-  </svg>
-</span>
-</section>
 
-<!-- IRFANTALK CONTROL STUDIO -->
-<div id="controlStudioPanel" class="hidden">
-  <div id="controlStudioRing">
-    <div id="outerControlRing" class="control-ring outer-ring">
+
        <!-- PRIVATE CHAT VIEW -->
   <section id="chatView" class="hidden">
     <div class="chat-head">
@@ -776,7 +763,7 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 <script src="/socket.io/socket.io.js"></script>
      
 <script>
-/const firebaseConfig={apiKey:"AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",authDomain:"irfantalk.firebaseapp.com",databaseURL:"https://irfantalk-default-rtdb.firebaseio.com",projectId:"irfantalk",storageBucket:"irfantalk.firebasestorage.app",messagingSenderId:"218169866517",appId:"1:218169866517:web:447670dc6a565e1e7b511c"};/ Apna firebaseConfig yahan rakhein:
+/const firebaseConfig={apiKey:"AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",authDomain:"irfantalk.firebaseapp.com",databaseURL:"https://irfantalk-default-rtdb.firebaseio.com",projectId:"irfantalk",storageBucket:"irfantalk.firebasestorage.app",messagingSenderId:"218169866517",appId:"1:218169866517:web:447670dc6a565e1e7b511c"};
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth(), db = firebase.database();
 let currentUser = null, authMode = "login", otpSentFor = "";
