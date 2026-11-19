@@ -334,6 +334,73 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 #innerControlRing {
   inset: 18% !important;
 }
+  /* INNER RING SIZE ADJUSTMENT */
+#innerControlRing {
+  inset: 18% !important;
+}
+
+/* 45° DIAGONAL FRIENDS TRACK (TOP-HALF, BOTTOM-LEFT TO TOP-RIGHT) */
+.diagonal-friends-wrap {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: pan-y;
+}
+
+.diagonal-friends-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.friend-diag-item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.friend-diag-avatar {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 22px;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.friend-diag-item.active .friend-diag-avatar {
+  width: 82px;
+  height: 82px;
+  font-size: 27px;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
+}
+
+.friend-diag-name {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+</style>
+ 
+ <body>
+   
 </style>
  
  <body>
@@ -716,7 +783,10 @@ button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
     </div>
              </div>
 
-
+<div id="diagonalFriendsWrap" class="diagonal-friends-wrap">
+  <div id="diagonalFriendsTrack" class="diagonal-friends-track"></div>
+</div>
+  
        <!-- PRIVATE CHAT VIEW -->
   <section id="chatView" class="hidden">
     <div class="chat-head">
@@ -802,7 +872,96 @@ const safe = s => String(s || "").replace(/[&<>"']/g, c => ({
   '"': "&quot;",
   "'": "&#39;"
 }[c]));
+      "&#39;": "&#39;"
+    }[c]));
 
+(function initDiagonalFriendsTrack() {
+  const wrap = document.getElementById("diagonalFriendsWrap");
+  const track = document.getElementById("diagonalFriendsTrack");
+  if (!wrap || !track) return;
+
+  const friends = [
+    { name: "Aarav", status: "Online" },
+    { name: "Zoya", status: "In Voice" },
+    { name: "Kabir", status: "Active now" },
+    { name: "Sara", status: "Available" },
+    { name: "Rohan", status: "Away" }
+  ];
+
+  let activeIndex = 1;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let isDragging = false;
+
+  const angleRad = (45 * Math.PI) / 180;
+  const cos45 = Math.cos(angleRad);
+  const sin45 = Math.sin(angleRad);
+  const stepSpacing = 88;
+
+  function renderDiagonalFriends() {
+    track.innerHTML = "";
+
+    friends.forEach((friend, idx) => {
+      const offset = idx - activeIndex;
+      const dist = offset * stepSpacing;
+
+      const dx = dist * cos45;
+      const dy = -dist * sin45;
+
+      const item = document.createElement("div");
+      item.className = "friend-diag-item" + (idx === activeIndex ? " active" : "");
+
+      const scale = idx === activeIndex ? 1.05 : Math.max(0.76, 1 - Math.abs(offset) * 0.12);
+      const opacity = Math.max(0.28, 1 - Math.abs(offset) * 0.25);
+
+      item.style.transform = `translate(calc(-50% + ${dx.toFixed(1)}px), calc(-50% + ${dy.toFixed(1)}px)) scale(${scale.toFixed(2)})`;
+      item.style.opacity = opacity.toFixed(2);
+      item.style.zIndex = String(20 - Math.abs(offset));
+
+      const initial = (friend.name || "?").trim().charAt(0).toUpperCase();
+      item.innerHTML = `
+        <div class="friend-diag-avatar">${initial}</div>
+        <div class="friend-diag-name">${friend.name}</div>
+      `;
+
+      item.addEventListener("click", () => {
+        activeIndex = idx;
+        renderDiagonalFriends();
+      });
+
+      track.appendChild(item);
+    });
+  }
+
+  wrap.addEventListener("pointerdown", (e) => {
+    isDragging = true;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+  });
+
+  window.addEventListener("pointerup", (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    const deltaX = e.clientX - dragStartX;
+    const deltaY = e.clientY - dragStartY;
+    const diagSwipe = deltaX * cos45 - deltaY * sin45;
+
+    if (Math.abs(diagSwipe) > 28) {
+      if (diagSwipe > 0 && activeIndex < friends.length - 1) {
+        activeIndex += 1;
+      } else if (diagSwipe < 0 && activeIndex > 0) {
+        activeIndex -= 1;
+      }
+      renderDiagonalFriends();
+    }
+  });
+
+  renderDiagonalFriends();
+})();
+
+function setAuthMode(mode) {
+  
 function setAuthMode(mode) {
   authMode = mode;
   $("authTitle").textContent =
