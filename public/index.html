@@ -1363,16 +1363,18 @@ function joinPrivateVoice(targetUid) {
 const voiceStatus = $("voiceStatus");
  
 const walkieToggleBtn = $("walkieToggleBtn");
-const walkiePanel = $("walkiePanel");
+const walkiePanel = $("walkiePanel");)
 
-walkieToggleBtn.addEventListener("click", () => {
-  walkiePanel.classList.toggle("hidden");
+if (walkieToggleBtn && walkiePanel) {
+  walkieToggleBtn.addEventListener("click", () => {
+    walkiePanel.classList.toggle("hidden");
 
-  walkieToggleBtn.textContent =
-    walkiePanel.classList.contains("hidden")
-      ? "🎙️ Walkie-Talkie"
-      : "✕ Close Walkie-Talkie";
-});
+    walkieToggleBtn.textContent =
+      walkiePanel.classList.contains("hidden")
+        ? "🎙️ Walkie-Talkie"
+        : "✕ Close Walkie-Talkie";
+  });
+ }
  
 let talkPressActive = false;
 
