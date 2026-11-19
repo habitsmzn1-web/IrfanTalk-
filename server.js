@@ -4,8 +4,14 @@ const http = require('http');
 const { Server } = require('socket.io');
 const admin = require("firebase-admin");
 const path = require('path');
-const crypto = require('crypto');
-
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD
+  }
+});
 const app = express();
 const serviceAccount = JSON.parse(
   process.env.FIREBASE_SERVICE_ACCOUNT
@@ -60,10 +66,11 @@ app.post('/api/otp/send', async (req, res) => {
       return res.status(400).json({ error: 'Valid email required.' });
     }
 
-    if (!process.env.RESEND_API_KEY) {
-      return res.status(500).json({ error: 'Email service is not configured.' });
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+  return res.status(500).json({
+    error: 'Gmail SMTP is not configured.'
+  });
     }
-
     const now = Date.now();
     if (lastSent.has(email) && now - lastSent.get(email) < 60 * 1000) {
       return res.status(429).json({ error: 'Please wait 60 seconds before requesting another code.' });
@@ -71,34 +78,18 @@ app.post('/api/otp/send', async (req, res) => {
 
     const code = String(crypto.randomInt(100000, 1000000));
 
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: 'IrfanTalk <onboarding@resend.dev>',
-        to: [email],
-        subject: 'Your IrfanTalk verification code',
-        html: `<div style="font-family:Arial">
-          <h2>Welcome to IrfanTalk</h2>
-          <p>Your signup verification code is:</p>
-          <h1 style="letter-spacing:8px">${code}</h1>
-          <p>This code expires in 5 minutes. Do not share it.</p>
-        </div>`
-      })
-    });
 
-    const result = await response.json();
-
-    if (!response.ok) {
-      console.error('Resend error:', result);
-      return res.status(502).json({
-        error: 'Email could not be sent. Check Resend test-mode recipient verification.'
-      });
-    }
-
+await transporter.sendMail({
+  from: `"IrfanTalk" <${process.env.GMAIL_USER}>`,
+  to: email,
+  subject: 'Your IrfanTalk verification code',
+  html: `<div style="font-family:Arial">
+    <h2>Welcome to IrfanTalk</h2>
+    <p>Your signup verification code is:</p>
+    <h1 style="letter-spacing:8px">${code}</h1>
+    <p>This code expires in 5 minutes. Do not share it.</p>
+  </div>`
+});
     otpStore.set(email, {
       codeHash: hash(code),
       expires: now + 5 * 60 * 1000,
