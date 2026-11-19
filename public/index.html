@@ -916,7 +916,12 @@ $("authSubmit").onclick=async()=>{
   $("authStatus").textContent=e.message;
  }
 };
-
+$("welcomeForgotBtn").onclick=()=>{
+  $("welcomeScreen").classList.add("hidden");
+  $("authScreen").classList.remove("hidden");
+  setAuthMode("login");
+  $("authStatus").textContent="Enter your registered email, then tap Forgot password.";
+};
 $("googleBtn").onclick=async()=>{
  try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());}
  catch(e){$("authStatus").textContent=e.message;}
