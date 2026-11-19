@@ -681,20 +681,12 @@ box-shadow:0 0 0 2px #bdbdbd,0 12px 28px #00000035;">
 </div>
  </div>
   
-<div class="card" style="text-align:center;margin:12px 0">
-  <h2>🎙️ Private Walkie-Talkie</h2>
-  <button id="talkBtn" class="btn"
-  style="width:180px;height:70px;border-radius:28px;
-  user-select:none;
-  -webkit-user-select:none;
-  -webkit-touch-callout:none;
-  touch-action:none;">
-  Hold to Talk
-</button>
-  <div id="voiceStatus" class="status">
-    Ready to talk
-  </div>
-</div>
+      <div class="card hidden" style="text-align:center;margin:12px 0">
+        <h2>🎙️ Private Walkie-Talkie</h2>
+        <button id="talkBtn" class="btn" style="width:180px;height:70px;border-radius:28px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;">Hold to Talk</button>
+        <div id="voiceStatus" class="status">Ready to talk</div>
+      </div>
+  
   <div id="messages" class="messages"><div class="empty">Say hello to start chatting.</div></div>
   <form id="messageForm" class="compose"><input id="messageInput" class="field" maxlength="2000" placeholder="Write a message…" autocomplete="off"><button class="btn">Send</button></form>
   <div id="chatStatus" class="status"></div>
@@ -1016,7 +1008,10 @@ function playIrfanChatSound() {
 async function openChat(person){
  activeUser=person;
  joinPrivateVoice(person.uid);
- $("usersView").classList.add("hidden");$("chatView").classList.remove("hidden");
+ const topBar = document.querySelector("#appShell > header.top");
+if (topBar) topBar.classList.add("hidden");
+$("usersView").classList.add("hidden");$("chatView").classList.remove("hidden");
+ 
  $("chatName").textContent=person.name;$("chatAvatar").textContent=(person.name[0]||"U").toUpperCase();
  if(chatRef&&chatListener)chatRef.off("value",chatListener);
  chatRef=db.ref(pairPath(person.uid)).limitToLast(100);
@@ -1153,7 +1148,6 @@ try {
     bubble.addEventListener("mouseleave", clearPress);
   }
 
-
   box.append(bubble);
 });
 
@@ -1165,7 +1159,10 @@ function closeChat(){
  if(chatRef&&chatListener)chatRef.off("value",chatListener);
  chatRef=null;chatListener=null;activeUser=null;
  $("chatView").classList.add("hidden");$("usersView").classList.remove("hidden");
-}
+const topBar = document.querySelector("#appShell > header.top");
+if (topBar) topBar.classList.remove("hidden");
+ 
+ 
  let voicePeers = new Map();
 let localVoiceStream = null;
 let voiceRoomTarget = null;
@@ -1473,17 +1470,48 @@ controlStudioBtn.style.fontSize = open ? "32px" : "";
     controlStudioBtn.addEventListener("pointerup", stopControlStudioDrag);
     controlStudioBtn.addEventListener("pointercancel", stopControlStudioDrag);
 
-    controlStudioBtn.addEventListener("click", () => {
-      if (hasMoved) {
-        hasMoved = false;
-        return;
-      }
+    let studioHoldTimer = null;
+let studioHoldActive = false;
 
-      const isOpen =
-        !controlStudioPanel.classList.contains("hidden");
+controlStudioBtn.addEventListener("pointerdown", () => {
+  if (controlStudioBtn.classList.contains("is-open")) return;
+  studioHoldActive = false;
+  clearTimeout(studioHoldTimer);
+  studioHoldTimer = setTimeout(() => {
+    if (!hasMoved && !isDragging) {
+      studioHoldActive = true;
+      const talkEl = $("talkBtn");
+      if (talkEl) talkEl.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+    }
+  }, 400);
+});
 
-      setControlStudioOpen(!isOpen);
-    });
+const releaseStudioHold = () => {
+  clearTimeout(studioHoldTimer);
+  if (studioHoldActive) {
+    studioHoldActive = false;
+    const talkEl = $("talkBtn");
+    if (talkEl) talkEl.dispatchEvent(new Event("pointerup", { bubbles: true }));
+  }
+};
+
+controlStudioBtn.addEventListener("pointerup", releaseStudioHold);
+controlStudioBtn.addEventListener("pointercancel", releaseStudioHold);
+
+controlStudioBtn.addEventListener("click", () => {
+  clearTimeout(studioHoldTimer);
+  if (studioHoldActive) {
+    studioHoldActive = false;
+    return;
+  }
+  if (hasMoved) {
+    hasMoved = false;
+    return;
+  }
+  const isOpen = !controlStudioPanel.classList.contains("hidden");
+  setControlStudioOpen(!isOpen);
+});
+ 
 
 // CONTROL STUDIO - INDEPENDENT MANUAL RING ROTATION
 const ROTATION_SENSITIVITY = 25;
