@@ -1048,7 +1048,13 @@ snap.forEach(child=>{
     (m.senderUid === currentUser.uid ? " mine" : "");
 
   bubble.textContent = m.text || "";
-
+if (m.deletedForEveryone) {
+  bubble.textContent = "🚫 This message was deleted";
+  bubble.dataset.deletedForEveryone = "true";
+  bubble.style.fontStyle = "italic";
+  bubble.style.opacity = "0.75";
+ }
+ 
   const meta = document.createElement("small");
   meta.textContent =
     (m.senderUid === currentUser.uid ? "You" : person.name) +
@@ -1100,14 +1106,15 @@ snap.forEach(child=>{
         alert("Delete time expired. You can delete within 24 hours.");
         return;
       }
-
-      if (!confirm("Delete this message for everyone?")) return;
-
-      try {
-        await messageRef.remove();
-      } catch (error) {
-        alert("Delete failed: " + error.message);
-      }
+if (!confirm("Delete this message for everyone?")) return;
+try {
+  await messageRef.update({
+    deletedForEveryone: true,
+    deletedAt: Date.now()
+  });
+} catch (error) {
+  alert("Delete failed: " + error.message);
+ }
     };
 
     actions.append(editBtn, deleteBtn);
@@ -1116,6 +1123,10 @@ snap.forEach(child=>{
     let pressTimer = null;
 
     const showActions = () => {
+     if (m.deletedForEveryone || bubble.dataset.deletedForEveryone === "true") {
+  return;
+ }
+     
       actions.style.display = "flex";
     };
 
