@@ -922,16 +922,7 @@ $("welcomeForgotBtn").onclick=()=>{
   setAuthMode("login");
   $("authStatus").textContent="Enter your registered email, then tap Forgot password.";
 };
-$("googleBtn").onclick=async()=>{
- try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());}
- catch(e){$("authStatus").textContent=e.message;}
-};
-$("forgotBtn").onclick=async()=>{
- const email=$("emailInput").value.trim();
- if(!email){$("authStatus").textContent="Enter your registered email first.";return;}
- try{await auth.sendPasswordResetEmail(email);$("authStatus").textContent="Password reset link sent. Check your inbox and spam folder.";}
- catch(e){$("authStatus").textContent=e.message;}
-};
+
  
 // Welcome screen buttons
 $("welcomeEmailBtn").onclick=()=>{
