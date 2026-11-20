@@ -391,6 +391,69 @@ border: 2px solid #aeb4bb !important;
 #innerControlRing {
   inset: 18% !important;
 }
+ 
+/* IRFANTALK - RESPONSIVE SCREEN FOUNDATION */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    width: 100%;
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+}
+
+input,
+textarea,
+button,
+select {
+    max-width: 100%;
+    font: inherit;
+}
+
+/* Android Phones */
+@media (max-width: 600px) {
+    html,
+    body {
+        width: 100%;
+    }
+}
+
+/* Tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+    html,
+    body {
+        width: 100%;
+    }
+}
+
+/* Laptop and PC */
+@media (min-width: 1025px) {
+    html,
+    body {
+        width: 100%;
+    }
+}
+ 
 </style>
 </head>
 <body>
