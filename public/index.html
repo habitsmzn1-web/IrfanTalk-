@@ -1606,5 +1606,64 @@ $("welcomeScreen").classList.remove("hidden");
 
 
 </script>
+<script>
+(() => {
+  function setVoiceStatusText(msg) {
+    const v1 = document.getElementById("voiceStatus");
+    const v2 = document.getElementById("homeVoiceStatus");
+    if (v1) v1.textContent = msg;
+    if (v2) v2.textContent = msg;
+  }
+
+  if (typeof window.startTransmitting !== "function") {
+    window.startTransmitting = async function () {
+      try {
+        if (!window.localVoiceStream && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          window.localVoiceStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        }
+        const tracks = window.localVoiceStream ? window.localVoiceStream.getAudioTracks() : [];
+        tracks.forEach((t) => { t.enabled = true; });
+
+        if (window.voicePeers && typeof window.voicePeers.forEach === "function") {
+          window.voicePeers.forEach((peer) => {
+            const sender = peer && peer.getSenders ? peer.getSenders().find((s) => s.track && s.track.kind === "audio") : null;
+            if (sender && tracks[0] && typeof sender.replaceTrack === "function") {
+              sender.replaceTrack(tracks[0]).catch(() => {});
+            }
+          });
+        }
+        setVoiceStatusText("Mic Live");
+      } catch (err) {
+        setVoiceStatusText("Mic Error");
+      }
+    };
+  }
+
+  if (typeof window.stopTransmitting !== "function") {
+    window.stopTransmitting = function () {
+      try {
+        if (window.localVoiceStream) {
+          window.localVoiceStream.getAudioTracks().forEach((t) => { t.enabled = false; });
+        }
+        setVoiceStatusText("Mic Off");
+      } catch (_) {}
+    };
+  }
+
+  if (typeof window.cancelTransmitting !== "function") {
+    window.cancelTransmitting = function () {
+      window.stopTransmitting();
+      setVoiceStatusText("Cancelled");
+    };
+  }
+
+  if (typeof window.setSpeakerMode !== "function") {
+    window.setSpeakerMode = function (boostOn) {
+      setVoiceStatusText(boostOn ? "Speaker Boost ON" : "Normal Audio");
+    };
+  }
+})();
+</script>
+       
 </body>
 </html>
