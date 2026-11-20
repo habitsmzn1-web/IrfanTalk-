@@ -683,14 +683,7 @@ box-shadow:0 0 0 2px #bdbdbd,0 12px 28px #00000035;">
   
 <div class="card" style="text-align:center;margin:12px 0">
   <h2>🎙️ Private Walkie-Talkie</h2>
-  <button id="talkBtn" class="btn"
-  style="width:180px;height:70px;border-radius:28px;
-  user-select:none;
-  -webkit-user-select:none;
-  -webkit-touch-callout:none;
-  touch-action:none;">
-  Hold to Talk
-</button>
+
   <div id="voiceStatus" class="status">
     Ready to talk
   </div>
@@ -1903,10 +1896,74 @@ $("welcomeScreen").classList.remove("hidden");
   }
 
   coreBtn.addEventListener("pointerup", releasePointer);
-  coreBtn.addEventListener("pointercancel", releasePointer);
+  coreBtn.addEventListener("pointercancel<script>
+(() => {
+  const voiceBtn = document.querySelector('#innerControlRing button[data-control="voice"]');
+  const voiceStatus = document.getElementById("voiceStatus");
+  const homeVoiceStatus = document.getElementById("homeVoiceStatus");
+
+  if (!voiceBtn) return;
+
+  let holdTimer = null;
+  let isTalking = false;
+
+  function updateStatus(msg) {
+    if (voiceStatus) voiceStatus.textContent = msg;
+    if (homeVoiceStatus) homeVoiceStatus.textContent = msg;
+  }
+
+  function startTalk() {
+    if (isTalking) return;
+    isTalking = true;
+    voiceBtn.setAttribute("aria-pressed", "true");
+    updateStatus("Talking...");
+    if (typeof window.startTransmitting === "function") {
+      window.startTransmitting();
+    }
+  }
+
+  function stopTalk() {
+    clearTimeout(holdTimer);
+    holdTimer = null;
+    if (!isTalking) return;
+    isTalking = false;
+    voiceBtn.setAttribute("aria-pressed", "false");
+    updateStatus("Ready to talk");
+    if (typeof window.stopTransmitting === "function") {
+      window.stopTransmitting();
+    }
+  }
+
+  voiceBtn.addEventListener("pointerdown", (e) => {
+    if (e.button !== undefined && e.button !== 0) return;
+    clearTimeout(holdTimer);
+    // Hold karne par baat shuru
+    holdTimer = setTimeout(() => {
+      startTalk();
+    }, 200);
+  });
+
+  voiceBtn.addEventListener("pointerup", () => {
+    if (isTalking) {
+      stopTalk();
+    } else {
+      // Quick tap par toggle start/stop
+      clearTimeout(holdTimer);
+      holdTimer = null;
+      startTalk();
+    }
+  });
+
+  voiceBtn.addEventListener("pointercancel", stopTalk);
+
+  // Phone lock / background se wapas aane par state clean reset
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden || document.visibilityState === "visible") {
+      stopTalk();
+    }
+  });
 })();
- </script>
- 
+</script>
        
 </body>
 </html>
