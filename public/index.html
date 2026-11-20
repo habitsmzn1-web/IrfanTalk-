@@ -1543,49 +1543,34 @@ controlStudioBtn.style.fontSize = open ? "32px" : "";
      if (controlStudioBtn.classList.contains("is-open")) return;
       event.preventDefault();
 
-      const rect = controlStudioBtn.getBoundingClientRect();
-      dragStartX = event.clientX;
-      dragStartY = event.clientY;
-      buttonStartX = rect.left;
-      buttonStartY = rect.top;
-      isDragging = true;
-      hasMoved = false;
+      const rect = control
+        if (hasMoved) {
+          const x = Math.max(0, Math.min(
+            window.innerWidth - controlStudioBtn.offsetWidth,
+            buttonStartX + dx
+          ));
+          const y = Math.max(0, Math.min(
+            window.innerHeight - controlStudioBtn.offsetHeight,
+            buttonStartY + dy
+          ));
 
-      controlStudioBtn.setPointerCapture(event.pointerId);
-    });
+          controlStudioBtn.style.position = "fixed";
+          controlStudioBtn.style.left = x + "px";
+          controlStudioBtn.style.top = y + "px";
+          controlStudioBtn.style.right = "auto";
+          controlStudioBtn.style.bottom = "auto";
+          controlStudioBtn.style.display = "flex";
+          controlStudioBtn.style.visibility = "visible";
+          controlStudioBtn.style.opacity = "1";
+        }
+      });
 
-    controlStudioBtn.addEventListener("pointermove", event => {
-      if (!isDragging) return;
-
-      const dx = event.clientX - dragStartX;
-      const dy = event.clientY - dragStartY;
-
-      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
-        hasMoved = true;
-      }
-
-      if (hasMoved) {
-        const x = Math.max(0, Math.min(
-          window.innerWidth - controlStudioBtn.offsetWidth,
-          buttonStartX + dx
-        ));
-
-        const y = Math.max(0, Math.min(
-          window.innerHeight - controlStudioBtn.offsetHeight,
-          buttonStartY + dy
-        ));
-
-        controlStudioBtn.style.left = x + "px";
-        controlStudioBtn.style.top = y + "px";
-        controlStudioBtn.style.right = "auto";
-        controlStudioBtn.style.bottom = "auto";
-      }
-    });
-
-    function stopControlStudioDrag() {
-      isDragging = false;
-    }
-
+      function stopControlStudioDrag() {
+        isDragging = false;
+        controlStudioBtn.style.visibility = "visible";
+        controlStudioBtn.style.opacity = "1";
+ }
+                                      
     controlStudioBtn.addEventListener("pointerup", stopControlStudioDrag);
     controlStudioBtn.addEventListener("pointercancel", stopControlStudioDrag);
 
