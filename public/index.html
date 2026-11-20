@@ -1554,16 +1554,16 @@ controlStudioBtn.style.fontSize = open ? "32px" : "";
             buttonStartY + dy
           ));
 
-          controlStudioBtn.style.position = "fixed";
-          controlStudioBtn.style.left = x + "px";
-          controlStudioBtn.style.top = y + "px";
-          controlStudioBtn.style.right = "auto";
-          controlStudioBtn.style.bottom = "auto";
-          controlStudioBtn.style.display = "flex";
-          controlStudioBtn.style.visibility = "visible";
-          controlStudioBtn.style.opacity = "1";
-        }
-      });
+          controlStudioBtn.style.setProperty("position", "fixed", "important");
+          controlStudioBtn.style.setProperty("left", x + "px", "important");
+          controlStudioBtn.style.setProperty("top", y + "px", "important");
+          controlStudioBtn.style.setProperty("right", "auto", "important");
+          controlStudioBtn.style.setProperty("bottom", "auto", "important");
+          controlStudioBtn.style.setProperty("transform", "none", "important");
+          controlStudioBtn.style.setProperty("display", "flex", "important");
+          controlStudioBtn.style.setProperty("visibility", "visible", "important");
+          controlStudioBtn.style.setProperty("opacity", "1", "important");
+
 
       function stopControlStudioDrag() {
         isDragging = false;
