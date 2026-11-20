@@ -1896,8 +1896,8 @@ $("welcomeScreen").classList.remove("hidden");
   }
 
   coreBtn.addEventListener("pointerup", releasePointer);
-  coreBtn.addEventListener("pointercancel<script>
-(() => {
+  coreBtn.addEventListener("pointercancel", releasePointer);
+  
   const voiceBtn = document.querySelector('#innerControlRing button[data-control="voice"]');
   const voiceStatus = document.getElementById("voiceStatus");
   const homeVoiceStatus = document.getElementById("homeVoiceStatus");
@@ -1944,15 +1944,13 @@ $("welcomeScreen").classList.remove("hidden");
   });
 
   voiceBtn.addEventListener("pointerup", () => {
-    if (isTalking) {
-      stopTalk();
-    } else {
-      // Quick tap par toggle start/stop
-      clearTimeout(holdTimer);
-      holdTimer = null;
-      startTalk();
-    }
-  });
+  clearTimeout(holdTimer);
+  holdTimer = null;
+  if (isTalking) {
+    stopTalk();
+  }
+});
+ 
 
   voiceBtn.addEventListener("pointercancel", stopTalk);
 
