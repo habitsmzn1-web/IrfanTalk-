@@ -1258,7 +1258,7 @@ function joinPrivateVoice(targetUid) {
 
   voiceSocket.emit("join-private-voice", targetUid);
 }
- const talkButton = $("talkBtn");
+
 const voiceStatus = $("voiceStatus");
 let talkPressActive = false;
 
@@ -1326,15 +1326,7 @@ async function stopTalking() {
  $("homeVoiceStatus").textContent = "Ready to talk";
 }
 
-talkButton.addEventListener("pointerdown", async event => {
-  event.preventDefault();
-  talkPressActive = true;
-  await startTalking();
-});
 
-talkButton.addEventListener("pointerup", stopTalking);
-talkButton.addEventListener("pointercancel", stopTalking);
-talkButton.addEventListener("lostpointercapture", stopTalking);
 $("messageForm").onsubmit=async e=>{
  e.preventDefault();
  if(!activeUser)return;
@@ -1656,7 +1648,7 @@ $("welcomeScreen").classList.remove("hidden");
     };
   }
 })();
-</script>
+</script>    
  <script>
 (() => {
   const dock = document.getElementById("itStudioDock");
@@ -1889,12 +1881,10 @@ $("welcomeScreen").classList.remove("hidden");
         setTrayOpen(!expanded);
       }
     }
-
     activePointer = null;
     holdMode = false;
     clearArmed();
   }
-
   coreBtn.addEventListener("pointerup", releasePointer);
   coreBtn.addEventListener("pointercancel", releasePointer);
   
@@ -1951,17 +1941,13 @@ $("welcomeScreen").classList.remove("hidden");
   }
 });
  
-
   voiceBtn.addEventListener("pointercancel", stopTalk);
-
-  // Phone lock / background se wapas aane par state clean reset
   document.addEventListener("visibilitychange", () => {
     if (document.hidden || document.visibilityState === "visible") {
       stopTalk();
     }
   });
 })();
-</script>
-       
+</script>     
 </body>
 </html>
