@@ -453,6 +453,85 @@ html, body {
     margin-inline: auto !important;
   }
 }
+ /* Keep Control Studio floating button visible & above overlays during drag */
+#controlStudioBtn {
+  position: fixed;
+  z-index: 2050 !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  touch-action: none;
+}
+
+/* Private Chat Room (#chatView) responsive & stable layout */
+#chatView {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  padding-bottom: 140px;
+  box-sizing: border-box;
+}
+
+#chatView.hidden {
+  display: none !important;
+}
+
+#chatView .chat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#chatView .call-actions {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto !important;
+}
+
+#chatView .call-actions button {
+  flex: 0 0 auto;
+  min-width: 42px;
+  min-height: 42px;
+}
+
+#chatView #messages {
+  max-height: 46dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+
+#chatView #messageForm.compose {
+  position: sticky;
+  bottom: 76px;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: inherit;
+  padding-block: 6px;
+}
+
+@media (max-width: 600px) {
+  #chatView #messages {
+    max-height: 42dvh;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  #chatView #messages {
+    max-height: 50dvh;
+  }
+}
+
+@media (min-width: 1025px) {
+  #chatView #messages {
+    max-height: 54dvh;
+  }
+ }
  
 </style>
 </head>
