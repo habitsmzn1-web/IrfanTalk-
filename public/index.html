@@ -1906,6 +1906,31 @@ $("welcomeScreen").classList.remove("hidden");
   coreBtn.addEventListener("pointercancel", releasePointer);
 })();
  </script>
+   <script>
+(() => {
+  function hideHoldToTalkButton() {
+    const nodes = Array.from(document.querySelectorAll("button, [role='button'], div, a"));
+    for (const el of nodes) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      // Sirf "Hold to Talk" button ya uske immediate button wrapper ko hide karein
+      if (text === "hold to talk") {
+        const btn = el.closest("button, [role='button']") || el;
+        btn.style.setProperty("display", "none", "important");
+        btn.setAttribute("aria-hidden", "true");
+      }
+    }
+  }
+
+  hideHoldToTalkButton();
+  window.addEventListener("DOMContentLoaded", hideHoldToTalkButton);
+
+  // Agar chat/conversation view baad mein dynamically render ho toh tab bhi hide karein
+  const observer = new MutationObserver(hideHoldToTalkButton);
+  if (document.body) {
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+})();
+   </script>
        
 </body>
 </html>
