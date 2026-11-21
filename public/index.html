@@ -735,32 +735,46 @@ select {
  
 
  <section id="chatView" class="hidden">
-  <div class="chat-head"><button id="backBtn" class="icon">←</button><div id="chatAvatar" class="avatar">U</div><div class="meta"><strong id="chatName">User</strong><small>Private conversation</small></div></div>
+       <section id="chatView" class="hidden" style="display:flex;flex-direction:column;height:100%;min-height:70vh;background:#111618;color:#f3f5f6;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);">
+        <!-- Top Chat Header -->
+        <div class="chat-head" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#181f22;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
+          <button id="backBtn" class="icon" type="button" aria-label="Back" style="width:36px;height:36px;border-radius:50%;border:none;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">←</button>
+          <div id="chatAvatar" class="avatar" style="width:38px;height:38px;border-radius:50%;background:#2b3539;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">U</div>
+          <div class="meta" style="display:flex;flex-direction:column;min-width:0;line-height:1.25;">
+            <strong id="chatName" style="font-size:15px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">User</strong>
+            <small style="font-size:11.5px;color:#9aa5aa;">Private conversation</small>
+          </div>
+
+          <div class="call-actions" style="display:flex;gap:8px;margin-left:auto;align-items:center;">
+            <button id="audioCallBtn" class="icon" title="Audio Call" type="button" style="width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,0.06);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">📞</button>
+            <button id="videoCallBtn" class="icon" title="Video Call" type="button" style="width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,0.06);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">📹</button>
+            <button id="toggleWalkieBtn" class="icon" title="Walkie-Talkie" type="button" onclick="const w=document.getElementById('walkieStrip');if(w)w.style.display=(w.style.display==='none'?'flex':'none');" style="width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,0.06);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">🎙️</button>
+          </div>
+        </div>
+
+        <!-- Compact Walkie-Talkie Strip (Hidden by default so messages stay clear) -->
+        <div id="walkieStrip" style="display:none;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;background:#1c2528;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
+          <div id="voiceStatus" class="status" style="font-size:12px;color:#9aa5aa;margin:0;">Ready to talk</div>
+          <button id="talkBtn" class="btn" type="button" style="padding:8px 16px;border-radius:999px;border:none;background:#b8f338;color:#111618;font-weight:700;font-size:13px;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;">
+            Hold to Talk
+          </button>
+        </div>
+
+        <!-- Messages Feed -->
+        <div id="messages" class="messages" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#111618;">
+          <div class="empty" style="text-align:center;color:#9aa5aa;font-size:13px;margin:auto 0;">Say hello to start chatting.</div>
+        </div>
+
+        <!-- Status Line -->
+        <div id="chatStatus" class="status" style="padding:0 12px 4px;font-size:11.5px;color:#9aa5aa;min-height:14px;"></div>
+
+        <!-- Bottom Composer Bar -->
+        <form id="messageForm" class="compose" style="display:flex;align-items:center;gap:8px;padding:8px 10px 10px;background:#181f22;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
+          <input id="messageInput" class="field" maxlength="2000" placeholder="Write a message..." autocomplete="off" style="flex:1;min-width:0;background:#222b2f;color:#fff;border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:10px 14px;font-size:14px;outline:none;">
+          <button class="btn" type="submit" style="padding:10px 16px;border-radius:999px;border:none;background:#144d37;color:#fff;font-weight:600;font-size:13.5px;cursor:pointer;flex-shrink:0;">Send</button>
+        </form>
+       </section>
   
-<div class="call-actions" style="display:flex;gap:10px;margin-left:auto">
-  <button id="audioCallBtn" class="icon" title="Audio Call" type="button">📞</button>
-  <button id="videoCallBtn" class="icon" title="Video Call" type="button">📹</button>
-</div>
- </div>
-  
-<div class="card" style="text-align:center;margin:12px 0">
-  <h2>🎙️ Private Walkie-Talkie</h2>
-  <button id="talkBtn" class="btn"
-  style="width:180px;height:70px;border-radius:28px;
-  user-select:none;
-  -webkit-user-select:none;
-  -webkit-touch-callout:none;
-  touch-action:none;">
-  Hold to Talk
-</button>
-  <div id="voiceStatus" class="status">
-    Ready to talk
-  </div>
-</div>
-  <div id="messages" class="messages"><div class="empty">Say hello to start chatting.</div></div>
-  <form id="messageForm" class="compose"><input id="messageInput" class="field" maxlength="2000" placeholder="Write a message…" autocomplete="off"><button class="btn">Send</button></form>
-  <div id="chatStatus" class="status"></div>
- </section>
 </main>
 
 <script src="/socket.io/socket.io.js"></script>
