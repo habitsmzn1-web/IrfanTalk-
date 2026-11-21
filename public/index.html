@@ -771,11 +771,257 @@ select {
           <button class="btn" type="submit" style="padding:10px 16px;border-radius:999px;border:none;background:#144d37;color:#fff;font-weight:600;font-size:13.5px;cursor:pointer;flex-shrink:0;">Send</button>
         </form>
        </section>
-  
+  <!-- Audio / Video Call Overlay -->
+<div id="callModal" class="hidden" style="position:fixed;inset:0;z-index:3500;background:rgba(12,17,19,0.96);color:#fff;display:none;flex-direction:column;justify-content:space-between;padding:20px;box-sizing:border-box;">
+  <div style="text-align:center;margin-top:12px;">
+    <div id="callPeerName" style="font-size:20px;font-weight:700;">User</div>
+    <div id="callStatusText" style="font-size:13px;color:#9aa5aa;margin-top:4px;">Connecting...</div>
+  </div>
+
+  <!-- Video Containers (Shown for Video Call) -->
+  <div id="videoStage" style="position:relative;flex:1;margin:16px 0;border-radius:16px;overflow:hidden;background:#181f22;display:none;">
+    <video id="remoteVideo" autoplay playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+    <video id="localVideo" autoplay playsinline muted style="position:absolute;right:12px;bottom:12px;width:105px;height:145px;object-fit:cover;border-radius:12px;border:2px solid rgba(255,255,255,0.2);background:#000;"></video>
+  </div>
+
+  <!-- Audio Avatar Stage (Shown for Audio Call) -->
+  <div id="audioStage" style="flex:1;display:flex;align-items:center;justify-content:center;">
+    <div style="width:110px;height:110px;border-radius:50%;background:#1e292d;display:flex;align-items:center;justify-content:center;font-size:38px;border:2px solid rgba(184,243,56,0.35);">🎧</div>
+  </div>
+
+  <!-- Call Controls -->
+  <div style="display:flex;justify-content:center;gap:18px;padding-bottom:12px;">
+    <button id="acceptCallBtn" type="button" style="display:none;padding:12px 20px;border-radius:999px;border:none;background:#b8f338;color:#111618;font-weight:700;cursor:pointer;">Accept</button>
+    <button id="muteToggleBtn" type="button" style="padding:12px 18px;border-radius:999px;border:none;background:#263136;color:#fff;font-weight:600;cursor:pointer;">Mute</button>
+    <button id="camToggleBtn" type="button" style="display:none;padding:12px 18px;border-radius:999px;border:none;background:#263136;color:#fff;font-weight:600;cursor:pointer;">Cam Off</button>
+    <button id="hangupCallBtn" type="button" style="padding:12px 22px;border-radius:999px;border:none;background:#e53935;color:#fff;font-weight:700;cursor:pointer;">End</button>
+  </div>
+</div>
+       
 </main>
 
 <script src="/socket.io/socket.io.js"></script>
+   <script>   
+(() => {
+  const rtcConfig = {
+    iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+  };
 
+  let pc = null;
+  let localStream = null;
+  let remoteStream = null;
+  let currentCallType = "audio"; // "audio" | "video"
+  let callTargetUid = null;
+  let pendingOffer = null;
+  let isMuted = false;
+  let isCamOff = false;
+
+  const callModal = document.getElementById("callModal");
+  const callPeerName = document.getElementById("callPeerName");
+  const callStatusText = document.getElementById("callStatusText");
+  const videoStage = document.getElementById("videoStage");
+  const audioStage = document.getElementById("audioStage");
+  const localVideo = document.getElementById("localVideo");
+  const remoteVideo = document.getElementById("remoteVideo");
+  const acceptCallBtn = document.getElementById("acceptCallBtn");
+  const muteToggleBtn = document.getElementById("muteToggleBtn");
+  const camToggleBtn = document.getElementById("camToggleBtn");
+  const hangupCallBtn = document.getElementById("hangupCallBtn");
+
+  function openCallUI(peerLabel, statusLabel, mode, incoming = false) {
+    currentCallType = mode;
+    if (callPeerName) callPeerName.textContent = peerLabel || "User";
+    if (callStatusText) callStatusText.textContent = statusLabel;
+    if (videoStage) videoStage.style.display = mode === "video" ? "block" : "none";
+    if (audioStage) audioStage.style.display = mode === "audio" ? "flex" : "none";
+    if (camToggleBtn) camToggleBtn.style.display = mode === "video" ? "inline-block" : "none";
+    if (acceptCallBtn) acceptCallBtn.style.display = incoming ? "inline-block" : "none";
+    if (callModal) callModal.style.display = "flex";
+  }
+
+  async function startLocalMedia(mode) {
+    if (localStream) {
+      localStream.getTracks().forEach(t => t.stop());
+    }
+    localStream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: mode === "video" ? { facingMode: "user" } : false
+    });
+    if (mode === "video" && localVideo) {
+      localVideo.srcObject = localStream;
+    }
+    return localStream;
+  }
+
+  function createPeerConnection(targetUid) {
+    pc = new RTCPeerConnection(rtcConfig);
+    remoteStream = new MediaStream();
+    if (remoteVideo) remoteVideo.srcObject = remoteStream;
+
+    if (localStream) {
+      localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+    }
+
+    pc.ontrack = (event) => {
+      event.streams[0].getTracks().forEach(track => remoteStream.addTrack(track));
+    };
+
+    pc.onicecandidate = (event) => {
+      if (event.candidate && typeof voiceSocket !== "undefined" && voiceSocket && targetUid) {
+        voiceSocket.emit("call-ice-candidate", {
+          to: targetUid,
+          candidate: event.candidate
+        });
+      }
+    };
+
+    pc.onconnectionstatechange = () => {
+      if (!pc || !callStatusText) return;
+      if (pc.connectionState === "connected") {
+        callStatusText.textContent = currentCallType === "video" ? "Video connected" : "Audio connected";
+      } else if (["disconnected", "failed", "closed"].includes(pc.connectionState)) {
+        endCall(false);
+      }
+    };
+
+    return pc;
+  }
+
+  async function initiateCall(mode) {
+    const targetUid = activeUser?.uid || activeUser?.id;
+    if (!targetUid) {
+      alert("Pehle kisi user ka chat open karein.");
+      return;
+    }
+    if (typeof voiceSocket === "undefined" || !voiceSocket) {
+      alert("Voice/call socket connected nahi hai.");
+      return;
+    }
+
+    callTargetUid = targetUid;
+    const peerLabel = document.getElementById("chatName")?.textContent || activeUser?.name || "User";
+    openCallUI(peerLabel, mode === "video" ? "Calling video..." : "Calling...", mode, false);
+
+    try {
+      await startLocalMedia(mode);
+      const peer = createPeerConnection(targetUid);
+      const offer = await peer.createOffer();
+      await peer.setLocalDescription(offer);
+
+      voiceSocket.emit("call-offer", {
+        to: targetUid,
+        from: currentUser?.uid || null,
+        fromName: currentUser?.displayName || currentUser?.email || "User",
+        callType: mode,
+        offer
+      });
+    } catch (err) {
+      console.error("Call start failed:", err);
+      alert("Microphone / Camera permission allow karein.");
+      endCall(false);
+    }
+  }
+
+  function endCall(notifyPeer = true) {
+    if (notifyPeer && callTargetUid && typeof voiceSocket !== "undefined" && voiceSocket) {
+      voiceSocket.emit("call-end", { to: callTargetUid });
+    }
+    if (pc) {
+      pc.close();
+      pc = null;
+    }
+    if (localStream) {
+      localStream.getTracks().forEach(t => t.stop());
+      localStream = null;
+    }
+    isMuted = false;
+    isCamOff = false;
+    pendingOffer = null;
+    callTargetUid = null;
+    if (muteToggleBtn) muteToggleBtn.textContent = "Mute";
+    if (camToggleBtn) camToggleBtn.textContent = "Cam Off";
+    if (callModal) callModal.style.display = "none";
+  }
+
+  document.getElementById("audioCallBtn")?.addEventListener("click", () => initiateCall("audio"));
+  document.getElementById("videoCallBtn")?.addEventListener("click", () => initiateCall("video"));
+  hangupCallBtn?.addEventListener("click", () => endCall(true));
+
+  muteToggleBtn?.addEventListener("click", () => {
+    if (!localStream) return;
+    isMuted = !isMuted;
+    localStream.getAudioTracks().forEach(t => (t.enabled = !isMuted));
+    muteToggleBtn.textContent = isMuted ? "Unmute" : "Mute";
+  });
+
+  camToggleBtn?.addEventListener("click", () => {
+    if (!localStream) return;
+    isCamOff = !isCamOff;
+    localStream.getVideoTracks().forEach(t => (t.enabled = !isCamOff));
+    camToggleBtn.textContent = isCamOff ? "Cam On" : "Cam Off";
+  });
+
+  acceptCallBtn?.addEventListener("click", async () => {
+    if (!pendingOffer || !callTargetUid || typeof voiceSocket === "undefined" || !voiceSocket) return;
+    acceptCallBtn.style.display = "none";
+    if (callStatusText) callStatusText.textContent = "Connecting...";
+
+    try {
+      await startLocalMedia(currentCallType);
+      const peer = createPeerConnection(callTargetUid);
+      await peer.setRemoteDescription(new RTCSessionDescription(pendingOffer));
+      const answer = await peer.createAnswer();
+      await peer.setLocalDescription(answer);
+
+      voiceSocket.emit("call-answer", {
+        to: callTargetUid,
+        answer
+      });
+      pendingOffer = null;
+    } catch (err) {
+      console.error("Accept call failed:", err);
+      endCall(false);
+    }
+  });
+
+  function bindCallSocketEvents() {
+    if (typeof voiceSocket === "undefined" || !voiceSocket || voiceSocket._callEventsBound) return;
+    voiceSocket._callEventsBound = true;
+
+    voiceSocket.on("call-offer", ({ from, fromName, callType, offer }) => {
+      callTargetUid = from;
+      pendingOffer = offer;
+      openCallUI(
+        fromName || "Incoming User",
+        callType === "video" ? "Incoming video call..." : "Incoming audio call...",
+        callType || "audio",
+        true
+      );
+    });
+
+    voiceSocket.on("call-answer", async ({ answer }) => {
+      if (pc && answer) {
+        await pc.setRemoteDescription(new RTCSessionDescription(answer));
+      }
+    });
+
+    voiceSocket.on("call-ice-candidate", async ({ candidate }) => {
+      if (pc && candidate) {
+        try {
+          await pc.addIceCandidate(new RTCIceCandidate(candidate));
+        } catch (err) {
+          console.error("ICE candidate error:", err);
+        }
+      }
+    });
+
+    voiceSocket.on("call-end", () => endCall(false));
+  }
+
+  setInterval(bindCallSocketEvents, 1000);
+})();
+ </script>
+       
 <script>
 const firebaseConfig={apiKey:"AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",authDomain:"irfantalk.firebaseapp.com",databaseURL:"https://irfantalk-default-rtdb.firebaseio.com",projectId:"irfantalk",storageBucket:"irfantalk.firebasestorage.app",messagingSenderId:"218169866517",appId:"1:218169866517:web:447670dc6a565e1e7b511c"};
 firebase.initializeApp(firebaseConfig);
