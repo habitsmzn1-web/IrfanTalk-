@@ -1035,28 +1035,7 @@ window.initiateCall = initiateCall;
     voiceSocket.on("call-end", () => endCall(false));
   }
 console.log("audioBtn:", document.getElementById("audioCallBtn"), "videoBtn:", document.getElementById("videoCallBtn"));
-    document.addEventListener("click", (e) => {
-  const aBtn = e.target.closest("#audioCallBtn");
-  const vBtn = e.target.closest("#videoCallBtn");
-  if (aBtn) {
-    e.preventDefault();
-    e.stopPropagation();
-    initiateCall("audio");
-  } else if (vBtn) {
-    e.preventDefault();
- e.stopPropagation();
-initiateCall("video");
-}
-}, true);
-   document.addEventListener("click", (e) => {
-  const aBtn = e.target.closest("#audioCallBtn");
-  const vBtn = e.target.closest("#videoCallBtn");
-  const moreBtn = e.target.closest("#chatMoreBtn");
-  const menu = document.getElementById("chatMoreMenu");
 
-  if (aBtn || vBtn || moreBtn) {
-    alert("Hit: " + (aBtn ? "audio" : vBtn ? "video" : "more"));
-    }
       
    document.addEventListener("click", (e) => {
   const moreBtn = e.target.closest("#chatMoreBtn");
@@ -1078,7 +1057,7 @@ initiateCall("video");
     if (menu) menu.style.display = "none";
     return;
   }
-  if (menu && !e.target.closest("#chatMoreMenu")) {
+  if (menu && (e.target.closest("#chatMoreMenu")) {
     menu.style.display = "none";
   }
 });
