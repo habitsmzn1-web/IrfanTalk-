@@ -959,9 +959,9 @@ window.initiateCall = initiateCall;
       callModal.classList.add("hidden");
       callModal.style.setProperty("display", "none", "important");
     }
-    
-  document.getElementById("audioCallBtn")?.addEventListener("click", () => initiateCall("audio"));
-  document.getElementById("videoCallBtn")?.addEventListener("click", () => initiateCall("video"));
+document.getElementById("audioCallBtn")?.addEventListener("click", () => initiateCall("audio"));
+
+   document.getElementById("videoCallBtn")?.addEventListener("click", () => initiateCall("video"));
   hangupCallBtn?.addEventListener("click", () => endCall(true));
 
   muteToggleBtn?.addEventListener("click", () => {
@@ -978,7 +978,7 @@ window.initiateCall = initiateCall;
     camToggleBtn.textContent = isCamOff ? "Cam On" : "Cam Off";
   });
 
-  acceptCallBtn?.addEventListener("click", async () => {
+  acceptCallBtn?.addEventListener("click", async () => (
     if (!pendingOffer || !callTargetUid || typeof voiceSocket === "undefined" || !voiceSocket) return;
     acceptCallBtn.style.display = "none";
     if (callStatusText) callStatusText.textContent = "Connecting...";
@@ -1000,7 +1000,7 @@ window.initiateCall = initiateCall;
       endCall(false);
     }
   });
-
+   
   function bindCallSocketEvents() {
     if (typeof voiceSocket === "undefined" || !voiceSocket || voiceSocket._callEventsBound) return;
     voiceSocket._callEventsBound = true;
@@ -1015,13 +1015,11 @@ window.initiateCall = initiateCall;
         true
       );
     });
-
     voiceSocket.on("call-answer", async ({ answer }) => {
       if (pc && answer) {
         await pc.setRemoteDescription(new RTCSessionDescription(answer));
       }
     });
-
     voiceSocket.on("call-ice-candidate", async ({ candidate }) => {
       if (pc && candidate) {
         try {
@@ -1035,8 +1033,6 @@ window.initiateCall = initiateCall;
     voiceSocket.on("call-end", () => endCall(false));
   }
 console.log("audioBtn:", document.getElementById("audioCallBtn"), "videoBtn:", document.getElementById("videoCallBtn"));
-
-      
    document.addEventListener("click", (e) => {
   const moreBtn = e.target.closest("#chatMoreBtn");
   const menu = document.getElementById("chatMoreMenu");
@@ -1061,7 +1057,6 @@ console.log("audioBtn:", document.getElementById("audioCallBtn"), "videoBtn:", d
     menu.style.display = "none";
   }
 });
-    
   setInterval(bindCallSocketEvents, 1000);
 })();
  </script>
