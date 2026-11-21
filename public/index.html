@@ -1049,6 +1049,16 @@ initiateCall("video");
 }
 }, true);
    document.addEventListener("click", (e) => {
+  const aBtn = e.target.closest("#audioCallBtn");
+  const vBtn = e.target.closest("#videoCallBtn");
+  const moreBtn = e.target.closest("#chatMoreBtn");
+  const menu = document.getElementById("chatMoreMenu");
+
+  if (aBtn || vBtn || moreBtn) {
+    alert("Hit: " + (aBtn ? "audio" : vBtn ? "video" : "more"));
+    }
+      
+   document.addEventListener("click", (e) => {
   const moreBtn = e.target.closest("#chatMoreBtn");
   const menu = document.getElementById("chatMoreMenu");
   if (moreBtn && menu) {
