@@ -1040,10 +1040,34 @@ console.log("audioBtn:", document.getElementById("audioCallBtn"), "videoBtn:", d
     initiateCall("audio");
   } else if (vBtn) {
     e.preventDefault();
-    e.stopPropagation();
-    initiateCall("video");
-  }
+ e.stopPropagation();
+initiateCall("video");
+}
 }, true);
+   document.addEventListener("click", (e) => {
+  const moreBtn = e.target.closest("#chatMoreBtn");
+  const menu = document.getElementById("chatMoreMenu");
+  if (moreBtn && menu) {
+    e.preventDefault();
+    e.stopPropagation();
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+    return;
+  }
+  if (e.target.closest("#menuScrollLatestBtn")) {
+    const msgs = document.getElementById("messages") || document.querySelector(".messages, .chat-messages");
+    if (msgs) msgs.scrollTo({ top: msgs.scrollHeight, behavior: "smooth" });
+    if (menu) menu.style.display = "none";
+    return;
+  }
+  if (e.target.closest("#menuCloseChatBtn")) {
+    document.getElementById("backBtn")?.click();
+    if (menu) menu.style.display = "none";
+    return;
+  }
+  if (menu && !e.target.closest("#chatMoreMenu")) {
+    menu.style.display = "none";
+  }
+});
     
   setInterval(bindCallSocketEvents, 1000);
 })();
