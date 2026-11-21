@@ -230,9 +230,29 @@ border: 2px solid #aeb4bb !important;
   touch-action: none;
 }
 
-#controlStudioPanel.hidden {
-  display: none !important;
-}
+    #controlStudioPanel.hidden:not(.is-closing) {
+      display: none !important;
+    }
+
+    #controlStudioPanel.is-closing {
+      display: block !important;
+      pointer-events: none !important;
+    }
+
+    .control-ring button {
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease !important;
+      will-change: transform, opacity;
+    }
+
+    #controlStudioPanel.studio-entering .control-ring button,
+    #controlStudioPanel.is-closing .control-ring button {
+      transform: translate(
+        calc(-50% + var(--studio-offset-x, 0px)),
+        calc(-50% + var(--studio-offset-y, 32px))
+      ) scale(0.18) !important;
+      opacity: 0 !important;
+       }
+ 
 
 #controlStudioRing {
   position: fixed !important;
@@ -1535,17 +1555,190 @@ controlStudioBtn.style.fontSize = open ? "32px" : "";
     controlStudioBtn.addEventListener("pointerup", stopControlStudioDrag);
     controlStudioBtn.addEventListener("pointercancel", stopControlStudioDrag);
 
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let buttonStartX = 0;
+    let buttonStartY = 0;
+    let isDragging = false;
+    let hasMoved = false;
+    let holdTimer = null;
+    let isHoldTalking = false;
+    let suppressNextClick = false;
+    let closeAnimTimer = null;
+    const HOLD_DELAY_MS = 250;
+
+    function clearHoldTimer() {
+      if (holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    }
+
+    async function finishHoldTalking() {
+      clearHoldTimer();
+      if (isHoldTalking) {
+        isHoldTalking = false;
+        suppressNextClick = true;
+        if (typeof talkPressActive !== "undefined") {
+          talkPressActive = false;
+        }
+        if (typeof stopTalking === "function") {
+          await stopTalking();
+        }
+      }
+    }
+
+    function syncStudioOriginFromButton() {
+      const studioRing = $("controlStudioRing");
+      const buttonRect = controlStudioBtn.getBoundingClientRect();
+      if (!studioRing) return;
+
+      const btnCenterX = buttonRect.left + buttonRect.width / 2;
+      const btnCenterY = buttonRect.top + buttonRect.height / 2;
+
+      studioRing.style.left = (btnCenterX - studioRing.offsetWidth / 2) + "px";
+      studioRing.style.top = (btnCenterY - studioRing.offsetHeight / 2) + "px";
+
+      const ringRect = studioRing.getBoundingClientRect();
+      const ringCenterX = ringRect.left + ringRect.width / 2;
+      const ringCenterY = ringRect.top + ringRect.height / 2;
+
+      const offsetX = btnCenterX - ringCenterX;
+      const offsetY = (btnCenterY + 28) - ringCenterY;
+
+      controlStudioPanel.style.setProperty("--studio-offset-x", offsetX + "px");
+      controlStudioPanel.style.setProperty("--studio-offset-y", offsetY + "px");
+    }
+
+    function setControlStudioOpen(open) {
+      if (closeAnimTimer) {
+        clearTimeout(closeAnimTimer);
+        closeAnimTimer = null;
+      }
+
+      if (open) {
+        controlStudioPanel.classList.remove("hidden");
+        controlStudioPanel.classList.remove("is-closing");
+        controlStudioPanel.classList.add("studio-entering");
+
+        requestAnimationFrame(() => {
+          syncStudioOriginFromButton();
+          requestAnimationFrame(() => {
+            controlStudioPanel.classList.remove("studio-entering");
+          });
+        });
+      } else {
+        const alreadyHidden = controlStudioPanel.classList.contains("hidden");
+        if (!alreadyHidden) {
+          syncStudioOriginFromButton();
+          controlStudioPanel.classList.add("is-closing");
+          controlStudioPanel.classList.add("hidden");
+
+          closeAnimTimer = setTimeout(() => {
+            controlStudioPanel.classList.remove("is-closing");
+            closeAnimTimer = null;
+          }, 280);
+        } else {
+          controlStudioPanel.classList.add("hidden");
+          controlStudioPanel.classList.remove("is-closing");
+        }
+      }
+
+      controlStudioBtn.classList.toggle("is-open", open);
+      controlStudioBtn.innerHTML = open ? "×" : originalButtonHTML;
+      controlStudioBtn.style.fontSize = open ? "32px" : "";
+      controlStudioBtn.setAttribute(
+        "aria-label",
+        open ? "Close Control Studio" : "Open Control Studio"
+      );
+      document.body.style.overflow = open ? "hidden" : "";
+      if (closeControlStudio) {
+        closeControlStudio.style.display = "none";
+      }
+    }
+
+    controlStudioBtn.addEventListener("pointerdown", (event) => {
+      if (controlStudioBtn.classList.contains("is-open")) return;
+      event.preventDefault();
+      clearHoldTimer();
+      isHoldTalking = false;
+      suppressNextClick = false;
+
+      const rect = controlStudioBtn.getBoundingClientRect();
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+      buttonStartX = rect.left;
+      buttonStartY = rect.top;
+      isDragging = true;
+      hasMoved = false;
+      controlStudioBtn.setPointerCapture(event.pointerId);
+
+      holdTimer = setTimeout(async () => {
+        holdTimer = null;
+        if (!isDragging || hasMoved) return;
+        isHoldTalking = true;
+        suppressNextClick = true;
+        if (typeof talkPressActive !== "undefined") {
+          talkPressActive = true;
+        }
+        if (typeof startTalking === "function") {
+          await startTalking();
+        }
+      }, HOLD_DELAY_MS);
+    });
+
+    controlStudioBtn.addEventListener("pointermove", (event) => {
+      if (!isDragging) return;
+      const dx = event.clientX - dragStartX;
+      const dy = event.clientY - dragStartY;
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+        hasMoved = true;
+        clearHoldTimer();
+      }
+      if (hasMoved) {
+        const x = Math.max(
+          0,
+          Math.min(
+            window.innerWidth - controlStudioBtn.offsetWidth,
+            buttonStartX + dx
+          )
+        );
+        const y = Math.max(
+          0,
+          Math.min(
+            window.innerHeight - controlStudioBtn.offsetHeight,
+            buttonStartY + dy
+          )
+        );
+        controlStudioBtn.style.left = x + "px";
+        controlStudioBtn.style.top = y + "px";
+        controlStudioBtn.style.right = "auto";
+        controlStudioBtn.style.bottom = "auto";
+      }
+    });
+
+    async function handlePointerRelease() {
+      isDragging = false;
+      await finishHoldTalking();
+    }
+
+    controlStudioBtn.addEventListener("pointerup", handlePointerRelease);
+    controlStudioBtn.addEventListener("pointercancel", handlePointerRelease);
+    controlStudioBtn.addEventListener("lostpointercapture", handlePointerRelease);
+
     controlStudioBtn.addEventListener("click", () => {
+      if (suppressNextClick) {
+        suppressNextClick = false;
+        return;
+      }
       if (hasMoved) {
         hasMoved = false;
         return;
       }
-
-      const isOpen =
-        !controlStudioPanel.classList.contains("hidden");
-
+      const isOpen = !controlStudioPanel.classList.contains("hidden");
       setControlStudioOpen(!isOpen);
     });
+ 
 
 // CONTROL STUDIO - INDEPENDENT MANUAL RING ROTATION
 const ROTATION_SENSITIVITY = 25;
