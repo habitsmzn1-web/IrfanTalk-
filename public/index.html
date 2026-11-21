@@ -901,6 +901,7 @@ select {
   async function initiateCall(mode) {
     const targetUid = activeUser?.uid || activeUser?.id;
    console.log("activeUser:", activeUser, "voiceSocket:", typeof voiceSocket !== "undefined" ? voiceSocket?.connected : null);
+    alert("In initiateCall");
     
     if (!targetUid) {
       alert("Pehle kisi user ka chat open karein.");
