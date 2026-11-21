@@ -892,6 +892,8 @@ select {
 
   async function initiateCall(mode) {
     const targetUid = activeUser?.uid || activeUser?.id;
+   console.log("activeUser:", activeUser, "voiceSocket:", typeof voiceSocket !== "undefined" ? voiceSocket?.connected : null);
+    
     if (!targetUid) {
       alert("Pehle kisi user ka chat open karein.");
       return;
@@ -1022,7 +1024,8 @@ select {
 
     voiceSocket.on("call-end", () => endCall(false));
   }
-
+console.log("audioBtn:", document.getElementById("audioCallBtn"), "videoBtn:", document.getElementById("videoCallBtn"));
+    
   setInterval(bindCallSocketEvents, 1000);
 })();
  </script>
