@@ -1025,6 +1025,19 @@ select {
     voiceSocket.on("call-end", () => endCall(false));
   }
 console.log("audioBtn:", document.getElementById("audioCallBtn"), "videoBtn:", document.getElementById("videoCallBtn"));
+    document.addEventListener("click", (e) => {
+  const aBtn = e.target.closest("#audioCallBtn");
+  const vBtn = e.target.closest("#videoCallBtn");
+  if (aBtn) {
+    e.preventDefault();
+    e.stopPropagation();
+    initiateCall("audio");
+  } else if (vBtn) {
+    e.preventDefault();
+    e.stopPropagation();
+    initiateCall("video");
+  }
+}, true);
     
   setInterval(bindCallSocketEvents, 1000);
 })();
