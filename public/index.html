@@ -507,7 +507,8 @@ select {
  
 </style>
 </head>
-<body>
+<body style="margin:0;padding:0;width:100%;min-height:100dvh;background:#f6f5f1;color:#111618;box-sizing:border-box;">
+ 
  
 <section id="welcomeScreen" class="auth">
   <div class="brand">
@@ -584,8 +585,8 @@ select {
  </div>
 </section>
 
+ <main id="appShell" class="shell hidden" style="width:100%;min-height:100dvh;max-width:100%;margin:0;padding:0;box-sizing:border-box;background:#f6f5f1;">
  
-<main id="appShell" class="shell hidden">
 
  
 <!-- IRFANTALK TOP BAR -->
@@ -666,8 +667,9 @@ select {
     </div>
   </div>
 
-  <section style="display:flex;justify-content:space-around;align-items:center;background:#292929;border-radius:60px;width:100%;max-width:600px;align-self:stretch;box-sizing:border-box;padding:16px;margin:28px auto 10px;position:relative;">
-   
+
+   <section style="display:flex;justify-content:space-around;align-items:center;background:#292929;border-radius:60px;width:100%;max-width:100%;align-self:stretch;box-sizing:border-box;padding:16px;margin:28px 0 10px;position:relative;">
+    
    
    
    <!-- Emoji -->
@@ -809,8 +811,10 @@ select {
         </div>
 
         <!-- Messages Feed -->
-        <div id="messages" class="messages" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#111618;">
-          <div class="empty" style="text-align:center;color:#9aa5aa;font-size:13px;margin:auto 0;">Say hello to start chatting.</div>
+             <div id="messages" class="messages" style="flex:1;width:100%;min-height:0;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#f6f5f1;color:#111618;">
+              
+            <div class="empty" style="text-align:center;color:#4a5568;font-size:13px;margin:auto 0;">Say hello to start chatting.</div>
+              
         </div>
 
         <!-- Status Line -->
