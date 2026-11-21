@@ -836,8 +836,11 @@ select {
     if (audioStage) audioStage.style.display = mode === "audio" ? "flex" : "none";
     if (camToggleBtn) camToggleBtn.style.display = mode === "video" ? "inline-block" : "none";
     if (acceptCallBtn) acceptCallBtn.style.display = incoming ? "inline-block" : "none";
-    if (callModal) callModal.style.display = "flex";
-  }
+        if (callModal) {
+      callModal.classList.remove("hidden");
+      callModal.style.setProperty("display", "flex", "important");
+    }
+    
 
   async function startLocalMedia(mode) {
     if (localStream) {
@@ -940,9 +943,11 @@ select {
     callTargetUid = null;
     if (muteToggleBtn) muteToggleBtn.textContent = "Mute";
     if (camToggleBtn) camToggleBtn.textContent = "Cam Off";
-    if (callModal) callModal.style.display = "none";
-  }
-
+        if (callModal) {
+      callModal.classList.add("hidden");
+      callModal.style.setProperty("display", "none", "important");
+    }
+    
   document.getElementById("audioCallBtn")?.addEventListener("click", () => initiateCall("audio"));
   document.getElementById("videoCallBtn")?.addEventListener("click", () => initiateCall("video"));
   hangupCallBtn?.addEventListener("click", () => endCall(true));
