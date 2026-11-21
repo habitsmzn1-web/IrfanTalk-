@@ -220,7 +220,7 @@ border: 2px solid #aeb4bb !important;
 #controlStudioPanel {
   position: fixed !important;
   inset: 0 !important;
-  z-index: 2000 !important;
+  z-index: 9999 !important;
   display: block;
   background: transparent !important;
   backdrop-filter: none !important;
@@ -252,6 +252,28 @@ border: 2px solid #aeb4bb !important;
       ) scale(0.18) !important;
       opacity: 0 !important;
        }
+     #controlStudioBtn:active,
+    .control-ring button:active,
+    #closeControlStudio:active {
+      border-color: #ff2e4d !important;
+      box-shadow: 0 0 0 4px rgba(255, 46, 77, 0.35) !important;
+    }
+
+    .studio-expand-wave {
+      position: fixed;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 46, 77, 0.85);
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%) scale(0.4);
+      opacity: 0.95;
+      transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.38s ease;
+    }
+
+    .studio-expand-wave.animate-out {
+      transform: translate(-50%, -50%) scale(2.2);
+      opacity: 0;
+    }
  
 
 #controlStudioRing {
@@ -1467,7 +1489,19 @@ if (controlStudioBtn && controlStudioPanel) {
 
     const originalButtonHTML = controlStudioBtn.innerHTML;
 
-
+         const btnRect = controlStudioBtn.getBoundingClientRect();
+      const wave = document.createElement("span");
+      wave.className = "studio-expand-wave";
+      wave.style.width = btnRect.width + "px";
+      wave.style.height = btnRect.height + "px";
+      wave.style.left = (btnRect.left + btnRect.width / 2) + "px";
+      wave.style.top = (btnRect.top + btnRect.height / 2) + "px";
+      document.body.appendChild(wave);
+      requestAnimationFrame(() => {
+        wave.classList.add("animate-out");
+      });
+      setTimeout(() => wave.remove(), 420);
+   
     let dragStartX = 0;
     let dragStartY = 0;
     let buttonStartX = 0;
