@@ -252,12 +252,21 @@ border: 2px solid #aeb4bb !important;
       ) scale(0.18) !important;
       opacity: 0 !important;
        }
-     #controlStudioBtn:active,
+        #controlStudioBtn:active,
     .control-ring button:active,
     #closeControlStudio:active {
       border-color: #ff2e4d !important;
-      box-shadow: 0 0 0 4px rgba(255, 46, 77, 0.35) !important;
+      box-shadow: 0 0 0 3px #ff2e4d !important;
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
     }
+
+    .control-ring button,
+    #controlStudioBtn,
+    #closeControlStudio {
+      -webkit-tap-highlight-color: transparent !important;
+    }
+ 
 
     .studio-expand-wave {
       position: fixed;
