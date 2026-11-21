@@ -1038,6 +1038,10 @@ document.getElementById("audioCallBtn")?.addEventListener("click", () => initiat
   }
 console.log("audioBtn:", document.getElementById("audioCallBtn"), "videoBtn:", document.getElementById("videoCallBtn"));
    document.addEventListener("click", (e) => {
+        if (e.target.closest("#chatMoreBtn")) {
+      alert("More btn clicked");
+        }
+    
   const moreBtn = e.target.closest("#chatMoreBtn");
   const menu = document.getElementById("chatMoreMenu");
   if (moreBtn && menu) {
