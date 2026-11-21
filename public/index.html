@@ -934,7 +934,8 @@ select {
       endCall(false);
     }
   }
-
+window.initiateCall = initiateCall;
+    
   function endCall(notifyPeer = true) {
     if (notifyPeer && callTargetUid && typeof voiceSocket !== "undefined" && voiceSocket) {
       voiceSocket.emit("call-end", { to: callTargetUid });
