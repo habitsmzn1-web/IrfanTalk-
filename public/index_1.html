@@ -782,13 +782,11 @@ firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth(), db=firebase.database();
 let currentUser=null, authMode="login", otpSentFor="", activeUser=null, chatRef=null, chatListener=null, allUsers=[];
 let voiceSocket = null;
-
 async function connectVoiceSocket(user) {
   try {
     if (voiceSocket) {
       voiceSocket.disconnect();
     }
-
     const token = await user.getIdToken();
 
     voiceSocket = io({
