@@ -1057,6 +1057,7 @@ console.log("audioBtn:", document.getElementById("audioCallBtn"), "videoBtn:", d
     return;
   }
   if (e.target.closest("#menuCloseChatBtn")) {
+    alert("Script reached here");
     document.getElementById("backBtn")?.click();
     if (menu) menu.style.display = "none";
     return;
