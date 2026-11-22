@@ -1056,15 +1056,15 @@ function renderUsers(){
   const avatar=document.createElement("div");
   avatar.className="avatar";
   avatar.textContent=(u.name[0]||"U").toUpperCase();
-  avatar.style.cssText="width:82px;height:82px;min-width:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;background:linear-gradient(145deg,#6738f4,#12bfe0);";
-
+      avatar.style.cssText="width:82px;height:82px;min-width:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;background:#000000;color:#ffffff;border:2px solid #c0c0c0;";
+ 
   const name=document.createElement("strong");
   name.textContent=u.name;
   name.style.cssText="text-align:center;font-size:14px;";
 
   const chat=document.createElement("small");
   chat.textContent="Chat";
-  chat.style.cssText="color:#20c5e0;font-size:12px;";
+       chat.style.cssText="color:#3f3f46;font-size:12px;font-weight:600;";
 
   item.append(avatar,name,chat);
   item.onclick=()=>openChat(u);
