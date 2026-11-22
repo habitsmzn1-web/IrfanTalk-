@@ -1754,7 +1754,17 @@ setInterval(ensureControlStudioVisible, 800);
   $("welcomeScreen").classList.remove("hidden");
   ...
 ```[span_2](start_span)[span_2](end_span)[span_3](start_span)[span_3](end_span)[span_4](start_span)[span_4](end_span)
- 
+ document.addEventListener("click", (e) => {
+  const target = e.target.closest("button, input[type='submit'], a");
+  if (!target) return;
+  console.log("Clicked element:", {
+    tag: target.tagName,
+    id: target.id,
+    className: target.className,
+    text: (target.innerText || "").trim()
+  });
+}, true);
+
 </script>
 </body>
 </html>
