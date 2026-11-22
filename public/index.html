@@ -1693,7 +1693,7 @@ $("welcomeScreen").classList.remove("hidden");
   if(chatRef&&chatListener)chatRef.off("value",chatListener);
   chatRef=null;chatListener=null;activeUser=null;
  }
-}}
+}};
 
 $("navGroupsBtn")?.addEventListener("click", () => {
   const targetUser = (typeof allUsers !== "undefined" && Array.isArray(allUsers)) ? allUsers[0] : null;
