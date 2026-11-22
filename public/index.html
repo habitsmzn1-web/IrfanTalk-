@@ -1758,129 +1758,25 @@ $("navCallsBtn")?.addEventListener("click", () => {
 }
 
 setInterval(ensureControlStudioVisible, 800);
- function styleBottomNavButtonsSilverCircle() {
-  const navIds = ["navHomeBtn", "navPeopleBtn", "navCallsBtn", "navProfileBtn"];
-  navIds.forEach((id, idx) => {
-    const btn = $(id);
-    if (!btn) return;
-    btn.style.background = "linear-gradient(145deg, #f3f4f6, #cbd5e1)";
-    btn.style.border = "2px solid #9ca3af";
-    btn.style.borderRadius = "9999px";
-    btn.style.width = "44px";
-    btn.style.height = "44px";
-    btn.style.minWidth = "44px";
-    btn.style.minHeight = "44px";
-    btn.style.padding = "0";
-    btn.style.display = "inline-flex";
-    btn.style.alignItems = "center";
-    btn.style.justifyContent = "center";
-    btn.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.35), inset 0 1px 1px #ffffff";
-    btn.style.transition = "transform 0.15s ease, box-shadow 0.15s ease";
 
-    const svg = btn.querySelector("svg");
-    if (svg) {
-      svg.setAttribute("stroke", "#111111");
-      svg.style.color = "#111111";
-      svg.style.stroke = "#111111";
-    }
-
-    if (!btn.dataset.silverHoverBound) {
-      btn.dataset.silverHoverBound = "1";
-      btn.addEventListener("pointerdown", () => {
-        btn.style.transform = "scale(0.92)";
-      });
-      btn.addEventListener("pointerup", () => {
-        btn.style.transform = idx === 1 ? "scale(1.04)" : "scale(1)";
-      });
-      btn.addEventListener("pointerleave", () => {
-        btn.style.transform = "scale(1)";
-      });
-    }
-  });
+ #navHomeBtn, #navPeopleBtn, #navCallsBtn, #navProfileBtn {
+  background: radial-gradient(circle at 50% 35%, #262626 0%, #090909 75%) !important;
+  border: 3px solid #d1d5db !important;
+  border-radius: 9999px !important;
+  width: 46px !important;
+  height: 46px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 0 0 1.5px rgba(229, 231, 235, 0.55), 0 4px 10px rgba(0, 0, 0, 0.65) !important;
+  color: #ffffff !important;
 }
 
-styleBottomNavButtonsSilverCircle();
-setInterval(styleBottomNavButtonsSilverCircle, 1000);
- function styleBottomNavButtonsSilverCircle() {
-  const navIds = ["navHomeBtn", "navPeopleBtn", "navCallsBtn", "navProfileBtn"];
-  const navEmojis = {
-    navHomeBtn: "🏠",
-    navPeopleBtn: "💬",
-    navCallsBtn: "📞",
-    navProfileBtn: "👤"
-  };
-
-  navIds.forEach((id) => {
-    const btn = $(id);
-    if (!btn) return;
-
-    const bar = btn.closest("nav, footer, [id*='bottom'], [class*='bottom']") || btn.parentElement;
-    if (bar && bar.parentElement && bar.parentElement.children.length <= 2) {
-      bar.style.background = "#000000";
-      bar.style.backgroundColor = "#000000";
-    }
-
-    btn.style.background = "#000000";
-    btn.style.backgroundColor = "#000000";
-    btn.style.border = "2.5px solid #cbd5e1";
-    btn.style.borderRadius = "9999px";
-    btn.style.width = "46px";
-    btn.style.height = "46px";
-    btn.style.minWidth = "46px";
-    btn.style.minHeight = "46px";
-    btn.style.padding = "0";
-    btn.style.display = "inline-flex";
-    btn.style.alignItems = "center";
-    btn.style.justifyContent = "center";
-    btn.style.boxShadow = "0 0 0 1px rgba(203, 213, 225, 0.35), 0 3px 8px rgba(0, 0, 0, 0.6)";
-    btn.style.color = "#ffffff";
-    btn.style.fontSize = "20px";
-    btn.style.lineHeight = "1";
-
-    if (navEmojis[id]) {
-      btn.innerHTML = `<span style="display:inline-flex;align-items:center;justify-content:center;line-height:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.65));">${navEmojis[id]}</span>`;
-function styleBottomNavButtonsSilverCircle() {
-  const navIds = ["navHomeBtn", "navPeopleBtn", "navCallsBtn", "navProfileBtn"];
-  const navWhiteSvgs = {
-    navHomeBtn: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg>`,
-    navPeopleBtn: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><circle cx="9" cy="12" r="1.1" fill="#ffffff" stroke="none"/><circle cx="12" cy="12" r="1.1" fill="#ffffff" stroke="none"/><circle cx="15" cy="12" r="1.1" fill="#ffffff" stroke="none"/></svg>`,
-    navCallsBtn: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
-    navProfileBtn: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
-  };
-
-  navIds.forEach((id) => {
-    const btn = $(id);
-    if (!btn) return;
-
-    const bar = btn.closest("nav, footer, [id*='bottom'], [class*='bottom']") || btn.parentElement;
-    if (bar && bar.parentElement && bar.parentElement.children.length <= 2) {
-      bar.style.background = "#000000";
-      bar.style.backgroundColor = "#000000";
-    }
-
-    btn.style.background = "radial-gradient(circle at 50% 35%, #262626 0%, #090909 75%)";
-    btn.style.backgroundColor = "#090909";
-    btn.style.border = "3px solid #d1d5db";
-    btn.style.borderRadius = "9999px";
-    btn.style.width = "46px";
-    btn.style.height = "46px";
-    btn.style.minWidth = "46px";
-    btn.style.minHeight = "46px";
-    btn.style.padding = "0";
-    btn.style.display = "inline-flex";
-    btn.style.alignItems = "center";
-    btn.style.justifyContent = "center";
-    btn.style.boxShadow = "0 0 0 1.5px rgba(229, 231, 235, 0.55), 0 4px 10px rgba(0, 0, 0, 0.65)";
-    btn.style.color = "#ffffff";
-
-    if (navWhiteSvgs[id]) {
-      btn.innerHTML = navWhiteSvgs[id];
-    }
-  });
-}
-
-styleBottomNavButtonsSilverCircle();
-setInterval(styleBottomNavButtonsSilverCircle, 1000);
+#navHomeBtn svg, #navPeopleBtn svg, #navCallsBtn svg, #navProfileBtn svg {
+  stroke: #ffffff !important;
+  color: #ffffff !important;
+ }
  
  
 </script>
