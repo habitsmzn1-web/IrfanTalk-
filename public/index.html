@@ -1574,21 +1574,21 @@ const ROTATION_SENSITIVITY = 25;
 manualRings.forEach((ring) => {
   if (!ring || ring.dataset.manualRotationReady) return;
   ring.dataset.manualRotationReady = "true";
-  let startAngle = 0;
-  let startRotation = 0;
-  let currentRotation = 0;
-  let activePointer = null;
-  let moved = false;
-  let suppressClick = false;
+ let startAngle = 0;
+ let startRotation = 0;
+ let currentRotation = 0;
+ let activePointer = null;
+ let moved = false;
+ let suppressClick = false;
  let lastRotationChange = 0;
 let inertiaFrame = null;
  let lastMoveTime = 0;
 let rotationVelocity = 0;
-  function getAngle(event) {
-    const rect = ring.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    return Math.atan2(
+ function getAngle(event) {
+ const rect = ring.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  return Math.atan2(
       event.clientY - centerY,
       event.clientX - centerX
     ) * 180 / Math.PI;
@@ -1748,6 +1748,12 @@ $("navCallsBtn")?.addEventListener("click", () => {
 setInterval(ensureControlStudioVisible, 800);
 
  
+ } else {
+  $("appShell").classList.add("hidden");
+  $("authScreen").classList.add("hidden");
+  $("welcomeScreen").classList.remove("hidden");
+  ...
+```[span_2](start_span)[span_2](end_span)[span_3](start_span)[span_3](end_span)[span_4](start_span)[span_4](end_span)
  
 </script>
 </body>
