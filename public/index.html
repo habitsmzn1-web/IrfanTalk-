@@ -1693,19 +1693,7 @@ $("welcomeScreen").classList.remove("hidden");
   if(chatRef&&chatListener)chatRef.off("value",chatListener);
   chatRef=null;chatListener=null;activeUser=null;
  }
-});
-
-$("navHomeBtn")?.addEventListener("click", () => {
-  $("usersView")?.classList.remove("hidden");
-  $("chatCard")?.classList.add("hidden");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-$("navPeopleBtn")?.addEventListener("click", () => {
-  $("usersView")?.classList.remove("hidden");
-  $("userSearch")?.focus();
-  if (typeof loadUsers === "function") loadUsers();
-});
+}}
 
 $("navGroupsBtn")?.addEventListener("click", () => {
   const targetUser = (typeof allUsers !== "undefined" && Array.isArray(allUsers)) ? allUsers[0] : null;
@@ -1759,43 +1747,6 @@ $("navCallsBtn")?.addEventListener("click", () => {
 
 setInterval(ensureControlStudioVisible, 800);
 
- #navHomeBtn, #navPeopleBtn, #navCallsBtn, #navProfileBtn {
-  background: radial-gradient(circle at 50% 35%, #262626 0%, #090909 75%) !important;
-  border: 3px solid #d1d5db !important;
-  border-radius: 9999px !important;
-  width: 46px !important;
-  height: 46px !important;
-  padding: 0 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-shadow: 0 0 0 1.5px rgba(229, 231, 235, 0.55), 0 4px 10px rgba(0, 0, 0, 0.65) !important;
-  color: #ffffff !important;
-}
-
-#navHomeBtn svg, #navPeopleBtn svg, #navCallsBtn svg, #navProfileBtn svg {
-  stroke: #ffffff !important;
-  color: #ffffff !important;
- }
- #navHomeBtn, #navPeopleBtn, #navCallsBtn, #navProfileBtn {
-  background: radial-gradient(circle at 50% 35%, #262626 0%, #090909 75%) !important;
-  border: 3px solid #d1d5db !important;
-  border-radius: 9999px !important;
-  width: 46px !important;
-  height: 46px !important;
-  padding: 0 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: #ffffff !important;
-}
-
-#navHomeBtn svg, #navPeopleBtn svg, #navCallsBtn svg, #navProfileBtn svg,
-#navHomeBtn path, #navPeopleBtn path, #navCallsBtn path, #navProfileBtn path,
-#navHomeBtn circle, #navPeopleBtn circle, #navCallsBtn circle, #navProfileBtn circle {
-  stroke: #ffffff !important;
-  color: #ffffff !important;
- }
  
  
 </script>
