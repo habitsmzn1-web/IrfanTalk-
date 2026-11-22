@@ -1008,19 +1008,7 @@ $("welcomeGoogleBtn").onclick=()=>{
  
 $("logoutBtn").onclick=()=>auth.signOut();
 $("backBtn").onclick=closeChat;
-      const chatMoreBtn = document.getElementById("chatMoreBtn");
-      const chatMoreMenu = document.getElementById("chatMoreMenu");
-      if (chatMoreBtn && chatMoreMenu) {
-        chatMoreBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          chatMoreMenu.classList.toggle("hidden");
-        });
-        document.addEventListener("click", (e) => {
-          if (!chatMoreMenu.classList.contains("hidden") && !chatMoreMenu.contains(e.target) && e.target !== chatMoreBtn) {
-            chatMoreMenu.classList.add("hidden");
-          }
-        });
- }
+
  
 function pairPath(otherUid){
  const pair=[currentUser.uid,otherUid].sort();
