@@ -618,17 +618,15 @@ select {
   <section style="display:flex;justify-content:space-around;align-items:center;background:#292929;border-radius:60px;width:100%;max-width:600px;align-self:stretch;box-sizing:border-box;padding:16px;margin:28px auto 10px;position:relative;">
    
    
+          <!-- Emoji -->
+        <button id="navHomeBtn" type="button" title="Home" style="background:transparent;border:0;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10.5 12 3l9 7.5"/>
+            <path d="M5 9v12h14V9"/>
+            <path d="M9 21v-7h6v7"/>
+          </svg>
+        </button>
    
-   <!-- Emoji -->
-  <span style="display:flex;align-items:center;justify-content:center">
-    
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M3 10.5 12 3l9 7.5"/>
-  <path d="M5 9v12h14V9"/>
-  <path d="M9 21v-7h6v7"/>
-</svg>
-   
-  </span>
    
  
 <!-- MOVABLE CONTROL STUDIO BUTTON -->
@@ -660,29 +658,31 @@ select {
   </svg>
 </button>
 
-  <!-- People -->
-  <span style="display:flex;align-items:center;justify-content:center">
-    
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-4-.9L3 21l1.9-5.5a8.4 8.4 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8.5Z"/>
-  <path d="M8 12h.01M12 12h.01M16 12h.01"/>
-</svg>
-   
-  </span>
-
-
   
- 
-  <!-- Groups -->
-  <span style="display:flex;align-items:center;justify-content:center">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-      <circle cx="9" cy="7" r="4"/>
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-    </svg>
-  </span>
+    
+        <!-- People -->
+        <button id="navPeopleBtn" type="button" title="People" style="background:transparent;border:0;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.4 8.4 0 0 1-4-.9L3 21l1.9-5.5a8.4 8.4 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8.5Z"/>
+            <path d="M8 12h.01M12 12h.01M16 12h.01"/>
+          </svg>
+        </button>
    
+  </span>
+
+
+          <!-- Groups -->
+        <button id="navGroupsBtn" type="button" title="Groups" style="background:transparent;border:0;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </button>
+   
+ 
+  </span>
       
 
 <!-- Profile -->
@@ -1698,7 +1698,35 @@ $("welcomeScreen").classList.remove("hidden");
  }
 });
 
+$("navHomeBtn")?.addEventListener("click", () => {
+  $("usersView")?.classList.remove("hidden");
+  $("chatCard")?.classList.add("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
+$("navPeopleBtn")?.addEventListener("click", () => {
+  $("usersView")?.classList.remove("hidden");
+  $("userSearch")?.focus();
+  if (typeof loadUsers === "function") loadUsers();
+});
+
+$("navGroupsBtn")?.addEventListener("click", () => {
+  const targetUser = (typeof allUsers !== "undefined" && Array.isArray(allUsers)) ? allUsers[0] : null;
+  if (targetUser && typeof openChat === "function") {
+    openChat(targetUser);
+  } else {
+    $("usersView")?.classList.remove("hidden");
+  }
+});
+
+$("navProfileBtn")?.addEventListener("click", () => {
+  if (typeof setControlStudioOpen === "function") {
+    setControlStudioOpen(true);
+  } else {
+    $("controlStudioPanel")?.classList.toggle("hidden");
+  }
+});
+ 
 </script>
 </body>
 </html>
