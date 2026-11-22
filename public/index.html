@@ -1758,6 +1758,49 @@ $("navCallsBtn")?.addEventListener("click", () => {
 }
 
 setInterval(ensureControlStudioVisible, 800);
+ function styleBottomNavButtonsSilverCircle() {
+  const navIds = ["navHomeBtn", "navPeopleBtn", "navCallsBtn", "navProfileBtn"];
+  navIds.forEach((id, idx) => {
+    const btn = $(id);
+    if (!btn) return;
+    btn.style.background = "linear-gradient(145deg, #f3f4f6, #cbd5e1)";
+    btn.style.border = "2px solid #9ca3af";
+    btn.style.borderRadius = "9999px";
+    btn.style.width = "44px";
+    btn.style.height = "44px";
+    btn.style.minWidth = "44px";
+    btn.style.minHeight = "44px";
+    btn.style.padding = "0";
+    btn.style.display = "inline-flex";
+    btn.style.alignItems = "center";
+    btn.style.justifyContent = "center";
+    btn.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.35), inset 0 1px 1px #ffffff";
+    btn.style.transition = "transform 0.15s ease, box-shadow 0.15s ease";
+
+    const svg = btn.querySelector("svg");
+    if (svg) {
+      svg.setAttribute("stroke", "#111111");
+      svg.style.color = "#111111";
+      svg.style.stroke = "#111111";
+    }
+
+    if (!btn.dataset.silverHoverBound) {
+      btn.dataset.silverHoverBound = "1";
+      btn.addEventListener("pointerdown", () => {
+        btn.style.transform = "scale(0.92)";
+      });
+      btn.addEventListener("pointerup", () => {
+        btn.style.transform = idx === 1 ? "scale(1.04)" : "scale(1)";
+      });
+      btn.addEventListener("pointerleave", () => {
+        btn.style.transform = "scale(1)";
+      });
+    }
+  });
+}
+
+styleBottomNavButtonsSilverCircle();
+setInterval(styleBottomNavButtonsSilverCircle, 1000);
  
 </script>
 </body>
