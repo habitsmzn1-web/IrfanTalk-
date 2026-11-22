@@ -1801,6 +1801,57 @@ setInterval(ensureControlStudioVisible, 800);
 
 styleBottomNavButtonsSilverCircle();
 setInterval(styleBottomNavButtonsSilverCircle, 1000);
+ function styleBottomNavButtonsSilverCircle() {
+  const navIds = ["navHomeBtn", "navPeopleBtn", "navCallsBtn", "navProfileBtn"];
+  const navEmojis = {
+    navHomeBtn: "🏠",
+    navPeopleBtn: "💬",
+    navCallsBtn: "📞",
+    navProfileBtn: "👤"
+  };
+
+  navIds.forEach((id) => {
+    const btn = $(id);
+    if (!btn) return;
+
+    const bar = btn.closest("nav, footer, [id*='bottom'], [class*='bottom']") || btn.parentElement;
+    if (bar && bar.parentElement && bar.parentElement.children.length <= 2) {
+      bar.style.background = "#000000";
+      bar.style.backgroundColor = "#000000";
+    }
+
+    btn.style.background = "#000000";
+    btn.style.backgroundColor = "#000000";
+    btn.style.border = "2.5px solid #cbd5e1";
+    btn.style.borderRadius = "9999px";
+    btn.style.width = "46px";
+    btn.style.height = "46px";
+    btn.style.minWidth = "46px";
+    btn.style.minHeight = "46px";
+    btn.style.padding = "0";
+    btn.style.display = "inline-flex";
+    btn.style.alignItems = "center";
+    btn.style.justifyContent = "center";
+    btn.style.boxShadow = "0 0 0 1px rgba(203, 213, 225, 0.35), 0 3px 8px rgba(0, 0, 0, 0.6)";
+    btn.style.color = "#ffffff";
+    btn.style.fontSize = "20px";
+    btn.style.lineHeight = "1";
+
+    if (navEmojis[id]) {
+      btn.innerHTML = `<span style="display:inline-flex;align-items:center;justify-content:center;line-height:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.65));">${navEmojis[id]}</span>`;
+    } else {
+      const svg = btn.querySelector("svg");
+      if (svg) {
+        svg.setAttribute("stroke", "#ffffff");
+        svg.style.color = "#ffffff";
+        svg.style.stroke = "#ffffff";
+      }
+    }
+  });
+}
+
+styleBottomNavButtonsSilverCircle();
+setInterval(styleBottomNavButtonsSilverCircle, 1000);
  
 </script>
 </body>
