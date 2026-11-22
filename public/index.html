@@ -943,8 +943,14 @@ async function syncDirectory(user){
  const email=(user.email||"").toLowerCase();
  const name=(user.displayName||email.split("@")[0]||"IrfanTalk user").trim();
  const username=email?email.split("@")[0]:"";
- const profile={name,username,updatedAt:firebase.database.ServerValue.TIMESTAMP};
- await db.ref("userDirectory/"+user.uid).update(profile);
+const profile = {
+  email,
+  name,
+  username,
+  updatedAt: firebase.database.ServerValue.TIMESTAMP
+};
+ await db.ref("userDirectory/" + user.uid).update(profile);
+ 
 }
 async function loadUsers(){
  $("usersStatus").textContent="Loading registered users…";
@@ -955,7 +961,13 @@ async function loadUsers(){
   snap.forEach(child=>{
    if(child.key!==currentUser.uid){
     const p=child.val()||{};
-    allUsers.push({uid:child.key,name:p.name||"IrfanTalk user",username:p.username||""});
+allUsers.push({
+  uid: child.key,
+  email: p.email || "",
+  name: p.name || "IrfanTalk user",
+  username: p.username || ""
+});
+    
    }
   });
   renderUsers();
@@ -968,7 +980,12 @@ async function loadUsers(){
 
 function renderUsers(){
  const q=$("userSearch").value.trim().toLowerCase();
- const filtered=allUsers.filter(u=>(u.name+" "+u.username).toLowerCase().includes(q));
+ const filtered = allUsers.filter(u =>
+  (u.name + " " + u.username + " " + (u.email || ""))
+    .toLowerCase()
+    .includes(q)
+);
+ 
  const list=$("usersList");
  list.replaceChildren();
 
@@ -1436,7 +1453,10 @@ const closeControlStudio = $("closeControlStudio");
 auth.onAuthStateChanged(async user=>{
  currentUser=user;
  if(user){
- connectVoiceSocket(user);
+  await syncDirectory(user);
+  loadUsers();
+  connectVoiceSocket(user);
+ 
   $("welcomeScreen").classList.add("hidden");
 $("authScreen").classList.add("hidden");
 $("appShell").classList.remove("hidden");
