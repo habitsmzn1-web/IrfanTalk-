@@ -807,11 +807,17 @@ select {
             <small style="font-size:11.5px;color:#000000;">Private conversation</small>
           </div>
 
-          <div class="call-actions" style="display:flex;gap:8px;margin-left:auto;align-items:center;">
-            <button id="audioCallBtn" class="icon" title="Audio Call" type="button" style="width:36px;height:36px;border-radius:50%;border:none;background:#000000:(255,255,255,0.06);color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;">📞</button>
-            <button id="videoCallBtn" class="icon" title="Video Call" type="button" style="width:36px;height:36px;border-radius:50%;border:none;background:#000000(255,255,255,0.06);color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;">📹</button>
-            
+          <div class="call-actions" style      <div class="call-actions" style="display:flex;gap:8px;margin-left:auto;align-items:center;position:relative;">
+        <button id="audioCallBtn" class="icon" title="Audio Call" type="button" style="width:36px;height:36px;border-radius:50%;border:none;background:#000000;color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;">📞</button>
+        <button id="videoCallBtn" class="icon" title="Video Call" type="button" style="width:36px;height:36px;border-radius:50%;border:none;background:#000000;color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;">📹</button>
+        <button id="chatMoreBtn" class="icon" title="More options" aria-label="More options" type="button" style="width:36px;height:36px;border-radius:50%;border:1px solid #c0c0c0;background:#000000;color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;line-height:1;">⋮</button>
+        <div id="chatMoreMenu" class="hidden" style="position:absolute;top:42px;right:0;min-width:160px;background:#000000;color:#ffffff;border:1px solid #c0c0c0;border-radius:12px;padding:6px;z-index:2600;box-shadow:0 8px 24px rgba(0,0,0,0.28);">
+          <button type="button" onclick="document.getElementById('audioCallBtn')?.click();document.getElementById('chatMoreMenu')?.classList.add('hidden');" style="width:100%;text-align:left;background:transparent;color:#ffffff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;">Audio Call</button>
+          <button type="button" onclick="document.getElementById('videoCallBtn')?.click();document.getElementById('chatMoreMenu')?.classList.add('hidden');" style="width:100%;text-align:left;background:transparent;color:#ffffff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;">Video Call</button>
+          <button type="button" onclick="document.getElementById('backBtn')?.click();" style="width:100%;text-align:left;background:transparent;color:#d4d4d8;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;">Close Chat</button>
+        </div>
           </div>
+         
         </div>
 
         <!-- Compact Walkie-Talkie Strip (Hidden by default so messages stay clear) -->
