@@ -612,8 +612,6 @@ select {
       <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;margin-top:34px;">
         <div id="homeVoiceStatus" style="font-weight:700;color:#777;font-size:14px;">Ready to talk</div>
       </div>
-    </div>
-  </div>
 
   <section style="display:flex;justify-content:space-around;align-items:center;background:#292929;border-radius:60px;width:100%;max-width:600px;align-self:stretch;box-sizing:border-box;padding:16px;margin:28px auto 10px;position:relative;">
    
@@ -1337,13 +1335,14 @@ function joinPrivateVoice(targetUid) {
 
   voiceSocket.emit("join-private-voice", targetUid);
 }
- const talkButton = $("talkBtn");
+ const talkButton = $("homeTalkBtn");
 const voiceStatus = $("voiceStatus");
 let talkPressActive = false;
 
 async function startTalking() {
   if (!voiceSocket || !voiceSocket.connected) {
-    voiceStatus.textContent = "Voice connection not ready";
+    if (voiceStatus) voiceStatus.textContent = "Voice connection not ready";
+   
     return;
   }
 
@@ -1374,10 +1373,12 @@ async function startTalking() {
       if (sender) await sender.replaceTrack(track);
     }
 
-    voiceStatus.textContent = "🎙️ Transmitting...";
+   if (voiceStatus) voiceStatus.textContent = "🎙️ Transmitting...";
+   
    $("homeVoiceStatus").textContent = "🎙️ Transmitting...";
   } catch (error) {
-    voiceStatus.textContent = "Microphone permission required";
+   if (voiceStatus) voiceStatus.textContent = "Microphone permission required";
+   
    $("homeVoiceStatus").textContent = "Microphone permission required";
     console.error("Microphone error:", error);
   }
@@ -1401,7 +1402,8 @@ async function stopTalking() {
     if (sender) await sender.replaceTrack(null);
   }
 
-  voiceStatus.textContent = "Ready to talk";
+  if (voiceStatus) voiceStatus.textContent = "Ready to talk";
+ 
  $("homeVoiceStatus").textContent = "Ready to talk";
 }
 
