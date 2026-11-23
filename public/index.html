@@ -357,66 +357,7 @@ select {
         width: 100%;
     }
 }
- .control-ring button {
-  --r: 92px !important;
-  --angle: 0deg;
-  --ring-rot: 0deg;
-  position: absolute !important;
-  left: 50% !important;
-  top: 50% !important;
-  width: 42px !important;
-  height: 42px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  transform:
-    translate(-50%, -50%)
-    rotate(calc(var(--angle) + var(--ring-rot)))
-    translateY(calc(-1 * var(--r)))
-    rotate(calc(-1 * (var(--angle) + var(--ring-rot)))) !important;
-}
-
-#controlStudioPanel,
-#controlStudioPanel * {
-  visibility: visible !important;
-}
-
-#controlStudioPanel.hidden {
-  display: none !important;
-}
-
-#controlStudioPanel:not(.hidden) {
-  display: block !important;
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 99999 !important;
-  overflow: visible !important;
-  pointer-events: none !important;
-}
-
-#controlStudioPanel:not(.hidden) #controlStudioRing,
-#controlStudioPanel:not(.hidden) .control-ring,
-#controlStudioPanel:not(.hidden) #outerControlRing,
-#controlStudioPanel:not(.hidden) #innerControlRing {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  overflow: visible !important;
-}
-
-#controlStudioPanel:not(.hidden) .control-ring button,
-#controlStudioPanel:not(.hidden) #closeControlStudio {
-  display: flex !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  }
+ 
  
 </style>
 </head>
@@ -1690,3 +1631,4 @@ $("welcomeScreen").classList.remove("hidden");
 </script>
 </body>
 </html>
+
