@@ -1556,8 +1556,8 @@ velocity = 0;
     let diff = now - startAngle;
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;
-    angleOffset += diff * 3.5;
-  velocity = diff * 3.5;
+    angleOffset += diff * 8;
+  velocity = diff * 8;
     startAngle = now
     drawRing();
    
@@ -1573,7 +1573,7 @@ velocity = 0;
   function loop() {
   if (!dragging && Math.abs(velocity) > 0.05) {
     angleOffset += velocity;
-    velocity *= 0.93;
+    velocity *= 0.96;
   } else if (!dragging) {
     velocity = 0;
   }
@@ -1587,6 +1587,7 @@ velocity = 0;
 </script>
 </body>
 </html>
+
 
 
 
