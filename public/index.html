@@ -1476,7 +1476,7 @@ $("welcomeScreen").classList.remove("hidden");
   const PANEL_ID = "controlStudioPanel";
   const RING_ID = "controlStudioRing";
   const CLOSE_ID = "closeControlStudio";
-  const RADIUS = 92;
+  const RADIUS = 106;
 
   let angleOffset = 0;
   let dragging = false;
@@ -1549,14 +1549,16 @@ $("welcomeScreen").classList.remove("hidden");
   }, true);
 
   document.addEventListener("pointermove", (e) => {
-    if (!dragging) return;
+        if (!dragging) return;
+    if (e.cancelable) e.preventDefault();
     const now = pointerDeg(e, getCenter());
     let diff = now - startAngle;
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;
-    angleOffset += diff;
+    angleOffset += diff * 1.5;
     startAngle = now;
     drawRing();
+   
   }, true);
 
   function stop() {
@@ -1576,6 +1578,7 @@ $("welcomeScreen").classList.remove("hidden");
 </script>
 </body>
 </html>
+
 
 
 
