@@ -410,32 +410,7 @@ select {
 
   requestAnimationFrame(frameLoop);
 })();
-     btns.forEach((btn, idx) => {
-      const deg = idx * STEP + unifiedAngle;
-      btn.classList.remove("hidden");
-      btn.style.display = "flex";
-      btn.style.alignItems = "center";
-      btn.style.justifyContent = "center";
-      btn.style.opacity = "1";
-      btn.style.visibility = "visible";
-      btn.style.userSelect = "none";
-      btn.style.webkitUserSelect = "none";
-
-      // बटन रिंग पर घूमता है, लेकिन आखिरी rotate(-deg) से सीधा रहता है
-      btn.style.transform =
-        `translate(-50%, -50%) rotate(${deg}deg) translateY(-${RADIUS}px) rotate(${-deg}deg)`;
-
-      // बटन के अंदर का सिंबल/आइकन भी बिल्कुल सीधा (0deg) रहे
-      const symbols = btn.querySelectorAll("svg, i, span, img");
-      symbols.forEach((sym) => {
-        sym.style.display = "inline-flex";
-        sym.style.alignItems = "center";
-        sym.style.justifyContent = "center";
-        sym.style.opacity = "1";
-        sym.style.visibility = "visible";
-        sym.style.transform = "rotate(0deg)";
-      });
-    });
+     
  
 </style>
 </head>
@@ -1705,10 +1680,37 @@ $("welcomeScreen").classList.remove("hidden");
   }
   requestAnimationFrame(stepFrame);
 })();
+     btns.forEach((btn, idx) => {
+      const deg = idx * STEP + unifiedAngle;
+      btn.classList.remove("hidden");
+      btn.style.display = "flex";
+      btn.style.alignItems = "center";
+      btn.style.justifyContent = "center";
+      btn.style.opacity = "1";
+      btn.style.visibility = "visible";
+      btn.style.userSelect = "none";
+      btn.style.webkitUserSelect = "none";
+
+      // बटन रिंग पर घूमता है, लेकिन आखिरी rotate(-deg) से सीधा रहता है
+      btn.style.transform =
+        `translate(-50%, -50%) rotate(${deg}deg) translateY(-${RADIUS}px) rotate(${-deg}deg)`;
+
+      // बटन के अंदर का सिंबल/आइकन भी बिल्कुल सीधा (0deg) रहे
+      const symbols = btn.querySelectorAll("svg, i, span, img");
+      symbols.forEach((sym) => {
+        sym.style.display = "inline-flex";
+        sym.style.alignItems = "center";
+        sym.style.justifyContent = "center";
+        sym.style.opacity = "1";
+        sym.style.visibility = "visible";
+        sym.style.transform = "rotate(0deg)";
+      });
+    });
  
 </script>
 </body>
 </html>
+
 
 
 
