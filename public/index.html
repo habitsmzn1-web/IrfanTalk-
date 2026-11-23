@@ -263,22 +263,7 @@ border: 2px solid #aeb4bb !important;
   height: 20px;
 }
 
-/* 14 buttons evenly spaced by 25.7143deg on ONE single circle */
-.outer-ring button:nth-child(1) { --angle: 0deg; }
-.outer-ring button:nth-child(2) { --angle: 25.7143deg; }
-.outer-ring button:nth-child(3) { --angle: 51.4286deg; }
-.outer-ring button:nth-child(4) { --angle: 77.1429deg; }
-.outer-ring button:nth-child(5) { --angle: 102.8571deg; }
-.outer-ring button:nth-child(6) { --angle: 128.5714deg; }
 
-.inner-ring button:nth-child(1) { --angle: 154.2857deg; }
-.inner-ring button:nth-child(2) { --angle: 180deg; }
-.inner-ring button:nth-child(3) { --angle: 205.7143deg; }
-.inner-ring button:nth-child(4) { --angle: 231.4286deg; }
-.inner-ring button:nth-child(5) { --angle: 257.1429deg; }
-.inner-ring button:nth-child(6) { --angle: 282.8571deg; }
-.inner-ring button:nth-child(7) { --angle: 308.5714deg; }
-.inner-ring button:nth-child(8) { --angle: 334.2857deg; }
 
 #closeControlStudio {
   position: absolute !important;
@@ -1490,82 +1475,7 @@ let rotationVelocity = 0;
   ring.addEventListener("pointerdown", (event) => {
     const button = event.target.closest("button");
     if (!button) return;
-    event.preventDefault();
-    activePointer = event.pointerId;
-    startAngle = getAngle(event);
-    startRotation = currentRotation;
-   lastMoveTime = performance.now();
-lastRotationChange = 0;
-rotationVelocity = 0;
-    moved = false;
-    button.setPointerCapture(event.pointerId);
-  });
-  ring.addEventListener("pointermove", (event) => {
-    if (activePointer !== event.pointerId) return;
-    const angle = getAngle(event);
-    let difference = angle - startAngle;
-    if (difference > 180) difference -= 360;
-    if (difference < -180) difference += 360;
-    if (Math.abs(difference) > 2) moved = true;
-   const now = performance.now();
-const elapsed = Math.max(now - lastMoveTime, 1);
-const rotationDelta =
-  difference * ROTATION_SENSITIVITY - lastRotationChange;
 
-rotationVelocity = rotationDelta / elapsed;
-lastRotationChange = difference * ROTATION_SENSITIVITY;
-lastMoveTime = now;
-    currentRotation = startRotation +
-(difference * ROTATION_SENSITIVITY);
-    ring.style.transform = `rotate(${currentRotation}deg)`;
-    updateButtons();
-  });
-  function stopRotation(event) {
-    if (activePointer !== event.pointerId) return;
-    activePointer = null;
-   if (inertiaFrame) {
-  cancelAnimationFrame(inertiaFrame);
-}
-
-let previousFrameTime = performance.now();
-
-function continueInertia(now) {
-  const elapsed = Math.min(now - previousFrameTime, 32);
-  previousFrameTime = now;
-
-  currentRotation += rotationVelocity * elapsed;
-
-  ring.style.transform = `rotate(${currentRotation}deg)`;
-  updateButtons();
-
-  rotationVelocity *= Math.pow(0.97, elapsed / 16);
-
-  if (Math.abs(rotationVelocity) > 0.015) {
-    inertiaFrame = requestAnimationFrame(continueInertia);
-  } else {
-    inertiaFrame = null;
-  }
-}
-
-if (Math.abs(rotationVelocity) > 0.04) {
-  inertiaFrame = requestAnimationFrame(continueInertia);
-}
-    if (moved) {
-      suppressClick = true;
-      setTimeout(() => {
-        suppressClick = false;
-      }, 300);
-    }
-  }
-  ring.addEventListener("pointerup", stopRotation);
-  ring.addEventListener("pointercancel", stopRotation);
-  ring.addEventListener("click", (event) => {
-    if (!suppressClick) return;
-    event.preventDefault();
-    event.stopPropagation();
-    suppressClick = false;
-  }, true);
-});
          
     setControlStudioOpen(
       !controlStudioPanel.classList.contains("hidden")
@@ -1686,4 +1596,5 @@ $("welcomeScreen").classList.remove("hidden");
 </script>
 </body>
 </html>
+
 
