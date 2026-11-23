@@ -357,6 +357,66 @@ select {
         width: 100%;
     }
 }
+ .control-ring button {
+  --r: 92px !important;
+  --angle: 0deg;
+  --ring-rot: 0deg;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 42px !important;
+  height: 42px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform:
+    translate(-50%, -50%)
+    rotate(calc(var(--angle) + var(--ring-rot)))
+    translateY(calc(-1 * var(--r)))
+    rotate(calc(-1 * (var(--angle) + var(--ring-rot)))) !important;
+}
+
+#controlStudioPanel,
+#controlStudioPanel * {
+  visibility: visible !important;
+}
+
+#controlStudioPanel.hidden {
+  display: none !important;
+}
+
+#controlStudioPanel:not(.hidden) {
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
+#controlStudioPanel:not(.hidden) #controlStudioRing,
+#controlStudioPanel:not(.hidden) .control-ring,
+#controlStudioPanel:not(.hidden) #outerControlRing,
+#controlStudioPanel:not(.hidden) #innerControlRing {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  overflow: visible !important;
+}
+
+#controlStudioPanel:not(.hidden) .control-ring button,
+#controlStudioPanel:not(.hidden) #closeControlStudio {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  }
  
 </style>
 </head>
@@ -1584,40 +1644,47 @@ $("welcomeScreen").classList.remove("hidden");
   chatRef=null;chatListener=null;activeUser=null;
  }
 });
-
  (function () {
-  const RADIUS = 104;
-  const COUNT = 14;
-  const STEP = 360 / COUNT;
+  const RADIUS = 92;
+  const STEP = 360 / 14;
 
-  function getRingButtons() {
-    return Array.from(document.querySelectorAll("#controlStudioRing .control-ring button"));
-  }
+  function lockAll14Rotation() {
+    const panel = document.getElementById("controlStudioPanel");
+    if (panel) {
+      panel.style.zIndex = "99999";
+      panel.style.overflow = "visible";
+    }
 
-  function syncAll14Together() {
-    const btns = getRingButtons();
-    if (!btns.length) return;
+    const ring = document.getElementById("controlStudioRing");
+    if (ring) {
+      ring.style.zIndex = "100000";
+      ring.style.overflow = "visible";
+    }
 
+    const btns = Array.from(document.querySelectorAll("#controlStudioRing .control-ring button"));
     const rot = typeof currentRotation === "number" && !Number.isNaN(currentRotation)
       ? currentRotation
       : 0;
 
-    btns.forEach((btn, index) => {
-      const angle = index * STEP + rot;
+    btns.forEach((btn, i) => {
+      const deg = i * STEP + rot;
+      btn.classList.remove("hidden");
+      btn.style.display = "flex";
+      btn.style.opacity = "1";
+      btn.style.visibility = "visible";
       btn.style.position = "absolute";
       btn.style.left = "50%";
       btn.style.top = "50%";
       btn.style.transform =
-        `translate(-50%, -50%) rotate(${angle}deg) translateY(-${RADIUS}px) rotate(${-angle}deg)`;
+        `translate(-50%, -50%) rotate(${deg}deg) translateY(-${RADIUS}px) rotate(${-deg}deg)`;
     });
   }
 
-  function loop() {
-    syncAll14Together();
-    requestAnimationFrame(loop);
+  function stepFrame() {
+    lockAll14Rotation();
+    requestAnimationFrame(stepFrame);
   }
-
-  requestAnimationFrame(loop);
+  requestAnimationFrame(stepFrame);
 })();
  
 </script>
