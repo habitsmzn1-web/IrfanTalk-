@@ -213,154 +213,11 @@ border: 2px solid #aeb4bb !important;
   }
 }
  
-/* IRFANTALK CONTROL STUDIO - NEW DESIGN */
-
-/* IRFANTALK CONTROL STUDIO - BUTTON ANCHORED */
-
-#controlStudioPanel {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 2000 !important;
-  display: block;
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  overflow: visible !important;
-  pointer-events: none;
-  touch-action: none;
-}
-
-#controlStudioPanel.hidden {
-  display: none !important;
-}
-
-#controlStudioRing {
-  position: fixed !important;
-  left: 0;
-  top: 0;
-  transform: none !important;
-  width: min(94vw, 380px) !important;
-  height: min(94vw, 380px) !important;
-  border: none !important;
-  box-shadow: none !important;
-  pointer-events: none;
-}
-
-.control-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  pointer-events: none;
-  transform: rotate(0deg);
-  animation: none !important;
-  transition: none !important;
-  touch-action: none;
-}
-
-.inner-ring,
-.outer-ring {
-  animation: none !important;
-}
-
-.control-ring button {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: linear-gradient(145deg,#222,#000);
-  color: #fff;
-  border: 3px solid #c0c0c0;
-  box-shadow: 0 5px 12px #00000025;
-  pointer-events: auto;
-  touch-action: none;
-  animation: none !important;
-  transition: opacity 0.45s ease;
-  opacity: 1;
-}
-
-.inner-ring button {
-  width: 58px;
-  height: 58px;
-  font-size: 24px;
-}
-
-.outer-ring button {
-  width: 64px;
-  height: 64px;
-  font-size: 25px;
-}
-
-/* INNER RING - 8 ICONS */
-
-.inner-ring button:nth-child(1) {
-  left: 50%; top: 5%;
-  transform: translate(-50%,-50%);
-}
-.inner-ring button:nth-child(2) {
-  left: 82%; top: 18%;
-  transform: translate(-50%,-50%);
-}
-.inner-ring button:nth-child(3) {
-  left: 95%; top: 50%;
-  transform: translate(-50%,-50%);
-}
-.inner-ring button:nth-child(4) {
-  left: 82%; top: 82%;
-  transform: translate(-50%,-50%);
-}
-.inner-ring button:nth-child(5) {
-  left: 50%; top: 95%;
-  transform: translate(-50%,-50%);
-}
-.inner-ring button:nth-child(6) {
-  left: 18%; top: 82%;
-  transform: translate(-50%,-50%);
-}
-.inner-ring button:nth-child(7) {
-  left: 5%; top: 50%;
-  transform: translate(-50%,-50%);
-}
-.inner-ring button:nth-child(8) {
-  left: 18%; top: 18%;
-  transform: translate(-50%,-50%);
-}
-
-/* OUTER RING - 6 ICONS */
-
-.outer-ring button:nth-child(1) {
-  left: 50%; top: 1%;
-  transform: translate(-50%,-50%);
-}
-.outer-ring button:nth-child(2) {
-  left: 93%; top: 27%;
-  transform: translate(-50%,-50%);
-}
-.outer-ring button:nth-child(3) {
-  left: 93%; top: 73%;
-  transform: translate(-50%,-50%);
-}
-.outer-ring button:nth-child(4) {
-  left: 50%; top: 99%;
-  transform: translate(-50%,-50%);
-}
-.outer-ring button:nth-child(5) {
-  left: 7%; top: 73%;
-  transform: translate(-50%,-50%);
-}
-.outer-ring button:nth-child(6) {
-  left: 7%; top: 27%;
-/* IRFANTALK CONTROL STUDIO - SINGLE RING LAYOUT */
-
+/* SINGLE RING - ALL 14 ICONS ON ONE CIRCLE */
 #controlStudioPanel {
   position: fixed !important;
   inset: 0 !important;
   z-index: 3500 !important;
-  display: block;
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  overflow: visible !important;
   pointer-events: none;
   touch-action: none;
 }
@@ -373,154 +230,80 @@ border: 2px solid #aeb4bb !important;
   position: fixed !important;
   left: 0;
   top: 0;
-  transform: none !important;
-  width: min(94vw, 390px) !important;
-  height: min(94vw, 390px) !important;
-  border: none !important;
-  box-shadow: none !important;
+  width: 340px !important;
+  height: 340px !important;
   pointer-events: none;
 }
 
 .control-ring,
 #outerControlRing,
 #innerControlRing {
-  position: absolute;
+  position: absolute !important;
   inset: 0 !important;
   border-radius: 50%;
   pointer-events: none;
-  transform: rotate(0deg);
-  animation: none !important;
-  transition: none !important;
   touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
 .control-ring button {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 54px !important;
-  height: 54px !important;
-  font-size: 20px !important;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #222, #000);
-  color: #fff;
-  border: 2.5px solid #c0c0c0;
-  box-shadow: 0 5px 12px #00000025;
-  pointer-events: auto;
+  --r: 128px;
+  --angle: 0deg;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 50px !important;
+  height: 50px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(145deg, #222, #000) !important;
+  color: #fff !important;
+  border: 2.5px solid #c0c0c0 !important;
+  pointer-events: auto !important;
   touch-action: none;
-  animation: none !important;
-  transition: opacity 0.45s ease;
-  opacity: 1;
+  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(-1 * var(--r))) rotate(calc(-1 * var(--angle))) !important;
 }
 
 .control-ring button svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 }
 
-/* Single Ring: Outer Ring (6 buttons) */
-.outer-ring button:nth-child(1) {
-  left: calc(50% + 158px * cos(-90deg));
-  top: calc(50% + 158px * sin(-90deg));
-  transform: translate(-50%, -50%);
-}
-.outer-ring button:nth-child(2) {
-  left: calc(50% + 158px * cos(-64.2857deg));
-  top: calc(50% + 158px * sin(-64.2857deg));
-  transform: translate(-50%, -50%);
-}
-.outer-ring button:nth-child(3) {
-  left: calc(50% + 158px * cos(-38.5714deg));
-  top: calc(50% + 158px * sin(-38.5714deg));
-  transform: translate(-50%, -50%);
-}
-.outer-ring button:nth-child(4) {
-  left: calc(50% + 158px * cos(-12.8571deg));
-  top: calc(50% + 158px * sin(-12.8571deg));
-  transform: translate(-50%, -50%);
-}
-.outer-ring button:nth-child(5) {
-  left: calc(50% + 158px * cos(12.8571deg));
-  top: calc(50% + 158px * sin(12.8571deg));
-  transform: translate(-50%, -50%);
-}
-.outer-ring button:nth-child(6) {
-  left: calc(50% + 158px * cos(38.5714deg));
-  top: calc(50% + 158px * sin(38.5714deg));
-  transform: translate(-50%, -50%);
-}
+/* 14 buttons evenly spaced by 25.7143deg (360 / 14) on ONE single ring */
+.outer-ring button:nth-child(1) { --angle: 0deg; }
+.outer-ring button:nth-child(2) { --angle: 25.7143deg; }
+.outer-ring button:nth-child(3) { --angle: 51.4286deg; }
+.outer-ring button:nth-child(4) { --angle: 77.1429deg; }
+.outer-ring button:nth-child(5) { --angle: 102.8571deg; }
+.outer-ring button:nth-child(6) { --angle: 128.5714deg; }
 
-/* Single Ring: Inner Ring buttons merged into the same single ring (8 buttons) */
-.inner-ring button:nth-child(1) {
-  left: calc(50% + 158px * cos(64.2857deg));
-  top: calc(50% + 158px * sin(64.2857deg));
-  transform: translate(-50%, -50%);
-}
-.inner-ring button:nth-child(2) {
-  left: calc(50% + 158px * cos(90deg));
-  top: calc(50% + 158px * sin(90deg));
+.inner-ring button:nth-child(1) { --angle: 154.2857deg; }
+.inner-ring button:nth-child(2) { --angle: 180deg; }
+.inner-ring button:nth-child(3) { --angle: 205.7143deg; }
+.inner-ring button:nth-child(4) { --angle: 231.4286deg; }
+.inner-ring button:nth-child(5) { --angle: 257.1429deg; }
+.inner-ring button:nth-child(6) { --angle: 282.8571deg; }
+.inner-ring button:nth-child(7) { --angle: 308.5714deg; }
+.inner-ring button:nth-child(8) { --angle: 334.2857deg; }
 
-   transform: translate(-50%, -50%);
-}
-.inner-ring button:nth-child(3) {
-  left: calc(50% + 158px * cos(115.7143deg));
-  top: calc(50% + 158px * sin(115.7143deg));
-  transform: translate(-50%, -50%);
-}
-.inner-ring button:nth-child(4) {
-  left: calc(50% + 158px * cos(141.4286deg));
-  top: calc(50% + 158px * sin(141.4286deg));
-  transform: translate(-50%, -50%);
-}
-.inner-ring button:nth-child(5) {
-  left: calc(50% + 158px * cos(167.1429deg));
-  top: calc(50% + 158px * sin(167.1429deg));
-  transform: translate(-50%, -50%);
-}
-.inner-ring button:nth-child(6) {
-  left: calc(50% + 158px * cos(192.8571deg));
-  top: calc(50% + 158px * sin(192.8571deg));
-  transform: translate(-50%, -50%);
-}
-.inner-ring button:nth-child(7) {
-  left: calc(50% + 158px * cos(218.5714deg));
-  top: calc(50% + 158px * sin(218.5714deg));
-  transform: translate(-50%, -50%);
-}
-.inner-ring button:nth-child(8) {
-  left: calc(50% + 158px * cos(244.2857deg));
-  top: calc(50% + 158px * sin(244.2857deg));
-  transform: translate(-50%, -50%);
-}
-
-/* CENTRE CLOSE BUTTON */
 #closeControlStudio {
   position: absolute !important;
   left: 50% !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
-  width: 68px !important;
-  height: 68px !important;
+  width: 64px !important;
+  height: 64px !important;
   border-radius: 50% !important;
   background: #111 !important;
   color: #fff !important;
   border: 3px solid #c0c0c0 !important;
-  font-size: 34px !important;
+  font-size: 32px !important;
   z-index: 10;
-  box-shadow: none !important;
 }
-
-.control-ring button:active {
-  box-shadow: none !important;
-}
-
-#controlStudioBtn {
-  touch-action: none;
-  z-index: 4000 !important;
-}
+ 
  
 /* IRFANTALK - RESPONSIVE SCREEN FOUNDATION */
 
