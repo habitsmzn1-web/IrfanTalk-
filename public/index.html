@@ -357,7 +357,59 @@ select {
         width: 100%;
     }
 }
- 
+ (function () {
+  const RADIUS = 92;
+  const TOTAL = 14;
+  const STEP = 360 / TOTAL;
+
+  function syncSixAndEightIntoOneRing() {
+    const panel = document.getElementById("controlStudioPanel");
+    if (!panel || panel.classList.contains("hidden")) return;
+
+    const ring = document.getElementById("controlStudioRing");
+    if (!ring) return;
+
+    // 6 wale aur 8 wale dono rings ke sabhi 14 buttons ko ek saath le rahe hain
+    const allButtons = Array.from(ring.querySelectorAll("button")).filter(
+      (btn) => btn.id !== "closeControlStudio"
+    );
+
+    if (!allButtons.length) return;
+
+    const rot =
+      typeof currentRotation === "number" && Number.isFinite(currentRotation)
+        ? currentRotation
+        : 0;
+
+    allButtons.forEach((btn, index) => {
+      const angle = index * STEP + rot;
+
+      btn.classList.remove("hidden");
+      btn.style.display = "flex";
+      btn.style.alignItems = "center";
+      btn.style.justifyContent = "center";
+      btn.style.position = "absolute";
+      btn.style.left = "50%";
+      btn.style.top = "50%";
+      btn.style.opacity = "1";
+      btn.style.visibility = "visible";
+      btn.style.transform =
+        `translate(-50%, -50%) rotate(${angle}deg) translateY(-${RADIUS}px) rotate(${-angle}deg)`;
+
+      btn.querySelectorAll("svg, i, path, circle, rect, line, polygon").forEach((icon) => {
+        icon.style.opacity = "1";
+        icon.style.visibility = "visible";
+      });
+    });
+  }
+
+  function frameLoop() {
+    syncSixAndEightIntoOneRing();
+    requestAnimationFrame(frameLoop);
+  }
+
+  requestAnimationFrame(frameLoop);
+})();
  
 </style>
 </head>
@@ -1631,4 +1683,5 @@ $("welcomeScreen").classList.remove("hidden");
 </script>
 </body>
 </html>
+
 
