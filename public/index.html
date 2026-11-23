@@ -1585,6 +1585,40 @@ $("welcomeScreen").classList.remove("hidden");
  }
 });
 
+ (function () {
+  const RADIUS = 104;
+  const COUNT = 14;
+  const STEP = 360 / COUNT;
+
+  function getRingButtons() {
+    return Array.from(document.querySelectorAll("#controlStudioRing .control-ring button"));
+  }
+
+  function syncAll14Together() {
+    const btns = getRingButtons();
+    if (!btns.length) return;
+
+    const rot = typeof currentRotation === "number" && !Number.isNaN(currentRotation)
+      ? currentRotation
+      : 0;
+
+    btns.forEach((btn, index) => {
+      const angle = index * STEP + rot;
+      btn.style.position = "absolute";
+      btn.style.left = "50%";
+      btn.style.top = "50%";
+      btn.style.transform =
+        `translate(-50%, -50%) rotate(${angle}deg) translateY(-${RADIUS}px) rotate(${-angle}deg)`;
+    });
+  }
+
+  function loop() {
+    syncAll14Together();
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+})();
  
 </script>
 </body>
