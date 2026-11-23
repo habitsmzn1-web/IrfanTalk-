@@ -1557,9 +1557,9 @@ velocity = 0;
     let diff = now - startAngle;
     if (diff > +180) diff -= 360;
     if (diff < -180) diff += 360;
-    angleOffset = -diff * 8;
-  velocity = -diff * 8;
-    startAngle = now
+    angleOffset += diff * 8;
+    velocity = diff * 8;
+    startAngle = now;
     drawRing();
    
   }, true);
