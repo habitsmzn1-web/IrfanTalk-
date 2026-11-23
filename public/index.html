@@ -1476,7 +1476,7 @@ $("welcomeScreen").classList.remove("hidden");
   const PANEL_ID = "controlStudioPanel";
   const RING_ID = "controlStudioRing";
   const CLOSE_ID = "closeControlStudio";
-  const RADIUS = 106;
+  const RADIUS = 110;
 
   let angleOffset = 0;
   let dragging = false;
@@ -1555,7 +1555,7 @@ $("welcomeScreen").classList.remove("hidden");
     let diff = now - startAngle;
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;
-    angleOffset += diff * 1.5;
+    angleOffset += diff * 3.5;
     startAngle = now;
     drawRing();
    
@@ -1578,6 +1578,7 @@ $("welcomeScreen").classList.remove("hidden");
 </script>
 </body>
 </html>
+
 
 
 
