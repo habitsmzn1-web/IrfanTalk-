@@ -1557,6 +1557,7 @@ velocity = 0;
     let diff = now - startAngle;
     if (diff > +180) diff -= 360;
     if (diff < -180) diff += 360;
+   if (e.clientY < getCenter().y) diff = -diff;
     angleOffset += diff * 8;
     velocity = diff * 8;
     startAngle = now;
