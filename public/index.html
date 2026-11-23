@@ -212,27 +212,13 @@ border: 2px solid #aeb4bb !important;
     flex-shrink: 0;
   }
 }
- 
-#controlStudioPanel {
+ #controlStudioRing {
   position: fixed !important;
-  inset: 0 !important;
-  z-index: 3500 !important;
-  overflow: visible !important;
+  left: 0;
+  top: 0;
+  width: 280px !important;
+  height: 280px !important;
   pointer-events: none;
-  touch-action: none;
-}
-
-#controlStudioPanel.hidden {
-  display: none !important;
-}
-
-#controlStudioRing {
-  position: fixed !important;
-  width: 300px !important;
-  height: 300px !important;
-  overflow: visible !important;
-  pointer-events: none;
-  z-index: 3501 !important;
 }
 
 .control-ring,
@@ -240,10 +226,9 @@ border: 2px solid #aeb4bb !important;
 #innerControlRing {
   position: absolute !important;
   inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  overflow: visible !important;
+  border-radius: 50%;
   pointer-events: none;
+  touch-action: none;
 }
 
 .control-ring button {
@@ -264,11 +249,8 @@ border: 2px solid #aeb4bb !important;
   background: linear-gradient(145deg, #222, #000) !important;
   color: #fff !important;
   border: 2.5px solid #c0c0c0 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
   pointer-events: auto !important;
   touch-action: none;
-  z-index: 3502 !important;
   transform:
     translate(-50%, -50%)
     rotate(calc(var(--angle) + var(--ring-rot)))
@@ -276,14 +258,42 @@ border: 2px solid #aeb4bb !important;
     rotate(calc(-1 * (var(--angle) + var(--ring-rot)))) !important;
 }
 
-.control-ring button svg,
-.control-ring button i {
+.control-ring button svg {
   width: 20px;
   height: 20px;
-  opacity: 1 !important;
-  visibility: visible !important;
 }
- 
+
+/* 14 buttons evenly spaced by 25.7143deg on ONE single circle */
+.outer-ring button:nth-child(1) { --angle: 0deg; }
+.outer-ring button:nth-child(2) { --angle: 25.7143deg; }
+.outer-ring button:nth-child(3) { --angle: 51.4286deg; }
+.outer-ring button:nth-child(4) { --angle: 77.1429deg; }
+.outer-ring button:nth-child(5) { --angle: 102.8571deg; }
+.outer-ring button:nth-child(6) { --angle: 128.5714deg; }
+
+.inner-ring button:nth-child(1) { --angle: 154.2857deg; }
+.inner-ring button:nth-child(2) { --angle: 180deg; }
+.inner-ring button:nth-child(3) { --angle: 205.7143deg; }
+.inner-ring button:nth-child(4) { --angle: 231.4286deg; }
+.inner-ring button:nth-child(5) { --angle: 257.1429deg; }
+.inner-ring button:nth-child(6) { --angle: 282.8571deg; }
+.inner-ring button:nth-child(7) { --angle: 308.5714deg; }
+.inner-ring button:nth-child(8) { --angle: 334.2857deg; }
+
+#closeControlStudio {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 50% !important;
+  background: #111 !important;
+  color: #fff !important;
+  border: 3px solid #c0c0c0 !important;
+  font-size: 28px !important;
+  z-index: 10;
+}
  
  
 /* IRFANTALK - RESPONSIVE SCREEN FOUNDATION */
