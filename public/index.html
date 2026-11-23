@@ -1435,6 +1435,9 @@ auth.onAuthStateChanged(async user=>{
  currentUser=user;
  if(user){
  connectVoiceSocket(user);
+  await syncDirectory(user);
+  loadUsers();
+   
   $("welcomeScreen").classList.add("hidden");
 $("authScreen").classList.add("hidden");
 $("appShell").classList.remove("hidden");
