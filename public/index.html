@@ -1472,19 +1472,12 @@ let rotationVelocity = 0;
         `translate(-50%, -50%) rotate(${-currentRotation}deg)`;
     });
   }
-  ring.addEventListener("pointerdown", (event) => {
-    const button = event.target.closest("button");
-    if (!button) return;
-
-         
-    setControlStudioOpen(
-      !controlStudioPanel.classList.contains("hidden")
-    );
+    
+});
+    }
   }
-}
-  
-  
 } else {
+  
   $("appShell").classList.add("hidden");
 $("authScreen").classList.add("hidden");
 $("welcomeScreen").classList.remove("hidden");
@@ -1596,5 +1589,6 @@ $("welcomeScreen").classList.remove("hidden");
 </script>
 </body>
 </html>
+
 
 
