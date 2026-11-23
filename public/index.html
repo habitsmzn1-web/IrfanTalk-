@@ -1481,7 +1481,7 @@ $("welcomeScreen").classList.remove("hidden");
   let angleOffset = 0;
   let dragging = false;
   let startAngle = 0;
-
+let velocity = 0;
   function getButtons() {
     const ring = document.getElementById(RING_ID);
     if (!ring) return [];
@@ -1545,6 +1545,7 @@ $("welcomeScreen").classList.remove("hidden");
 
     dragging = true;
     startAngle = pointerDeg(e, getCenter());
+velocity = 0;
     drawRing();
   }, true);
 
@@ -1556,7 +1557,8 @@ $("welcomeScreen").classList.remove("hidden");
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;
     angleOffset += diff * 3.5;
-    startAngle = now;
+  velocity = diff * 3.5;
+    startAngle = now
     drawRing();
    
   }, true);
@@ -1569,15 +1571,23 @@ $("welcomeScreen").classList.remove("hidden");
   document.addEventListener("pointercancel", stop, true);
 
   function loop() {
-    drawRing();
-    requestAnimationFrame(loop);
+  if (!dragging && Math.abs(velocity) > 0.05) {
+    angleOffset += velocity;
+    velocity *= 0.93;
+  } else if (!dragging) {
+    velocity = 0;
   }
+  drawRing();
+  requestAnimationFrame(loop);
+  }
+  
   requestAnimationFrame(loop);
 })();
  
 </script>
 </body>
 </html>
+
 
 
 
