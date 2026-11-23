@@ -1544,8 +1544,9 @@ let velocity = 0;
     if (!btn || btn.id === CLOSE_ID) return;
 
     dragging = true;
-    startAngle = pointerDeg(e, getCenter());
 velocity = 0;
+    startAngle = pointerDeg(e, getCenter());
+
     drawRing();
   }, true);
 
@@ -1557,7 +1558,7 @@ velocity = 0;
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;
     angleOffset += diff * 8;
-  velocity = diff * -8;
+  velocity -= diff * 8;
     startAngle = now
     drawRing();
    
@@ -1575,7 +1576,7 @@ velocity = 0;
     angleOffset += velocity;
     velocity *= 0.96;
   } else if (!dragging) {
-    velocity = 0;
+   
   }
   drawRing();
   requestAnimationFrame(loop);
@@ -1587,6 +1588,7 @@ velocity = 0;
 </script>
 </body>
 </html>
+
 
 
 
