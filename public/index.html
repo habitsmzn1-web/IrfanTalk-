@@ -1582,14 +1582,13 @@ $("welcomeScreen").classList.remove("hidden");
 
   document.addEventListener("pointerup", stop, true);
   document.addEventListener("pointercancel", stop, true);
-
-  function loop() {
+function loop() {
     drawRing();
       requestAnimationFrame(loop);
     }
-}
-}});
+ }
  
+  
 </script>
 </body>
 </html>
