@@ -1556,6 +1556,7 @@ $("welcomeScreen").classList.remove("hidden");
     velocity = dx * 0.6;
     startX = e.clientX;
   }, { capture: true, passive: false });
+    const stop = () => { dragging = false; };
   
   document.addEventListener("pointerup", stop, true);
   document.addEventListener("pointercancel", stop, true);
