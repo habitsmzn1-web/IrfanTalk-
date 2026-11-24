@@ -1505,10 +1505,14 @@ let rotationVelocity = 0;
   let startAngle = 0;
 
   function getButtons() {
-  const ring = document.getElementById(RING_ID);
   const panel = document.getElementById(PANEL_ID);
-  const scope = (ring && ring.querySelectorAll("button").length > 1) ? ring : panel;
+  const ring = document.getElementById(RING_ID);
+  const scope = panel || ring;
   if (!scope) return [];
+
+  const controlled = Array.from(scope.querySelectorAll("button[data-control]"));
+  if (controlled.length) return controlled;
+
   return Array.from(scope.querySelectorAll("button")).filter(
     (b) => b.id !== CLOSE_ID && !b.closest(`#${CLOSE_ID}`)
   );
@@ -1529,35 +1533,33 @@ function drawRing() {
   const ring = document.getElementById(RING_ID);
   if (ring) {
     ring.style.overflow = "visible";
-    ring.style.position = ring.style.position || "relative";
+    ring.style.setProperty("--ring-rot", `${angleOffset}deg`);
   }
 
   const step = 360 / btns.length;
   btns.forEach((btn, i) => {
-    const deg = i * step + angleOffset;
+    const deg = i * step;
     btn.classList.remove("hidden");
+    btn.style.setProperty("--angle", `${deg}deg`);
+    btn.style.setProperty("--ring-rot", `${angleOffset}deg`);
+    if (typeof RADIUS !== "undefined") {
+      btn.style.setProperty("--r", `${RADIUS}px`);
+    }
     btn.style.display = "flex";
     btn.style.alignItems = "center";
     btn.style.justifyContent = "center";
-    btn.style.position = "absolute";
-    btn.style.left = "50%";
-    btn.style.top = "50%";
-    btn.style.margin = "0";
     btn.style.opacity = "1";
     btn.style.visibility = "visible";
     btn.style.pointerEvents = "auto";
-    btn.style.zIndex = "20";
-    btn.style.transform = `translate(-50%, -50%) rotate(${deg}deg) translateY(-${RADIUS}px) rotate(${-deg}deg)`;
+    btn.style.zIndex = "25";
 
     btn.querySelectorAll("svg, i, span").forEach((icon) => {
       icon.style.opacity = "1";
       icon.style.visibility = "visible";
-      icon.style.transform = "rotate(0deg)";
     });
   });
 }
   
-
   document.addEventListener("pointerdown", (e) => {
     const panel = document.getElementById(PANEL_ID);
     if (!panel || panel.classList.contains("hidden")) return;
