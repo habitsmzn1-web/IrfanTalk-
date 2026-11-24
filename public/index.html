@@ -1557,19 +1557,27 @@ function drawRing() {
 }
   
   
-  document.addEventListener("pointerdown", (e) => {
+    document.addEventListener("pointerdown", (e) => {
     const panel = document.getElementById(PANEL_ID);
     if (!panel || panel.classList.contains("hidden")) return;
-    const btn = e.target.closest(`#${RING_ID} button`);
-    if (!btn || btn.id === CLOSE_ID) return;
+
+    const ring = document.getElementById(RING_ID);
+    const closeBtn = document.getElementById(CLOSE_ID);
+    if (closeBtn && (e.target === closeBtn || closeBtn.contains(e.target))) return;
+
+    const onRing = ring && (e.target === ring || ring.contains(e.target));
+    const onPanelRing = e.target.closest && e.target.closest(`#${PANEL_ID}`);
+    if (!onRing && !onPanelRing) return;
 
     dragging = true;
     startAngle = pointerDeg(e, getCenter());
+    if (e.cancelable) e.preventDefault();
     drawRing();
   }, true);
 
   document.addEventListener("pointermove", (e) => {
     if (!dragging) return;
+    if (e.cancelable) e.preventDefault();
     const now = pointerDeg(e, getCenter());
     let diff = now - startAngle;
     if (diff > 180) diff -= 360;
@@ -1577,7 +1585,8 @@ function drawRing() {
     angleOffset += diff;
     startAngle = now;
     drawRing();
-  }, true);
+  }, { capture: true, passive: false });
+  
 
   function stop() {
     dragging = false;
@@ -1595,13 +1604,7 @@ function drawRing() {
       }
     }).observe(panelEl, { attributes: true, attributeFilter: ["class"] });
   }
-  function loop() {
-  if (!dragging) angleOffset += 0.25;
-  drawRing();
-  requestAnimationFrame(loop);
-}
-
-loop();
+  
 })();
 </script>
  
