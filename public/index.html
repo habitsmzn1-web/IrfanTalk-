@@ -1499,7 +1499,32 @@ let rotationVelocity = 0;
   let angleOffset = 0;
   let dragging = false;
   let startAngle = 0;
+  let velocity = 0;
+  let inertiaId = null;
 
+  function stopInertia() {
+    if (inertiaId) {
+      cancelAnimationFrame(inertiaId);
+      inertiaId = null;
+    }
+  }
+
+  function startInertia() {
+    stopInertia();
+    function stepInertia() {
+      if (dragging || Math.abs(velocity) < 0.08) {
+        velocity = 0;
+        inertiaId = null;
+        return;
+      }
+      angleOffset += velocity;
+      velocity *= 0.92;
+      drawRing();
+      inertiaId = requestAnimationFrame(stepInertia);
+    }
+    inertiaId = requestAnimationFrame(stepInertia);
+  }
+  
   function getButtons() {
   const panel = document.getElementById(PANEL_ID);
   const ring = document.getElementById(RING_ID);
@@ -1556,7 +1581,7 @@ function drawRing() {
   });
 }
   
-    document.addEventListener("pointerdown", (e) => {
+      document.addEventListener("pointerdown", (e) => {
     const panel = document.getElementById(PANEL_ID);
     if (!panel || panel.classList.contains("hidden")) return;
 
@@ -1566,6 +1591,9 @@ function drawRing() {
 
     const targetEl = ring || panel;
     if (!targetEl || (!targetEl.contains(e.target) && e.target !== targetEl)) return;
+
+    stopInertia();
+    velocity = 0;
 
     if (ring) ring.style.touchAction = "none";
     panel.style.touchAction = "none";
@@ -1579,6 +1607,9 @@ function drawRing() {
     if (e.cancelable) e.preventDefault();
     drawRing();
   }, true);
+  
+
+    
 
   document.addEventListener("pointermove", (e) => {
     if (!dragging) return;
@@ -1594,15 +1625,20 @@ function drawRing() {
     let diff = now - startAngle;
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;
+       velocity = diff * 0.85;
+   
     angleOffset += diff;
     startAngle = now;
     drawRing();
   }, { capture: true, passive: false });
   
     
-  function stop() {
+    function stop() {
+    if (!dragging) return;
     dragging = false;
+    startInertia();
   }
+
 
   document.addEventListener("pointerup", stop, true);
   document.addEventListener("pointercancel", stop, true);
