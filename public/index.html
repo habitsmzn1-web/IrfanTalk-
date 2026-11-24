@@ -1548,17 +1548,22 @@ $("welcomeScreen").classList.remove("hidden");
       startX = e.clientX;
       drawRing();
   }, true);
-
-    document.addEventListener("pointermove", (e) => {
-    if (!dragging) return;
-    if (e.cancelable) e.preventDefault();
-    const dx = e.clientX - startX;
-    angleOffset += dx * 0.6;
-    velocity = dx * 0.6;
-    startX = e.clientX;
-  }, { capture: true, passive: false });
-    dragging = false;
-  }
+  
+document.addEventListener("pointermove", (e) => {
+ 
+  if (!dragging) return;
+  if (e.cancelable) e.preventDefault();
+  const now = pointerDeg(e, getCenter());
+  let diff = now - startAngle;
+  if (diff > +180) diff -= 360;
+  if (diff < -180) diff += 360;
+  if (e.clientY < getCenter().y) diff = -diff;
+  angleOffset += diff * 8;
+  velocity = diff * 8;
+  startAngle = now;
+}.rrue);
+}, { passive: false });
+  
 
   document.addEventListener("pointerup", stop, true);
   document.addEventListener("pointercancel", stop, true);
@@ -1568,12 +1573,8 @@ $("welcomeScreen").classList.remove("hidden");
     angleOffset += velocity;
     velocity *= 0.96;
   } else if (!dragging) {
-   
   }
   drawRing();
-  requestAnimationFrame(loop);
-  }
-  
   requestAnimationFrame(loop);
 })();
  
