@@ -238,8 +238,8 @@ border: 2px solid #aeb4bb !important;
   position: absolute !important;
   left: 50% !important;
   top: 50% !important;
-  width: 46px !important;
-  height: 46px !important;
+  width: 40px !important;
+  height: 40px !important;
   margin: 0 !important;
   padding: 0 !important;
   border-radius: 50% !important;
@@ -251,11 +251,7 @@ border: 2px solid #aeb4bb !important;
   border: 2.5px solid #c0c0c0 !important;
   pointer-events: auto !important;
   touch-action: none;
-  transform:
-    translate(-50%, -50%)
-    rotate(calc(var(--angle) + var(--ring-rot)))
-    translateY(calc(-1 * var(--r)))
-    rotate(calc(-1 * (var(--angle) + var(--ring-rot)))) !important;
+  
 }
 
 .control-ring button svg {
@@ -1498,7 +1494,7 @@ let rotationVelocity = 0;
   const PANEL_ID = "controlStudioPanel";
   const RING_ID = "controlStudioRing";
   const CLOSE_ID = "closeControlStudio";
-  const RADIUS = 92;
+  const RADIUS = 108;
 
   let angleOffset = 0;
   let dragging = false;
@@ -1536,15 +1532,18 @@ function drawRing() {
     ring.style.setProperty("--ring-rot", `${angleOffset}deg`);
   }
 
+  const rVal =
+    typeof RADIUS !== "undefined" && Number(RADIUS) > 0
+      ? `${RADIUS}px`
+      : "104px";
   const step = 360 / btns.length;
+
   btns.forEach((btn, i) => {
     const deg = i * step;
     btn.classList.remove("hidden");
     btn.style.setProperty("--angle", `${deg}deg`);
     btn.style.setProperty("--ring-rot", `${angleOffset}deg`);
-    if (typeof RADIUS !== "undefined") {
-      btn.style.setProperty("--r", `${RADIUS}px`);
-    }
+    btn.style.setProperty("--r", rVal);
     btn.style.display = "flex";
     btn.style.alignItems = "center";
     btn.style.justifyContent = "center";
@@ -1559,6 +1558,7 @@ function drawRing() {
     });
   });
 }
+  
   
   document.addEventListener("pointerdown", (e) => {
     const panel = document.getElementById(PANEL_ID);
