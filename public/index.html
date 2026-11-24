@@ -1585,13 +1585,17 @@ function drawRing() {
 
   document.addEventListener("pointerup", stop, true);
   document.addEventListener("pointercancel", stop, true);
-function loop() {
-  if (!dragging) angleOffset += 0.25;
   drawRing();
-  requestAnimationFrame(loop);
-}
 
-loop();
+  const panelEl = document.getElementById(PANEL_ID);
+  if (panelEl) {
+    new MutationObserver(() => {
+      if (!panelEl.classList.contains("hidden")) {
+        drawRing();
+      }
+    }).observe(panelEl, { attributes: true, attributeFilter: ["class"] });
+  }
+  
 })();
 </script>
  
