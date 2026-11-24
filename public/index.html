@@ -1556,7 +1556,6 @@ function drawRing() {
   });
 }
   
-  
     document.addEventListener("pointerdown", (e) => {
     const panel = document.getElementById(PANEL_ID);
     if (!panel || panel.classList.contains("hidden")) return;
@@ -1565,12 +1564,18 @@ function drawRing() {
     const closeBtn = document.getElementById(CLOSE_ID);
     if (closeBtn && (e.target === closeBtn || closeBtn.contains(e.target))) return;
 
-    const onRing = ring && (e.target === ring || ring.contains(e.target));
-    const onPanelRing = e.target.closest && e.target.closest(`#${PANEL_ID}`);
-    if (!onRing && !onPanelRing) return;
+    const targetEl = ring || panel;
+    if (!targetEl || (!targetEl.contains(e.target) && e.target !== targetEl)) return;
+
+    if (ring) ring.style.touchAction = "none";
+    panel.style.touchAction = "none";
+
+    const rect = (ring || panel).getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
 
     dragging = true;
-    startAngle = pointerDeg(e, getCenter());
+    startAngle = (Math.atan2(e.clientY - cy, e.clientX - cx) * 180) / Math.PI;
     if (e.cancelable) e.preventDefault();
     drawRing();
   }, true);
@@ -1578,7 +1583,14 @@ function drawRing() {
   document.addEventListener("pointermove", (e) => {
     if (!dragging) return;
     if (e.cancelable) e.preventDefault();
-    const now = pointerDeg(e, getCenter());
+
+    const panel = document.getElementById(PANEL_ID);
+    const ring = document.getElementById(RING_ID);
+    const rect = ((ring && ring.offsetWidth > 0) ? ring : panel).getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    const now = (Math.atan2(e.clientY - cy, e.clientX - cx) * 180) / Math.PI;
     let diff = now - startAngle;
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;
@@ -1587,7 +1599,7 @@ function drawRing() {
     drawRing();
   }, { capture: true, passive: false });
   
-
+    
   function stop() {
     dragging = false;
   }
