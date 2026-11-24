@@ -452,12 +452,16 @@ select {
     
     </div>
   </div>
-
+<button id="autoplayBtn" type="button" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:#232818;color:#d8e2c8;border:1px solid #3c4628;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;">
+  <span id="autoplayIcon" style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#9be12e;color:#111;font-size:11px;">🔊</span>
+  <span id="autoplayLabel">Autoplay</span>
+</button>
+ 
   <!-- Search, Add Contact and Logout -->
   <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px">
     <button type="button" class="icon" title="Search">⌕</button>
     <button type="button" class="icon" title="Add Contact">♙+</button>
-    <button id="logoutBtn" class="icon" title="Sign out">↪</button>
+   
   </div>
 
 </header>
@@ -806,7 +810,16 @@ $("welcomeGoogleBtn").onclick=()=>{
   setAuthMode("login");
   $("googleBtn").click();
 };
-
+let autoplayEnabled = true;
+const autoplayBtn = document.getElementById("autoplayBtn");
+const autoplayLabel = document.getElementById("autoplayLabel");
+if (autoplayBtn && autoplayLabel) {
+  autoplayBtn.onclick = () => {
+    autoplayEnabled = !autoplayEnabled;
+    autoplayLabel.textContent = autoplayEnabled ? "Autoplay" : "Autoplay Off";
+  };
+}
+ 
 // Phone login will be enabled later
  
 $("logoutBtn").onclick=()=>auth.signOut();
