@@ -1456,13 +1456,14 @@ let rotationVelocity = 0;
   function updateButtons() {
     ring.querySelectorAll("button").forEach((button) => {
       button.style.transform =
-        `translate(-50%, -50%) rotate(${-currentRotation}deg)`;
+        `translate(+50%, +50%) rotate(${-currentRotation}deg)`;
     });
   }
     
 });
     }
   }
+  
 } else {
   
   $("appShell").classList.add("hidden");
@@ -1558,18 +1559,8 @@ $("welcomeScreen").classList.remove("hidden");
   }, { capture: true, passive: false });
     const stop = () => { dragging = false; };
   
-  document.addEventListener("pointerup", stop, true);
+  document.addEventListener("pointerup",true);
   document.addEventListener("pointercancel", stop, true);
-
-  function loop() {
-  if (!dragging && Math.abs(velocity) > 0.05) {
-    angleOffset += velocity;
-    velocity *= 0.96;
-  } else if (!dragging) {
-  }
-  drawRing();
-  requestAnimationFrame(loop);
-})();
  
 </script>
 </body>
