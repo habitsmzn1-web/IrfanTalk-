@@ -1595,7 +1595,13 @@ function drawRing() {
       }
     }).observe(panelEl, { attributes: true, attributeFilter: ["class"] });
   }
-  
+  function loop() {
+  if (!dragging) angleOffset += 0.25;
+  drawRing();
+  requestAnimationFrame(loop);
+}
+
+loop();
 })();
 </script>
  
