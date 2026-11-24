@@ -1643,7 +1643,20 @@ function drawRing() {
   document.addEventListener("pointerup", stop, true);
   document.addEventListener("pointercancel", stop, true);
   drawRing();
+  const refreshRing = () => {
+    const panel = document.getElementById(PANEL_ID);
+    const ring = document.getElementById(RING_ID);
+    if (ring) {
+      ring.style.zIndex = "9999";
+    }
+    if (panel && !panel.classList.contains("hidden")) {
+      drawRing();
+    }
+  };
 
+  refreshRing();
+  setInterval(refreshRing, 500);
+  
   const panelEl = document.getElementById(PANEL_ID);
   if (panelEl) {
     new MutationObserver(() => {
