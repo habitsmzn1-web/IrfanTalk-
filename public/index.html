@@ -1481,7 +1481,7 @@ $("welcomeScreen").classList.remove("hidden");
   let angleOffset = 0;
   let dragging = false;
   let startAngle = 0;
-let velocity = 0;
+  let velocity = 0;
   function getButtons() {
     const ring = document.getElementById(RING_ID);
     if (!ring) return [];
@@ -1543,27 +1543,20 @@ let velocity = 0;
     const btn = e.target.closest(`#${RING_ID} button`);
     if (!btn || btn.id === CLOSE_ID) return;
 
-    dragging = true;
-velocity = 0;
-    startAngle = pointerDeg(e, getCenter());
-
-    drawRing();
+          dragging = true;
+      velocity = 0;
+      startX = e.clientX;
+      drawRing();
   }, true);
 
-  document.addEventListener("pointermove", (e) => {
-        if (!dragging) return;
+    document.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
     if (e.cancelable) e.preventDefault();
-    const now = pointerDeg(e, getCenter());
-    let diff = now - startAngle;
-    if (diff > +180) diff -= 360;
-    if (diff < -180) diff += 360;
-   if (e.clientY < getCenter().y) diff = -diff;
-    angleOffset += diff * 8;
-    velocity = diff * 8;
-    startAngle = now;
-  }, true);
-
-  function stop() {
+    const dx = e.clientX - startX;
+    angleOffset += dx * 0.6;
+    velocity = dx * 0.6;
+    startX = e.clientX;
+  }, { capture: true, passive: false });
     dragging = false;
   }
 
