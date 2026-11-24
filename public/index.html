@@ -1532,29 +1532,26 @@ function drawRing() {
     ring.style.setProperty("--ring-rot", `${angleOffset}deg`);
   }
 
-  const rVal =
-    typeof RADIUS !== "undefined" && Number(RADIUS) > 0
-      ? `${RADIUS}px`
-      : "104px";
-  const step = 360 / btns.length;
-
+    const step = 360 / btns.length;
   btns.forEach((btn, i) => {
-    const deg = i * step;
+    const deg = i * step + angleOffset;
     btn.classList.remove("hidden");
-    btn.style.setProperty("--angle", `${deg}deg`);
-    btn.style.setProperty("--ring-rot", `${angleOffset}deg`);
-    btn.style.setProperty("--r", rVal);
+    btn.style.position = "absolute";
+    btn.style.left = "50%";
+    btn.style.top = "50%";
+    btn.style.margin = "0";
     btn.style.display = "flex";
     btn.style.alignItems = "center";
     btn.style.justifyContent = "center";
     btn.style.opacity = "1";
     btn.style.visibility = "visible";
     btn.style.pointerEvents = "auto";
-    btn.style.zIndex = "25";
+    btn.style.transform = `translate(-50%, -50%) rotate(${deg}deg) translateY(-${RADIUS}px) rotate(${-deg}deg)`;
 
     btn.querySelectorAll("svg, i, span").forEach((icon) => {
       icon.style.opacity = "1";
       icon.style.visibility = "visible";
+      icon.style.transform = "rotate(0deg)";
     });
   });
 }
