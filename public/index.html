@@ -1476,13 +1476,10 @@ let rotationVelocity = 0;
     const button = event.target.closest("button");
     if (!button) return;
 
-         
-    setControlStudioOpen(
-      !controlStudioPanel.classList.contains("hidden")
-    );
+         setControlStudioOpen(!controlStudioPanel.classList.contains("hidden"));
   }
 });
-  
+   
   
 } else {
   $("appShell").classList.add("hidden");
