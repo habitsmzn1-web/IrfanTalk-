@@ -1477,10 +1477,9 @@ $("welcomeScreen").classList.remove("hidden");
   const RING_ID = "controlStudioRing";
   const CLOSE_ID = "closeControlStudio";
   const RADIUS = 110;
-
   let angleOffset = 0;
   let dragging = false;
-  let startAngle = 0;
+  let startX = 0;
   let velocity = 0;
   function getButtons() {
     const ring = document.getElementById(RING_ID);
@@ -1549,22 +1548,15 @@ $("welcomeScreen").classList.remove("hidden");
       drawRing();
   }, true);
   
-document.addEventListener("pointermove", (e) => {
- 
-  if (!dragging) return;
-  if (e.cancelable) e.preventDefault();
-  const now = pointerDeg(e, getCenter());
-  let diff = now - startAngle;
-  if (diff > +180) diff -= 360;
-  if (diff < -180) diff += 360;
-  if (e.clientY < getCenter().y) diff = -diff;
-  angleOffset += diff * 8;
-  velocity = diff * 8;
-  startAngle = now;
-}.rrue);
-}, { passive: false });
+  document.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    if (e.cancelable) e.preventDefault();
+    const dx = e.clientX - startX;
+    angleOffset += dx * 0.6;
+    velocity = dx * 0.6;
+    startX = e.clientX;
+  }, { capture: true, passive: false });
   
-
   document.addEventListener("pointerup", stop, true);
   document.addEventListener("pointercancel", stop, true);
 
@@ -1581,15 +1573,5 @@ document.addEventListener("pointermove", (e) => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
 
 
