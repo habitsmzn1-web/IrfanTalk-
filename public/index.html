@@ -1593,8 +1593,9 @@ controlStudioBtn.style.fontSize = open ? "32px" : "";
 
       document.body.style.overflow = open ? "hidden" : "";
     }
-
+window.__closeControlStudio = () => setControlStudioOpen(false);
     if (closeControlStudio) {
+     
       // Keep the central close control visible and usable while the studio is open.
       closeControlStudio.style.display = "flex";
       closeControlStudio.style.pointerEvents = "auto";
@@ -1667,48 +1668,7 @@ controlStudioBtn.style.fontSize = open ? "32px" : "";
       setControlStudioOpen(!isOpen);
     });
 
-// CONTROL STUDIO - INDEPENDENT MANUAL RING ROTATION
-const ROTATION_SENSITIVITY = 25;
-   const manualRings = [
-  document.getElementById("innerControlRing"),
-  document.getElementById("outerControlRing")
-];
-manualRings.forEach((ring) => {
-  if (!ring || ring.dataset.manualRotationReady) return;
-  ring.dataset.manualRotationReady = "true";
-  let startAngle = 0;
-  let startRotation = 0;
-  let currentRotation = 0;
-  let activePointer = null;
-  let moved = false;
-  let suppressClick = false;
- let lastRotationChange = 0;
-let inertiaFrame = null;
- let lastMoveTime = 0;
-let rotationVelocity = 0;
-  function getAngle(event) {
-    const rect = ring.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    return Math.atan2(
-      event.clientY - centerY,
-      event.clientX - centerX
-    ) * 180 / Math.PI;
-  }
-  function updateButtons() {
-    ring.querySelectorAll("button").forEach((button) => {
-      button.style.transform =
-        `translate(-50%, -50%) rotate(${-currentRotation}deg)`;
-    });
-  }
-  ring.addEventListener("pointerdown", (event) => {
-    const button = event.target.closest("button");
-    if (!button) return;
 
-         setControlStudioOpen(!controlStudioPanel.classList.contains("hidden"));
-  
-    });
-  });
     }
   }
 
@@ -1823,10 +1783,10 @@ function drawRing() {
     // Ring buttons must receive their own pointer/click events. Only the empty
     // ring area is used for rotation dragging; otherwise preventDefault here
     // can cancel the click and make every studio control appear frozen.
-    if (e.target.closest && e.target.closest("button[data-control]")) return;
 
-    const targetEl = ring || panel;
-    if (!targetEl || (!targetEl.contains(e.target) && e.target !== targetEl)) return;
+if (e.target.closest && e.target.closest("button[data-control]")) return;
+
+const targetEl = ring || panel;
 
     stopInertia();
     velocity = 0;
@@ -1920,7 +1880,7 @@ document.addEventListener("click", (e) => {
     translator: () => console.log("AI Translator opened"),
     camera: () => console.log("Camera opened"),
     vault: () => console.log("Vault opened"),
-    settings: () => { if (typeof setControlStudioOpen === "function") setControlStudioOpen(false); const m = document.getElementById("appSettingsModal"); if (!m) return; const show = m.style.display === "none" || m.classList.contains("hidden"); m.classList.toggle("hidden", !show); m.style.display = show ? "flex" : "none"; if (show) ["optSoundAlerts","optAutoHideRing","optCompactMode"].forEach(id => { const el = document.getElementById(id); if (el) el.checked = localStorage.getItem(id) === "true"; }); },
+    settings: () => { if (window.__closeControlStudio) window.__closeControlStudio(); const m = document.getElementById("appSettingsModal"); if (!m) return; const show = m.style.display === "none" || m.classList.contains("hidden"); m.classList.toggle("hidden", !show); m.style.display = show ? "flex" : "none"; if (show) ["optSoundAlerts","optAutoHideRing","optCompactMode"].forEach(id => { const el = document.getElementById(id); if (el) el.checked = localStorage.getItem(id) === "true"; }); },
     theme: (btn, isActive) => { const root = document.documentElement; const nextTheme = root.getAttribute("data-theme") === "light" ? "dark" : "light"; root.setAttribute("data-theme", nextTheme); document.body.classList.toggle("theme-light", nextTheme === "light"); document.body.classList.toggle("theme-dark", nextTheme === "dark"); localStorage.setItem("appTheme", nextTheme); },
   };
   if (actions[key]) actions[key](btn, isActive);
