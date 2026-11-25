@@ -2002,14 +2002,16 @@ const closeControlStudio = $("closeControlStudio");
 
 auth.onAuthStateChanged(async (user) => {
   currentUser = user;
-  if (user) {
-    connectVoiceSocket(user);
-    await syncDirectory(user);
-    loadUsers();
-
-    if ($("welcomeScreen")) $("welcomeScreen").classList.add("hidden");
-    if ($("authScreen")) $("authScreen").classList.add("hidden");
-    if ($("appShell")) $("appShell").classList.remove("hidden");
+      if (user) {
+      connectVoiceSocket(user);
+      await syncDirectory(user);
+      loadUsers();
+      if ($("welcomeScreen")) $("welcomeScreen").classList.add("hidden");
+      if ($("authScreen")) $("authScreen").classList.add("hidden");
+      if ($("appShell")) $("appShell").classList.remove("hidden");
+    } else {
+      if ($("appShell")) $("appShell").classList.add("hidden");
+    }
 
     if (controlStudioBtn && controlStudioPanel) {
       if (!controlStudioBtn.dataset.controlStudioReady) {
