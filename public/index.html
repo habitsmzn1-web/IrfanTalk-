@@ -1275,24 +1275,61 @@ if ($("forgotBtn")) {
  
 // Welcome screen buttons
 function openAuthScreen(mode) {
-  if ($("welcomeScreen")) $("welcomeScreen").classList.add("hidden");
-  if ($("authScreen")) $("authScreen").classList.remove("hidden");
-  setAuthMode(mode);
+  const nextMode = mode || "login";
+  const welcomeEl = $("welcomeScreen");
+  const authEl = $("authScreen");
+
+  if (welcomeEl) welcomeEl.classList.add("hidden");
+  if (authEl) authEl.classList.remove("hidden");
+
+  if (typeof setAuthMode === "function") {
+    setAuthMode(nextMode);
+  }
+  if (typeof closeChat === "function") {
+    closeChat();
+  }
 }
 
-if ($("welcomeEmailBtn")) {
-  $("welcomeEmailBtn").onclick = () => openAuthScreen("signup");
+function bindWelcomeAndAuthHandlers() {
+  if ($("welcomeEmailBtn")) {
+    $("welcomeEmailBtn").onclick = () => openAuthScreen("signup");
+  }
+
+  if ($("welcomeLoginBtn")) {
+    $("welcomeLoginBtn").onclick = () => openAuthScreen("login");
+  }
+
+  if ($("welcomeGoogleBtn")) {
+    $("welcomeGoogleBtn").onclick = () => {
+      openAuthScreen("login");
+      if ($("googleBtn")) {
+        $("googleBtn").click();
+      }
+    };
+  }
+
+  if ($("welcomeForgotBtn")) {
+    $("welcomeForgotBtn").onclick = () => {
+      openAuthScreen("login");
+      if ($("forgotBtn")) {
+        $("forgotBtn").click();
+      }
+    };
+  }
+
+  if ($("forgotBtn") && !$("forgotBtn").onclick) {
+    $("forgotBtn").onclick = () => {
+      const statusEl = $("authStatus") || $("status");
+      if (statusEl) {
+        statusEl.textContent = "Password reset ke liye apna email enter karein.";
+      }
+    };
+  }
 }
 
-if ($("welcomeLoginBtn")) {
-  $("welcomeLoginBtn").onclick = () => openAuthScreen("login");
-}
-
-if ($("welcomeGoogleBtn")) {
-  $("welcomeGoogleBtn").onclick = () => {
-    openAuthScreen("login");
-    if ($("googleBtn")) $("googleBtn").click();
-  };
+bindWelcomeAndAuthHandlers();
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bindWelcomeAndAuthHandlers);
 }
 
 // Phone login will be enabled later
