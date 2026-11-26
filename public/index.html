@@ -465,91 +465,244 @@ select {
   }
 </style>
 
-<style id="irfanAudioCallStyles">
-  /* ===== Chat header action buttons: black / white / silver ===== */
-  #chatView .call-actions{display:flex;gap:8px;margin-left:auto;align-items:center;flex-shrink:0;}
-  #chatView .chat-action-btn{
-    width:38px;height:38px;flex:none;padding:0;margin:0;
-    border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(145deg,#2a2a2a,#000);
-    color:#fff;
-    border:2px solid #c0c0c0;
-    box-shadow:0 4px 12px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);
-    cursor:pointer;
-    transition:transform .12s ease, background .15s ease, color .15s ease;
-    -webkit-tap-highlight-color:transparent;
+<style id="irfanCallDesignPatch">
+  #irfanCallDock {
+    position: fixed;
+    right: 16px;
+    bottom: 18px;
+    z-index: 9990;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
   }
-  #chatView .chat-action-btn svg{width:18px;height:18px;display:block}
-  #chatView .chat-action-btn:active{transform:scale(.92)}
-  #chatView .chat-action-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
-  #chatView .chat-action-btn.is-busy{background:linear-gradient(145deg,#ffffff,#d6d6d6);color:#000;border-color:#9aa0a6}
 
-  /* ===== Audio call screen ===== */
-  #itcOverlay{
-    position:fixed;inset:0;z-index:10080;
-    display:none;flex-direction:column;align-items:center;justify-content:space-between;
-    padding:calc(22px + env(safe-area-inset-top)) 20px calc(34px + env(safe-area-inset-bottom));
-    background:radial-gradient(circle at 50% 32%,#2b2b2b 0%,#101010 55%,#000 100%);
-    color:#fff;box-sizing:border-box;
-    font-family:Arial,sans-serif;
-    user-select:none;-webkit-user-select:none;
+  .irfan-call-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    border: 1px solid rgba(17, 24, 39, 0.14);
+    background: #ffffff;
+    color: #111827;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
   }
-  #itcOverlay.is-open{display:flex}
-  .itc-top{width:100%;display:flex;justify-content:center}
-  .itc-badge{
-    display:inline-flex;align-items:center;gap:7px;
-    padding:7px 14px;border-radius:999px;
-    border:1.5px solid #8f959b;background:rgba(255,255,255,.04);
-    color:#d4d8dc;font-size:12px;font-weight:700;letter-spacing:1px;
+
+  .irfan-call-btn:active {
+    transform: scale(0.96);
   }
-  .itc-badge svg{width:14px;height:14px}
-  .itc-center{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin-top:-40px}
-  .itc-avatar-wrap{position:relative;width:132px;height:132px;margin-bottom:18px}
-  .itc-avatar{
-    position:relative;z-index:1;width:132px;height:132px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:50px;font-weight:800;color:#fff;
-    background:linear-gradient(145deg,#2e2e2e,#000);
-    border:3px solid #c0c0c0;
-    box-shadow:0 10px 30px rgba(0,0,0,.6), inset 0 2px 0 rgba(255,255,255,.1);
+
+  .irfan-call-btn svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
   }
-  .itc-pulse{
-    position:absolute;inset:0;border-radius:50%;
-    border:2px solid rgba(200,200,200,.55);opacity:0;pointer-events:none;
+
+  body.dark .irfan-call-btn,
+  body[data-theme="dark"] .irfan-call-btn {
+    background: #1f2937;
+    color: #f9fafb;
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
   }
-  #itcOverlay.is-ringing .itc-pulse{animation:itcPulse 2s ease-out infinite}
-  #itcOverlay.is-ringing .itc-pulse.d2{animation-delay:1s}
-  @keyframes itcPulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.65);opacity:0}}
-  #itcName{margin:0;font-size:27px;font-weight:800;color:#fff;max-width:88vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  #itcStatus{font-size:14px;font-weight:700;color:#b9bec4;min-height:18px}
-  #itcTimer{font-size:16px;font-weight:700;color:#fff;letter-spacing:1px;font-variant-numeric:tabular-nums}
-  .itc-controls{display:flex;justify-content:center;align-items:flex-start;gap:44px;width:100%}
-  .itc-ctl{display:flex;flex-direction:column;align-items:center;gap:9px}
-  .itc-ctl span{font-size:12px;font-weight:700;color:#cfd3d7;letter-spacing:.5px}
-  .itc-btn{
-    width:68px;height:68px;padding:0;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(145deg,#262626,#000);
-    color:#fff;border:2.5px solid #c0c0c0;
-    box-shadow:0 8px 20px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.12);
-    cursor:pointer;touch-action:manipulation;
-    transition:transform .12s ease, background .15s ease, color .15s ease;
-    -webkit-tap-highlight-color:transparent;
+
+  .irfan-call-btn--video {
+    border-color: rgba(37, 99, 235, 0.4);
   }
-  .itc-btn svg{width:28px;height:28px}
-  .itc-btn:active{transform:scale(.92)}
-  .itc-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
-  /* White "primary" buttons: Accept, End and active toggles */
-  .itc-btn.is-light,
-  .itc-btn.is-on{
-    background:linear-gradient(145deg,#ffffff,#d4d4d4);
-    color:#000;border-color:#8f959b;
+
+  body.dark .irfan-call-btn--video,
+  body[data-theme="dark"] .irfan-call-btn--video {
+    border-color: rgba(96, 165, 250, 0.45);
   }
-  .itc-btn--end svg{transform:rotate(135deg)}
-  .itc-btn--decline svg{transform:rotate(135deg)}
-  #itcIncomingControls[hidden],#itcActiveControls[hidden],#itcTimer[hidden]{display:none!important}
-  @media (max-height:600px){.itc-center{margin-top:0}.itc-avatar-wrap,.itc-avatar{width:104px;height:104px}.itc-avatar{font-size:40px}}
+</style>
+<style id="irfanCallScreenPatch">
+  #irfanCallOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10060;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 18px 28px;
+    background: #0b1020;
+    color: #f9fafb;
+    box-sizing: border-box;
+  }
+
+  #irfanCallOverlay.is-open {
+    display: flex;
+  }
+
+  .irfan-call-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .irfan-call-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .irfan-call-status {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-top: 4px;
+  }
+
+  .irfan-call-stage {
+    position: relative;
+    flex: 1;
+    margin: 18px 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #irfanRemoteVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+
+  #irfanLocalVideo {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    width: 112px;
+    height: 152px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    background: #111827;
+    display: none;
+  }
+
+  .irfan-call-placeholder {
+    text-align: center;
+    padding: 20px;
+  }
+  .irfan-call-avatar {
+    width: 78px;
+    height: 78px;
+    border-radius: 999px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    background: rgba(59, 130, 246, 0.22);
+    border: 1px solid rgba(96, 165, 250, 0.45);
+  }
+
+  .irfan-call-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .irfan-ctrl-btn {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.1;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .irfan-ctrl-btn:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+
+  .irfan-ctrl-btn.is-off {
+    background: #ffffff;
+    color: #111827;
+  }
+
+  .irfan-ctrl-btn.irfan-ctrl-btn--end {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+  }
+</style>
+<style id="fixes">
+html{-webkit-text-size-adjust:100%}
+img,video{max-width:100%}
+@media(min-width:700px){.shell{width:min(100%,720px)}#chatView{left:50%!important;right:auto!important;width:min(100%,780px)!important;transform:translateX(-50%);border-left:1px solid #2b3539;border-right:1px solid #2b3539}}
+@media(min-width:1100px){.shell{width:min(100%,900px)}#chatView{width:min(100%,900px)!important}}
+@media(max-height:560px){#welcomeScreen{padding-top:24px!important}#welcomeScreen .auth-card{max-height:none!important}}
+#irfanCallOverlay{background:#000!important}
+.irfan-call-avatar{background:#2b2b2b!important;border-color:#aeb4bb!important}
+.irfan-call-btn--video{border-color:#aeb4bb!important}
+.irfan-ctrl-btn{min-width:64px;height:48px;padding:0 14px;font-size:13px;font-weight:700}
+.irfan-ctrl-btn.is-off{background:#fff;color:#111}
+#irfanLocalVideo,#irfanRemoteVideo{object-fit:cover}
+</style>
+<style id="irfanDesign">
+/* ---- IrfanTalk design v2: black / white / silver ---- */
+#usersView{padding:14px 12px!important}
+#usersView .chan-title{font-size:12px;letter-spacing:4px;text-transform:uppercase;text-align:left;margin:0 0 6px;color:#777}
+#usersView .search{display:none;margin-bottom:6px}
+body.show-search #usersView .search{display:flex}
+#usersView .footer-note{display:none}
+#usersList>div:not(.empty){flex-wrap:nowrap!important;justify-content:flex-start!important;overflow-x:auto;gap:12px!important;padding:10px 2px 8px!important;scrollbar-width:none}
+#usersList>div:not(.empty)::-webkit-scrollbar{display:none}
+#usersList>div:not(.empty)>button{width:74px!important;flex:none;padding:2px!important}
+#usersList .avatar{width:58px!important;height:58px!important;min-width:58px!important;font-size:22px!important;color:#fff;box-shadow:0 0 0 2px #f5f5f5,0 0 0 4px #aeb4bb}
+#usersList small{display:none}
+#usersList strong{font-size:12.5px!important;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#recentCards{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.rcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#0d0d0d;color:#f2f2f2;border:1px solid #3a3a3a;border-left:4px solid #aeb4bb;border-radius:14px;padding:10px 12px;cursor:pointer;font:inherit}
+.rcard .rav{width:42px;height:42px;border-radius:50%;background:#222;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+.rcard .rmid{flex:1;min-width:0;display:flex;flex-direction:column}
+.rcard .rmid strong{font-size:14px}
+.rcard .rmid span{font-size:12.5px;color:#9a9a9a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rcard small{color:#8a8a8a;font-size:11px;flex:none}
+/* mic dials */
+.dial,#homeTalkBtn{position:relative!important;border:3px solid #aeb4bb!important;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;--ri:81%}
+#homeTalkBtn{--ri:82%;box-shadow:0 12px 28px #00000035!important;margin:14px 0 !important}
+.dial{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#3a3a3a,#111 60%,#000);color:#e8e8e8;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.dial::before,#homeTalkBtn::before{content:"";position:absolute;inset:-13px;border-radius:50%;background:repeating-conic-gradient(#aeb4bb 0 1.4deg,transparent 1.4deg 10deg);-webkit-mask:radial-gradient(circle closest-side,transparent var(--ri),#000 calc(var(--ri) + 1%));mask:radial-gradient(circle closest-side,transparent var(--ri),#000 calc(var(--ri) + 1%));pointer-events:none}
+#homeTalkBtn::before{inset:-22px}
+.ptt-on{border-color:#ff2b2b!important;box-shadow:0 0 0 4px #ff2b2b55,0 0 26px #ff2b2bAA!important}
+.ptt-on::before{background:repeating-conic-gradient(#ff2b2b 0 1.4deg,transparent 1.4deg 10deg)!important;animation:irfSpin 3s linear infinite}
+@keyframes irfSpin{to{transform:rotate(360deg)}}
+#controlStudioBtn.ptt-on{border-color:#ff2b2b!important}
+/* chat room */
+#chatView,#chatView #messages,#chatView #chatStatus{background:#0b0b0c!important}
+#chatView #messageForm{background:#111!important;border-top:1px solid #2a2a2a!important}
+#chatView #messageInput{background:#1a1a1a!important;border-color:#333!important}
+#chatView #messageForm .btn{background:#000!important;border:2px solid #aeb4bb!important}
+#chatView .bubble{background:#1b1b1c;color:#f3f3f3;border:1px solid #3a3a3a;border-radius:16px 16px 16px 4px;max-width:78%}
+#chatView .bubble.mine{background:#e6e8ea;color:#0b0b0b;border-color:#e6e8ea;border-radius:16px 16px 4px 16px}
+#chatView .bubble small{color:#8a8a8a}
+#chatView .bubble.mine small{color:#555}
+#chatAvatar{box-shadow:0 0 0 2px #0b0b0c,0 0 0 4px #aeb4bb}
+#composeMicBtn{width:42px;height:42px;border-radius:50%;background:#000;color:#fff;border:2px solid #aeb4bb;display:flex;align-items:center;justify-content:center;padding:0;flex:none;touch-action:none;-webkit-user-select:none;user-select:none}
+#chatTalkDock{flex-shrink:0;display:flex;justify-content:center;align-items:center;padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px));background:#111;border-top:1px solid #2a2a2a}
+@media(max-height:640px){#chatTalkDock .dial{width:68px;height:68px}#chatTalkDock{padding:10px 0}}
 </style>
 </head>
 <body>
@@ -686,7 +839,7 @@ select {
 
  <!-- CONTACTS -->
 <section id="usersView" class="card" style="padding:18px 12px;">
-  <h2 style="text-align:center;">Your Connections</h2>
+  <h2 class="chan-title">Channels</h2>
 
   <div class="search">
     <input id="userSearch" class="field" style="margin:0;"
@@ -700,6 +853,7 @@ select {
   <div id="usersList" class="list">
     <div class="empty">Sign in to see registered users.</div>
   </div>
+  <div id="recentCards"></div>
 
   <div class="footer-note">
     Your IrfanTalk connections
@@ -835,15 +989,15 @@ select {
     <small style="font-size:11.5px;color:#9aa5aa;">Private conversation</small>
   </div>
 
-  <div class="call-actions">
-    <button id="audioCallBtn" class="chat-action-btn" title="Audio call" aria-label="Audio call" type="button">
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+  <div class="call-actions" style="display:flex;gap:8px;margin-left:auto;align-items:center;flex-shrink:0;">
+    <button id="audioCallBtn" class="icon" title="Audio Call" aria-label="Audio Call" type="button" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #aeb4bb;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+      <span aria-hidden="true">📞</span>
     </button>
-    <button id="videoCallBtn" class="chat-action-btn" title="Video call" aria-label="Video call" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="13" height="12" rx="2.5"/><path d="M15 10.5l6-3.5v10l-6-3.5z" fill="currentColor"/></svg>
+    <button id="videoCallBtn" class="icon" title="Video Call" aria-label="Video Call" type="button" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #aeb4bb;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+      <span aria-hidden="true">📹</span>
     </button>
-    <button id="moreBtn" class="chat-action-btn" title="More options" aria-label="More options" type="button">
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+    <button id="moreBtn" class="icon" title="More options" aria-label="More options" type="button" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #aeb4bb;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+      <span aria-hidden="true">⋮</span>
     </button>
   </div>
 </div>
@@ -866,17 +1020,19 @@ select {
         <!-- Bottom Composer Bar -->
 <form id="messageForm" class="compose" style="display:flex;align-items:center;gap:8px;padding:8px 10px 10px;background:#181f22;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
   <input id="messageInput" class="field" type="text" maxlength="2000" placeholder="Write a message..." aria-label="Write a message" autocomplete="off" style="flex:1;min-width:0;background:#222b2f;color:#fff;border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:10px 14px;font-size:14px;outline:none;">
-  <button class="btn" type="submit" style="padding:10px 16px;border-radius:999px;border:none;background:#144d37;color:#fff;font-weight:600;font-size:13.5px;cursor:pointer;flex-shrink:0;">Send</button>
+  <button id="composeMicBtn" type="button" aria-label="Hold to talk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+  <button class="btn" type="submit" style="padding:10px 16px;border-radius:999px;border:none;background:#000;color:#fff;font-weight:600;font-size:13.5px;cursor:pointer;flex-shrink:0;">Send</button>
 </form>
+<div id="chatTalkDock"><button id="chatTalkBtn" class="dial" type="button" aria-label="Hold to talk"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button></div>
 </section>
 </main>
 
 <script src="/socket.io/socket.io.js"></script>
-<script>
 
+<script>
 const firebaseConfig={apiKey:"AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",authDomain:"irfantalk.firebaseapp.com",databaseURL:"https://irfantalk-default-rtdb.firebaseio.com",projectId:"irfantalk",storageBucket:"irfantalk.firebasestorage.app",messagingSenderId:"218169866517",appId:"1:218169866517:web:447670dc6a565e1e7b511c"};
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth(), db = firebase.database();
+const auth=firebase.auth(), db=firebase.database();
 let currentUser = null, authMode = "login", otpSentFor = "", activeUser = null, chatRef = null, chatListener = null, allUsers = [];
 let voiceSocket = null;
 
@@ -1199,9 +1355,10 @@ async function syncDirectory(user) {
     updatedAt: firebase.database.ServerValue.TIMESTAMP
   };
   await db.ref("userDirectory/" + user.uid).update(profile);
+  if (email) await db.ref("emailIndex/" + ek(email)).set(user.uid);
 }
 
-async function loadUsers() {
+async function loadUsers_old() {
   if (!currentUser?.uid) return;
   if ($("usersStatus")) $("usersStatus").textContent = "Loading registered users…";
   if ($("usersList")) $("usersList").innerHTML = '<div class="empty">Please wait…</div>';
@@ -1262,15 +1419,16 @@ function renderUsers() {
     const avatar = document.createElement("div");
     avatar.className = "avatar";
     avatar.textContent = (u.name[0] || "U").toUpperCase();
-    avatar.style.cssText = "width:82px;height:82px;min-width:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;background:linear-gradient(145deg,#6738f4,#12bfe0);";
+    avatar.style.cssText = "width:82px;height:82px;min-width:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;background:#111;";
 
     const name = document.createElement("strong");
+    if (u.photo) setAvatar(avatar, u, u.name);
     name.textContent = u.name;
     name.style.cssText = "text-align:center;font-size:14px;";
 
     const chat = document.createElement("small");
     chat.textContent = "Chat";
-    chat.style.cssText = "color:#20c5e0;font-size:12px;";
+    chat.style.cssText = "color:#8a8f94;font-size:12px;";
 
     item.append(avatar, name, chat);
     item.onclick = () => {
@@ -1283,10 +1441,10 @@ function renderUsers() {
 }
 
 if ($("userSearch")) {
-  $("userSearch").addEventListener("input", renderUsers);
+  $("userSearch").addEventListener("input", () => renderUsers());
 }
 if ($("refreshBtn")) {
-  $("refreshBtn").onclick = loadUsers;
+  $("refreshBtn").onclick = () => loadUsers();
 }
 
 let irfanChatAudio = null;
@@ -1396,7 +1554,7 @@ async function openChat(person) {
   const displayName = person.name || "User";
   if ($("chatName")) $("chatName").textContent = displayName;
   if ($("chatAvatar")) {
-    $("chatAvatar").textContent = (displayName[0] || "U").toUpperCase();
+    setAvatar($("chatAvatar"), person, displayName);
   }
 
   if (chatRef && chatListener) {
@@ -1746,8 +1904,8 @@ async function startTalking() {
       if (sender) await sender.replaceTrack(track);
     }
 
-    if (voiceStatus) voiceStatus.textContent = "🎙️ Transmitting...";
-    if ($("homeVoiceStatus")) $("homeVoiceStatus").textContent = "🎙️ Transmitting...";
+    if (voiceStatus) voiceStatus.textContent = "Ready to talk";
+    if ($("homeVoiceStatus")) $("homeVoiceStatus").textContent = "Ready to talk";
   } catch (error) {
     if (voiceStatus) voiceStatus.textContent = "Microphone permission required";
     if ($("homeVoiceStatus")) $("homeVoiceStatus").textContent = "Microphone permission required";
@@ -1817,6 +1975,7 @@ if ($("messageForm")) {
       if (typeof playIrfanChatSound === "function") {
         playIrfanChatSound();
       }
+      indexChat(activeUser);
       if (input) input.value = "";
       if ($("chatStatus")) $("chatStatus").textContent = "";
     } catch (err) {
@@ -2591,9 +2750,9 @@ document.addEventListener("click", (e) => {
       window.__renderStudioContacts();
     }
     },
-     translator: () => console.log("AI Translator opened"),
-    camera: () => console.log("Camera opened"),
-    vault: () => console.log("Vault opened"),
+     translator: () => window.__studioTool("translator"),
+    camera: () => window.__studioTool("camera"),
+    vault: () => window.__studioTool("vault"),
     settings: () => {
       if (window.__closeControlStudio) window.__closeControlStudio();
       const m = document.getElementById("appSettingsModal");
@@ -2707,581 +2866,6 @@ applySavedToggle("liveCaption", "data-live-caption", "live-caption-active", "cap
   </div>
 </div>
 
-<!-- IRFANTALK AUDIO CALL SCREEN -->
-<div id="itcOverlay" role="dialog" aria-modal="true" aria-labelledby="itcName" aria-hidden="true">
-  <div class="itc-top">
-    <span class="itc-badge">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-      IRFANTALK AUDIO CALL
-    </span>
-  </div>
-
-  <div class="itc-center">
-    <div class="itc-avatar-wrap">
-      <span class="itc-pulse"></span><span class="itc-pulse d2"></span>
-      <div id="itcAvatar" class="itc-avatar" aria-hidden="true">U</div>
-    </div>
-    <h2 id="itcName">User</h2>
-    <div id="itcStatus" role="status" aria-live="polite">Calling…</div>
-    <div id="itcTimer" hidden>00:00</div>
-  </div>
-
-  <div id="itcIncomingControls" class="itc-controls" hidden>
-    <div class="itc-ctl">
-      <button id="itcDeclineBtn" type="button" class="itc-btn itc-btn--decline" aria-label="Decline call">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
-      </button>
-      <span>Decline</span>
-    </div>
-    <div class="itc-ctl">
-      <button id="itcAcceptBtn" type="button" class="itc-btn is-light" aria-label="Accept call">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
-      </button>
-      <span>Accept</span>
-    </div>
-  </div>
-
-  <div id="itcActiveControls" class="itc-controls">
-    <div class="itc-ctl">
-      <button id="itcMuteBtn" type="button" class="itc-btn" aria-label="Mute microphone" aria-pressed="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4M8 22h8"/>
-          <path class="itc-slash" d="M3 3l18 18" style="display:none"/>
-        </svg>
-      </button>
-      <span id="itcMuteLabel">Mute</span>
-    </div>
-    <div class="itc-ctl">
-      <button id="itcEndBtn" type="button" class="itc-btn is-light itc-btn--end" aria-label="End call">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
-      </button>
-      <span>End</span>
-    </div>
-  </div>
-
-  <audio id="itcRemoteAudio" autoplay playsinline></audio>
-</div>
-
-<script id="irfanAudioCallScript">
-/* =====================================================================
-   IrfanTalk – 1:1 Audio Call (WebRTC) with Firebase Realtime Database
-   signaling.
-
-   Database layout
-     calls/{callId}                 call document (offer, answer, status)
-     calls/{callId}/callerCandidates/{id}   ICE candidates from caller
-     calls/{callId}/calleeCandidates/{id}   ICE candidates from callee
-     callInbox/{calleeUid}/{callId}         "you have an incoming call" ping
-
-   Status flow: ringing -> accepted -> ended
-                ringing -> declined | missed | busy | cancelled
-   ===================================================================== */
-(function () {
-  "use strict";
-
-  // Add a TURN server here for calls over mobile data / strict networks, e.g.
-  // { urls: "turn:YOUR_TURN_HOST:3478", username: "user", credential: "pass" }
-  const ICE_SERVERS = [
-    { urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"] }
-  ];
-  const RING_TIMEOUT_MS = 45000;      // stop ringing after 45 s
-  const INBOX_MAX_AGE_MS = 120000;    // ignore very old incoming pings
-
-  // Test hooks are optional; normal app uses the global Firebase db / user.
-  const cdb = () => window.__irfanCallDb || db;
-  const me = () => window.__irfanCallUser || currentUser;
-  const el = (id) => document.getElementById(id);
-
-  const PHONE_ICON_HTML = el("audioCallBtn") ? el("audioCallBtn").innerHTML : "";
-
-  let call = null;          // the one active call (or null)
-  let inbox = null;         // { ref, handler }
-
-  /* ---------------------------- UI ---------------------------- */
-
-  function myName() {
-    const u = me();
-    if (!u) return "IrfanTalk user";
-    return (u.displayName || (u.email || "").split("@")[0] || "IrfanTalk user").trim();
-  }
-
-  function showOverlay(peerName, statusText, mode) {
-    const ov = el("itcOverlay");
-    if (!ov) return;
-    const name = peerName || "User";
-    el("itcName").textContent = name;
-    el("itcAvatar").textContent = (name[0] || "U").toUpperCase();
-    setStatus(statusText);
-    setMode(mode);
-    ov.classList.add("is-open");
-    ov.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-  }
-
-  function hideOverlay() {
-    const ov = el("itcOverlay");
-    if (!ov) return;
-    ov.classList.remove("is-open", "is-ringing");
-    ov.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  }
-
-  function setStatus(text) {
-    if (el("itcStatus")) el("itcStatus").textContent = text || "";
-  }
-
-  // mode: "incoming" | "outgoing" | "active" | "ended"
-  function setMode(mode) {
-    const ov = el("itcOverlay");
-    const incoming = mode === "incoming";
-    el("itcIncomingControls").hidden = !incoming;
-    el("itcActiveControls").hidden = incoming || mode === "ended";
-    ov.classList.toggle("is-ringing", mode === "incoming" || mode === "outgoing");
-    if (mode !== "active") el("itcTimer").hidden = true;
-    resetMuteButton();
-  }
-
-  function resetMuteButton() {
-    const b = el("itcMuteBtn");
-    if (!b) return;
-    b.classList.remove("is-on");
-    b.setAttribute("aria-pressed", "false");
-    b.setAttribute("aria-label", "Mute microphone");
-    const slash = b.querySelector(".itc-slash");
-    if (slash) slash.style.display = "none";
-    if (el("itcMuteLabel")) el("itcMuteLabel").textContent = "Mute";
-  }
-
-  function setHeaderBusy(busy) {
-    const b = el("audioCallBtn");
-    if (b) b.classList.toggle("is-busy", busy);
-  }
-
-  function startTimer() {
-    if (!call || call.timerId) return;
-    call.connectedAt = Date.now();
-    const t = el("itcTimer");
-    t.hidden = false;
-    const tick = () => {
-      if (!call) return;
-      const s = Math.floor((Date.now() - call.connectedAt) / 1000);
-      t.textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
-    };
-    tick();
-    call.timerId = setInterval(tick, 1000);
-  }
-
-  /* ------------------------- Ring tones ------------------------- */
-
-  let ringTimer = null;
-
-  function audioCtx() {
-    try {
-      const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return null;
-      if (typeof irfanChatAudio !== "undefined" && irfanChatAudio) return irfanChatAudio;
-      if (!window.__itcAudioCtx) window.__itcAudioCtx = new AC();
-      return window.__itcAudioCtx;
-    } catch { return null; }
-  }
-
-  function beep(ctx, freq, start, dur, vol) {
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.type = "sine";
-    o.frequency.value = freq;
-    g.gain.setValueAtTime(0.0001, start);
-    g.gain.exponentialRampToValueAtTime(vol, start + 0.02);
-    g.gain.setValueAtTime(vol, start + dur - 0.05);
-    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
-    o.connect(g); g.connect(ctx.destination);
-    o.start(start); o.stop(start + dur + 0.02);
-  }
-
-  function startRing(kind) {
-    stopRing();
-    const play = () => {
-      const ctx = audioCtx();
-      if (ctx) {
-        if (ctx.state === "suspended") ctx.resume().catch(() => {});
-        const t = ctx.currentTime + 0.02;
-        if (kind === "incoming") {
-          beep(ctx, 880, t, 0.35, 0.18); beep(ctx, 660, t + 0.4, 0.35, 0.18);
-        } else {
-          beep(ctx, 440, t, 0.9, 0.06);  // soft ring-back for the caller
-        }
-      }
-      if (kind === "incoming" && navigator.vibrate) {
-        try { navigator.vibrate([400, 200, 400]); } catch {}
-      }
-    };
-    play();
-    ringTimer = setInterval(play, kind === "incoming" ? 2000 : 3000);
-  }
-
-  function stopRing() {
-    if (ringTimer) { clearInterval(ringTimer); ringTimer = null; }
-    if (navigator.vibrate) { try { navigator.vibrate(0); } catch {} }
-  }
-
-  /* ----------------------- Firebase helpers ----------------------- */
-
-  function listen(ref, event, handler) {
-    ref.on(event, handler, (err) => {
-      console.error("Call listener error:", err);
-      if (call) finish("Connection error: " + err.message, false);
-    });
-    call.listeners.push([ref, event, handler]);
-  }
-
-  function friendlyError(err) {
-    const msg = (err && err.message) || String(err);
-    if (/permission/i.test(msg)) return "Permission denied. Update Firebase Database Rules for calls.";
-    if (/NotAllowed|Permission denied by system|denied/i.test(msg)) return "Microphone permission required.";
-    if (/NotFound|Requested device not found/i.test(msg)) return "No microphone found.";
-    return msg;
-  }
-
-  /* ----------------------- WebRTC plumbing ----------------------- */
-
-  async function getMic() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      throw new Error("Calls need HTTPS (or localhost) and a modern browser.");
-    }
-    return navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-      video: false
-    });
-  }
-
-  function createPc(myCandidatesPath) {
-    const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
-    call.pc = pc;
-
-    call.stream.getTracks().forEach((t) => pc.addTrack(t, call.stream));
-
-    pc.onicecandidate = (e) => {
-      if (e.candidate && call && call.pc === pc) {
-        cdb().ref(myCandidatesPath).push(e.candidate.toJSON()).catch(() => {});
-      }
-    };
-
-    pc.ontrack = (e) => {
-      const audio = el("itcRemoteAudio");
-      if (!audio) return;
-      audio.srcObject = e.streams[0] || new MediaStream([e.track]);
-      audio.play().catch(() => {});
-    };
-
-    pc.onconnectionstatechange = () => {
-      if (!call || call.pc !== pc) return;
-      const s = pc.connectionState;
-      if (s === "connected") {
-        clearTimeout(call.disconnectTimer);
-        setStatus("Connected");
-        setMode("active");
-        startTimer();
-      } else if (s === "disconnected") {
-        setStatus("Reconnecting…");
-        clearTimeout(call.disconnectTimer);
-        call.disconnectTimer = setTimeout(() => {
-          if (call && call.pc === pc && pc.connectionState !== "connected") finish("Call dropped", true);
-        }, 12000);
-      } else if (s === "failed") {
-        finish("Connection failed. A TURN server may be needed on this network.", true);
-      }
-    };
-    return pc;
-  }
-
-  async function addRemoteCandidate(json) {
-    if (!call || !call.pc || !json) return;
-    if (!call.pc.remoteDescription) { call.pendingCandidates.push(json); return; }
-    try { await call.pc.addIceCandidate(json); } catch (e) { console.warn("ICE add failed", e); }
-  }
-
-  async function flushCandidates() {
-    const list = call ? call.pendingCandidates.splice(0) : [];
-    for (const c of list) {
-      try { await call.pc.addIceCandidate(c); } catch (e) { console.warn("ICE add failed", e); }
-    }
-  }
-
-  function newCallState(role, id, peer) {
-    return {
-      role, id, peer,
-      pc: null, stream: null,
-      listeners: [], pendingCandidates: [],
-      ringTimeout: null, timerId: null, disconnectTimer: null,
-      connectedAt: 0, finished: false
-    };
-  }
-
-  /* ------------------------- Outgoing call ------------------------- */
-
-  async function startCall(peer) {
-    const user = me();
-    if (!user) { alert("Please log in first."); return; }
-    if (!peer || !peer.uid) { alert("Open a chat first."); return; }
-    if (peer.uid === user.uid) { alert("You cannot call yourself."); return; }
-    if (call) { showOverlay(call.peer.name, el("itcStatus").textContent, call.pc && call.pc.connectionState === "connected" ? "active" : (call.role === "caller" ? "outgoing" : "incoming")); return; }
-
-    const ref = cdb().ref("calls").push();
-    call = newCallState("caller", ref.key, { uid: peer.uid, name: peer.name || "User" });
-    setHeaderBusy(true);
-    showOverlay(call.peer.name, "Starting call…", "outgoing");
-
-    try {
-      call.stream = await getMic();
-      if (!call || call.finished) return;
-
-      const base = "calls/" + call.id;
-      const pc = createPc(base + "/callerCandidates");
-      const offer = await pc.createOffer({ offerToReceiveAudio: true });
-      await pc.setLocalDescription(offer);
-
-      await ref.set({
-        callerUid: user.uid,
-        callerName: myName(),
-        calleeUid: call.peer.uid,
-        calleeName: call.peer.name,
-        type: "audio",
-        status: "ringing",
-        createdAt: Date.now(),
-        offer: { type: offer.type, sdp: offer.sdp }
-      });
-      try { cdb().ref(base + "/status").onDisconnect().set("ended"); } catch {}
-
-      await cdb().ref("callInbox/" + call.peer.uid + "/" + call.id).set({
-        callerUid: user.uid,
-        callerName: myName(),
-        type: "audio",
-        createdAt: Date.now()
-      });
-
-      if (!call || call.finished) return;
-      setStatus("Ringing…");
-      startRing("outgoing");
-
-      listen(ref, "value", async (snap) => {
-        if (!call || call.id !== ref.key) return;
-        const d = snap.val();
-        if (!d) { finish("Call ended", false); return; }
-
-        if (d.answer && call.pc && !call.pc.currentRemoteDescription && !call.settingAnswer) {
-          call.settingAnswer = true;
-          try {
-            await call.pc.setRemoteDescription(d.answer);
-            await flushCandidates();
-          } catch (e) { console.error(e); }
-        }
-
-        if (d.status === "accepted") {
-          stopRing();
-          clearTimeout(call.ringTimeout);
-          if (call.pc && call.pc.connectionState !== "connected") setStatus("Connecting…");
-        } else if (d.status === "declined") finish("Call declined", false);
-        else if (d.status === "busy") finish("User is on another call", false);
-        else if (d.status === "ended") finish("Call ended", false);
-      });
-
-      listen(cdb().ref(base + "/calleeCandidates"), "child_added", (snap) => addRemoteCandidate(snap.val()));
-
-      call.ringTimeout = setTimeout(() => {
-        if (call && call.role === "caller" && !(call.pc && call.pc.currentRemoteDescription)) {
-          finish("No answer", "missed");
-        }
-      }, RING_TIMEOUT_MS);
-    } catch (err) {
-      console.error("Start call failed:", err);
-      finish(friendlyError(err), call && call.pc ? "cancelled" : false);
-    }
-  }
-
-  /* ------------------------- Incoming call ------------------------- */
-
-  function startInbox(uid) {
-    stopInbox();
-    if (!uid) return;
-    const ref = cdb().ref("callInbox/" + uid);
-    const handler = async (snap) => {
-      const ping = snap.val() || {};
-      const callId = snap.key;
-      const age = Date.now() - Number(ping.createdAt || 0);
-      if (!ping.createdAt || age > INBOX_MAX_AGE_MS) { snap.ref.remove().catch(() => {}); return; }
-
-      let data = null;
-      try {
-        const s = await cdb().ref("calls/" + callId).once("value");
-        data = s.val();
-      } catch (e) { console.error("Could not read call:", e); }
-      if (!data || data.status !== "ringing" || data.calleeUid !== uid) {
-        snap.ref.remove().catch(() => {});
-        return;
-      }
-      if (call) {
-        // Already on a call: tell the caller we are busy.
-        cdb().ref("calls/" + callId + "/status").set("busy").catch(() => {});
-        snap.ref.remove().catch(() => {});
-        return;
-      }
-      handleIncoming(callId, data);
-    };
-    ref.on("child_added", handler, (err) => console.error("Call inbox error:", err));
-    inbox = { ref, handler };
-  }
-
-  function stopInbox() {
-    if (inbox) { inbox.ref.off("child_added", inbox.handler); inbox = null; }
-  }
-
-  function handleIncoming(callId, data) {
-    call = newCallState("callee", callId, { uid: data.callerUid, name: data.callerName || "User" });
-    call.offer = data.offer;
-    setHeaderBusy(true);
-    showOverlay(call.peer.name, "Incoming audio call…", "incoming");
-    startRing("incoming");
-
-    const ref = cdb().ref("calls/" + callId);
-    listen(ref, "value", (snap) => {
-      if (!call || call.id !== callId) return;
-      const d = snap.val();
-      if (!d) { finish("Call ended", false); return; }
-      if (d.status === "ended" || d.status === "cancelled") finish(call.pc ? "Call ended" : "Missed call", false);
-      else if (d.status === "missed") finish("Missed call", false);
-    });
-
-    const left = Math.max(5000, RING_TIMEOUT_MS - (Date.now() - Number(data.createdAt || Date.now())));
-    call.ringTimeout = setTimeout(() => {
-      if (call && call.role === "callee" && !call.pc) finish("Missed call", "missed");
-    }, left);
-  }
-
-  async function acceptCall() {
-    if (!call || call.role !== "callee" || call.pc) return;
-    stopRing();
-    clearTimeout(call.ringTimeout);
-    setMode("active");
-    setStatus("Connecting…");
-    const base = "calls/" + call.id;
-    try {
-      call.stream = await getMic();
-      if (!call || call.finished) return;
-      const pc = createPc(base + "/calleeCandidates");
-      await pc.setRemoteDescription(call.offer);
-      const answer = await pc.createAnswer();
-      await pc.setLocalDescription(answer);
-      await cdb().ref(base).update({
-        answer: { type: answer.type, sdp: answer.sdp },
-        status: "accepted",
-        acceptedAt: Date.now()
-      });
-      try { cdb().ref(base + "/status").onDisconnect().set("ended"); } catch {}
-      cdb().ref("callInbox/" + me().uid + "/" + call.id).remove().catch(() => {});
-      listen(cdb().ref(base + "/callerCandidates"), "child_added", (snap) => addRemoteCandidate(snap.val()));
-    } catch (err) {
-      console.error("Accept failed:", err);
-      finish(friendlyError(err), "ended");
-    }
-  }
-
-  function declineCall() {
-    if (!call || call.role !== "callee") return;
-    finish("Call declined", "declined");
-  }
-
-  function endCall() {
-    if (!call) return;
-    let status = "ended";
-    if (call.role === "caller" && !(call.pc && call.pc.currentRemoteDescription)) status = "cancelled";
-    if (call.role === "callee" && !call.pc) status = "declined";
-    finish("Call ended", status);
-  }
-
-  /* --------------------------- Cleanup --------------------------- */
-
-  // remoteStatus: status string to write to the database, or false to write nothing
-  function finish(message, remoteStatus) {
-    if (!call || call.finished) return;
-    const c = call;
-    c.finished = true;
-    stopRing();
-    clearTimeout(c.ringTimeout);
-    clearTimeout(c.disconnectTimer);
-    clearInterval(c.timerId);
-
-    c.listeners.forEach(([ref, ev, h]) => { try { ref.off(ev, h); } catch {} });
-    c.listeners = [];
-
-    const base = "calls/" + c.id;
-    if (remoteStatus) {
-      cdb().ref(base + "/status").set(remoteStatus === true ? "ended" : remoteStatus).catch(() => {});
-    }
-    try { cdb().ref(base + "/status").onDisconnect().cancel(); } catch {}
-    const u = me();
-    if (c.role === "callee" && u) cdb().ref("callInbox/" + u.uid + "/" + c.id).remove().catch(() => {});
-    if (c.role === "caller") cdb().ref("callInbox/" + c.peer.uid + "/" + c.id).remove().catch(() => {});
-
-    if (c.pc) { try { c.pc.close(); } catch {} }
-    if (c.stream) c.stream.getTracks().forEach((t) => t.stop());
-    const audio = el("itcRemoteAudio");
-    if (audio) { audio.pause(); audio.srcObject = null; }
-
-    call = null;
-    setHeaderBusy(false);
-    setMode("ended");
-    setStatus(message || "Call ended");
-    setTimeout(() => { if (!call) hideOverlay(); }, 1400);
-  }
-
-  function toggleMute() {
-    if (!call || !call.stream) return;
-    const track = call.stream.getAudioTracks()[0];
-    if (!track) return;
-    track.enabled = !track.enabled;
-    const muted = !track.enabled;
-    const b = el("itcMuteBtn");
-    b.classList.toggle("is-on", muted);
-    b.setAttribute("aria-pressed", String(muted));
-    b.setAttribute("aria-label", muted ? "Unmute microphone" : "Mute microphone");
-    const slash = b.querySelector(".itc-slash");
-    if (slash) slash.style.display = muted ? "" : "none";
-    el("itcMuteLabel").textContent = muted ? "Unmute" : "Mute";
-  }
-
-  /* --------------------------- Wiring --------------------------- */
-
-  function bind() {
-    const audioBtn = el("audioCallBtn");
-    if (audioBtn) audioBtn.onclick = () => startCall(typeof activeUser !== "undefined" ? activeUser : null);
-
-    const videoBtn = el("videoCallBtn");
-    if (videoBtn) videoBtn.onclick = () => {
-      if (el("chatStatus")) el("chatStatus").textContent = "Video call is coming soon. Use the audio call for now.";
-    };
-
-    if (el("itcAcceptBtn")) el("itcAcceptBtn").onclick = acceptCall;
-    if (el("itcDeclineBtn")) el("itcDeclineBtn").onclick = declineCall;
-    if (el("itcEndBtn")) el("itcEndBtn").onclick = endCall;
-    if (el("itcMuteBtn")) el("itcMuteBtn").onclick = toggleMute;
-
-    window.addEventListener("pagehide", () => { if (call) endCall(); });
-  }
-
-  bind();
-
-  if (!window.__irfanCallDb && typeof auth !== "undefined") {
-    auth.onAuthStateChanged((user) => {
-      if (user) startInbox(user.uid);
-      else { if (call) endCall(); stopInbox(); }
-    });
-  }
-
-  // Small API (also used for testing)
-  window.IrfanCall = { startCall, acceptCall, declineCall, endCall, toggleMute, startInbox, stopInbox, get active() { return call; } };
-})();
-</script>
-
 <script id="studioFullScreenScript">
 (function () {
   function enhanceFullScreen() {
@@ -3334,5 +2918,162 @@ applySavedToggle("liveCaption", "data-live-caption", "live-caption-active", "cap
 })();
 </script>
 
+<script id="irfanFixes">
+(function(){
+const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.style.cssText=c;if(x!=null)e.textContent=x;return e};
+const LS=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const TS=()=>firebase.database.ServerValue.TIMESTAMP;
+const B="background:#000;color:#fff;border:2px solid #aeb4bb;border-radius:22px;padding:10px 16px;font-weight:700;cursor:pointer;font:inherit;font-weight:700;";
+const IN="padding:12px;border:1px solid #ddd;border-radius:12px;font:inherit;width:100%;";
+window.ek=e=>String(e).trim().toLowerCase().replace(/[.#$\[\]\/]/g,",");
+const okPhoto=p=>typeof p==="string"&&p.length<120000&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(p);
+window.setAvatar=function(el,p,name){if(!el)return;const ph=p&&p.photo;if(okPhoto(ph)){el.textContent="";el.style.backgroundImage="url("+ph+")";el.style.backgroundSize="cover";el.style.backgroundPosition="center"}else{el.style.backgroundImage="";el.textContent=((name||(p&&p.name)||"U")[0]||"U").toUpperCase()}};
+const myName=()=>{const u=auth.currentUser||{};return u.displayName||(u.email||"").split("@")[0]||"IrfanTalk user"};
+const FK=()=>"irfanFriends:"+(auth.currentUser&&auth.currentUser.uid);
+window.getFriends=()=>{try{return JSON.parse(LS(FK())||"[]")}catch(e){return[]}};
+function addFriend(p){const f=getFriends().filter(x=>x.uid!==p.uid);f.push({uid:p.uid});try{localStorage.setItem(FK(),JSON.stringify(f))}catch(e){}}
+window.indexChat=function(p){if(!p||!p.uid||!currentUser)return;const u={};u["userChats/"+currentUser.uid+"/"+p.uid+"/last"]=TS();u["userChats/"+p.uid+"/"+currentUser.uid+"/last"]=TS();db.ref().update(u).catch(()=>{})};
+async function getPerson(uid,fb){const p=(await db.ref("userDirectory/"+uid).once("value")).val()||{};return{uid,name:p.name||fb||"IrfanTalk user",username:p.username||"",photo:p.photo||""}}
+window.loadUsers=async function(){
+  if(!currentUser||!currentUser.uid)return;const st=$("usersStatus");if(st)st.textContent="Loading…";
+  try{
+    const mine=(await withTimeout(db.ref("userChats/"+currentUser.uid).once("value"),15000,"Loading timed out. Internet aur Firebase Rules check karein.")).val()||{};
+    const ids=new Set(Object.keys(mine).concat(getFriends().map(f=>f.uid)));ids.delete(currentUser.uid);
+    const arr=await Promise.all([...ids].map(async uid=>{try{const p=await getPerson(uid);p.last=(mine[uid]&&mine[uid].last)||0;return p}catch(e){return null}}));
+    allUsers=arr.filter(Boolean).sort((a,b)=>b.last-a.last);renderUsers();
+    if(st)st.textContent=allUsers.length?"":"Abhi koi chat nahi hai. Upar 👤+ dabakar dost dhundhiye.";
+  }catch(e){if($("usersList"))$("usersList").innerHTML='<div class="empty">Load nahi hua: '+safe(e.message)+"</div>";if(st)st.textContent="Firebase Rules check karein."}
+};
+function sheet(title){const w=mk("div","position:fixed;inset:0;z-index:10050;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:14px");const b=mk("div","background:#fff;color:#111;border:2px solid #bfc0c2;border-radius:22px;padding:16px;width:min(100%,460px);max-height:90dvh;overflow:auto;display:flex;flex-direction:column;gap:10px");const h=mk("div","display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:17px",title);const x=mk("button","background:none;border:0;font-size:26px;cursor:pointer;color:#111","×");h.append(x);b.append(h);w.append(b);document.body.append(w);const close=()=>{w.remove();if(b.onclose)b.onclose()};x.onclick=close;w.onclick=e=>{if(e.target===w)close()};return{box:b,close}}
+async function findByEmail(e){const uid=(await db.ref("emailIndex/"+ek(e)).once("value")).val();if(!uid||uid===currentUser.uid)return null;return getPerson(uid)}
+if($("addContactBtn"))$("addContactBtn").onclick=()=>{
+  const s=sheet("Dost dhundhiye");const inp=mk("input",IN);inp.type="email";inp.placeholder="Dost ka email likhiye";
+  const go=mk("button",B,"Search");const out=mk("div","display:flex;flex-direction:column;gap:8px");
+  const msg=t=>out.replaceChildren(mk("div","color:#555;font-size:13px",t));
+  async function show(list){msg("Dhundh raha hoon…");const found=[];for(const e of list.slice(0,200)){try{const p=await findByEmail(e);if(p&&!found.some(f=>f.uid===p.uid))found.push(p)}catch(_){}}
+    if(!found.length)return msg("IrfanTalk par koi registered dost nahi mila.");out.replaceChildren();
+    found.forEach(p=>{const r=mk("div","display:flex;align-items:center;gap:10px");const av=mk("div","width:42px;height:42px;border-radius:50%;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none");setAvatar(av,p,p.name);const n=mk("div","flex:1;font-weight:700;overflow-wrap:anywhere",p.name);const c=mk("button",B+"padding:7px 14px","Chat");c.onclick=()=>{addFriend(p);s.close();loadUsers();openChat(p)};r.append(av,n,c);out.append(r)})}
+  go.onclick=()=>{const e=inp.value.trim();if(e)show([e])};
+  s.box.append(inp,go);
+  if(navigator.contacts&&navigator.contacts.select){const pc=mk("button",B,"📇 Phone contacts se dhundhiye");pc.onclick=async()=>{try{const sel=await navigator.contacts.select(["name","email"],{multiple:true});show([...new Set(sel.flatMap(c=>c.email||[]))])}catch(e){msg("Contacts nahi khul sake.")}};s.box.append(pc)}
+  s.box.append(out,mk("div","font-size:12px;color:#666","Sirf wahi dost dikhte hain jinka email aap daalte hain. Baaki registered users ki list kisi ko nahi dikhti."));
+};
+const fi=mk("input");fi.type="file";fi.accept="image/*";fi.style.display="none";document.body.append(fi);
+fi.onchange=()=>{const f=fi.files[0];fi.value="";if(!f||!f.type.startsWith("image/")||!currentUser)return;const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=c.height=256;const m=Math.min(im.width,im.height);c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,256,256);const url=c.toDataURL("image/jpeg",.8);URL.revokeObjectURL(im.src);db.ref("userDirectory/"+currentUser.uid+"/photo").set(url).then(()=>setAvatar($("myAvatar"),{photo:url},myName())).catch(e=>alert("Photo save nahi hui: "+e.message))};im.onerror=()=>alert("Yeh image khul nahi saki.");im.src=URL.createObjectURL(f)};
+["myAvatar","profileNavBtn"].forEach(i=>{if($(i))$(i).onclick=()=>fi.click()});
+/* ---- Calls (WebRTC + Firebase signaling) ---- */
+let call=null;const ICE={iceServers:[{urls:["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302"]}]};
+const st=t=>{const e=$("icStatus");if(e)e.textContent=t};
+function buildOv(){if($("irfanCallOverlay"))return;const d=mk("div");d.id="irfanCallOverlay";
+  d.innerHTML='<div class="irfan-call-top"><div><div class="irfan-call-title" id="icTitle"></div><div class="irfan-call-status" id="icStatus"></div></div></div><div class="irfan-call-stage"><video id="irfanRemoteVideo" autoplay playsinline></video><video id="irfanLocalVideo" autoplay playsinline muted></video><div class="irfan-call-placeholder" id="icPh"><div class="irfan-call-avatar" id="icAv"></div></div></div><div class="irfan-call-controls"><button type="button" class="irfan-ctrl-btn" id="icAcc">Accept</button><button type="button" class="irfan-ctrl-btn" id="icMute">Mute</button><button type="button" class="irfan-ctrl-btn" id="icCam">Camera</button><button type="button" class="irfan-ctrl-btn irfan-ctrl-btn--end" id="icEnd">End</button></div>';
+  document.body.append(d);
+  const tog=(id,kind,on,off)=>{$(id).onclick=e=>{if(!call||!call.stream)return;const t=(kind==="a"?call.stream.getAudioTracks():call.stream.getVideoTracks())[0];if(t){t.enabled=!t.enabled;e.currentTarget.classList.toggle("is-off",!t.enabled);e.currentTarget.textContent=t.enabled?on:off}}};
+  tog("icMute","a","Mute","Unmute");tog("icCam","v","Camera","Camera off");
+  $("icEnd").onclick=()=>{if(call&&!call.caller&&!call.pc){db.ref("calls/"+call.id+"/state").set("declined").catch(()=>{});endCall("",1)}else endCall()};
+  $("icAcc").onclick=acceptCall}
+function showCall(p,type,incoming){buildOv();$("icTitle").textContent=p.name||"IrfanTalk user";setAvatar($("icAv"),p,p.name);$("icPh").style.display="";$("icAcc").style.display=incoming?"":"none";$("icCam").style.display=type==="video"?"":"none";$("icMute").classList.remove("is-off");$("icMute").textContent="Mute";$("irfanCallOverlay").classList.add("is-open")}
+function listen(r,ev,fn){r.on(ev,fn);call.refs.push([r,ev,fn])}
+function media(type){return navigator.mediaDevices.getUserMedia({audio:{noiseSuppression:LS("noiseCancellation")==="1",echoCancellation:true},video:type==="video"?(LS("dataSaver")==="1"?{width:320,height:240,frameRate:15}:{facingMode:"user"}):false})}
+async function prep(){const c=call;if(!(navigator.mediaDevices&&window.RTCPeerConnection))throw new Error("Is browser/page par calling support nahi hai (https chahiye).");
+  const stream=await media(c.type);const pc=new RTCPeerConnection(ICE);c.pc=pc;c.stream=stream;stream.getTracks().forEach(t=>pc.addTrack(t,stream));
+  const lv=$("irfanLocalVideo");lv.srcObject=c.type==="video"?stream:null;lv.style.display=c.type==="video"?"":"none";
+  pc.ontrack=e=>{$("irfanRemoteVideo").srcObject=e.streams[0];if(c.type==="video")$("icPh").style.display="none"};
+  pc.onicecandidate=e=>{if(e.candidate)db.ref("calls/"+c.id+(c.caller?"/callerIce":"/calleeIce")).push(e.candidate.toJSON())};
+  pc.onconnectionstatechange=()=>{if(pc.connectionState==="connected"){st("Connected");clearTimeout(c.t)}if(pc.connectionState==="failed")endCall("Connection fail ho gaya")};return pc}
+function endCall(reason,skip){const c=call;if(!c)return;call=null;clearTimeout(c.t);c.refs.forEach(a=>a[0].off(a[1],a[2]));try{c.pc&&c.pc.close()}catch(_){}
+  if(c.stream)c.stream.getTracks().forEach(t=>t.stop());if(!skip)db.ref("calls/"+c.id+"/state").set("ended").catch(()=>{});
+  const me=currentUser&&currentUser.uid;db.ref("callInbox/"+(c.caller?c.peer.uid:me)+"/"+c.id).remove().catch(()=>{});
+  if(c.caller)setTimeout(()=>db.ref("calls/"+c.id).remove().catch(()=>{}),6000);
+  st(reason||"Call khatam");const rv=$("irfanRemoteVideo");if(rv)rv.srcObject=null;setTimeout(()=>{if(!call&&$("irfanCallOverlay"))$("irfanCallOverlay").classList.remove("is-open")},1200)}
+async function startCall(type){
+  const p=activeUser;if(call||!p||!currentUser)return;const id=db.ref("calls").push().key;
+  call={id,peer:p,type,caller:true,refs:[]};showCall(p,type,false);st("Calling…");const c=call;
+  try{const pc=await prep();const o=await pc.createOffer();await pc.setLocalDescription(o);
+    await db.ref("calls/"+id).set({callerUid:currentUser.uid,calleeUid:p.uid,type,offer:{type:o.type,sdp:o.sdp},state:"ringing",at:TS()});
+    await db.ref("callInbox/"+p.uid+"/"+id).set({callerUid:currentUser.uid,name:myName(),type,at:TS()});
+    c.t=setTimeout(()=>endCall("Jawab nahi mila"),45000);
+    listen(db.ref("calls/"+id+"/answer"),"value",async s=>{const a=s.val();if(!a||c.got)return;c.got=1;clearTimeout(c.t);st("Connecting…");await pc.setRemoteDescription(a);listen(db.ref("calls/"+id+"/calleeIce"),"child_added",x=>pc.addIceCandidate(x.val()).catch(()=>{}))});
+    listen(db.ref("calls/"+id+"/state"),"value",s=>{const v=s.val();if(v==="declined")endCall("Call decline hui",1);else if(v==="ended")endCall("Call khatam",1)});
+  }catch(e){endCall(e&&e.name==="NotAllowedError"?"Mic/camera ki permission dijiye":((e&&e.message)||"Call nahi lag saki"))}}
+async function acceptCall(){const c=call;if(!c||c.caller||c.pc)return;$("icAcc").style.display="none";st("Connecting…");
+  try{const cs=(await db.ref("calls/"+c.id).once("value")).val();if(!cs||!cs.offer)throw new Error("Call ab available nahi hai");const pc=await prep();await pc.setRemoteDescription(cs.offer);const a=await pc.createAnswer();await pc.setLocalDescription(a);
+    await db.ref("calls/"+c.id+"/answer").set({type:a.type,sdp:a.sdp});db.ref("callInbox/"+currentUser.uid+"/"+c.id).remove().catch(()=>{});
+    listen(db.ref("calls/"+c.id+"/callerIce"),"child_added",x=>pc.addIceCandidate(x.val()).catch(()=>{}))}
+  catch(e){endCall(e&&e.name==="NotAllowedError"?"Mic/camera ki permission dijiye":((e&&e.message)||"Call connect nahi hui"))}}
+function watchIncoming(uid){if(window.__inRef)window.__inRef.off();const r=db.ref("callInbox/"+uid);window.__inRef=r;
+  r.on("child_added",async s=>{const v=s.val()||{},cid=s.key;const cs=(await db.ref("calls/"+cid).once("value")).val();
+    if(!cs||cs.state!=="ringing"||cs.calleeUid!==uid){s.ref.remove().catch(()=>{});return}
+    if(call){db.ref("calls/"+cid+"/state").set("declined").catch(()=>{});s.ref.remove().catch(()=>{});return}
+    const p=await getPerson(cs.callerUid,v.name);call={id:cid,peer:p,type:cs.type,caller:false,refs:[]};showCall(p,cs.type,true);st("Incoming "+(cs.type==="video"?"video":"audio")+" call…");
+    if(navigator.vibrate)navigator.vibrate([300,200,300]);
+    listen(db.ref("calls/"+cid+"/state"),"value",x=>{if(x.val()==="ended")endCall("Call miss ho gayi",1)})})}
+auth.onAuthStateChanged(async u=>{if(u){watchIncoming(u.uid);try{const ph=(await db.ref("userDirectory/"+u.uid+"/photo").once("value")).val();if(ph)setAvatar($("myAvatar"),{photo:ph},myName())}catch(e){}}else{if(window.__inRef)window.__inRef.off();if(call)endCall("",1)}});
+if($("audioCallBtn"))$("audioCallBtn").onclick=()=>startCall("audio");
+if($("videoCallBtn"))$("videoCallBtn").onclick=()=>startCall("video");
+/* ---- More menu ---- */
+if($("moreBtn"))$("moreBtn").onclick=e=>{e.stopPropagation();let m=$("moreMenu");if(m){m.remove();return}
+  m=mk("div","position:absolute;top:52px;right:8px;z-index:2600;background:#000;border:1.5px solid #aeb4bb;border-radius:14px;overflow:hidden;min-width:190px");m.id="moreMenu";
+  [["🗑 Meri messages delete karein",async()=>{if(!activeUser||!confirm("Aapke bheje hue messages delete ho jayenge. Pakka?"))return;try{const q=await db.ref(pairPath(activeUser.uid)).once("value");const u={};q.forEach(c=>{if((c.val()||{}).senderUid===currentUser.uid)u[c.key]=null});if(Object.keys(u).length)await db.ref(pairPath(activeUser.uid)).update(u)}catch(x){alert(x.message)}}],["← Chat band karein",()=>$("backBtn").click()]].forEach(a=>{const b=mk("button","display:block;width:100%;text-align:left;background:none;border:0;color:#fff;padding:13px 14px;font:inherit;font-size:14px;cursor:pointer",a[0]);b.onclick=()=>{m.remove();a[1]()};m.append(b)});$("chatView").append(m)};
+document.addEventListener("click",()=>{const m=$("moreMenu");if(m)m.remove()});
+/* ---- Control Studio tools ---- */
+function camTool(){const s=sheet("Camera");const v=mk("video","width:100%;border-radius:14px;background:#000");v.autoplay=true;v.playsInline=true;v.muted=true;const row=mk("div","display:flex;gap:8px;flex-wrap:wrap");const snap=mk("button",B,"📸 Photo"),sw=mk("button",B,"🔄 Switch"),dl=mk("a",B+"text-decoration:none;display:none","⬇ Save");dl.download="irfantalk-photo.jpg";const img=mk("img","width:100%;border-radius:14px;display:none");let fm="user",ms=null;
+  const start=async()=>{if(ms)ms.getTracks().forEach(t=>t.stop());try{ms=await navigator.mediaDevices.getUserMedia({video:{facingMode:fm},audio:false});v.srcObject=ms}catch(e){s.box.append(mk("div","color:#b00","Camera permission nahi mili."))}};
+  snap.onclick=()=>{if(!v.videoWidth)return;const c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);img.src=dl.href=c.toDataURL("image/jpeg",.9);img.style.display="block";dl.style.display=""};
+  sw.onclick=()=>{fm=fm==="user"?"environment":"user";start()};s.box.onclose=()=>{if(ms)ms.getTracks().forEach(t=>t.stop())};row.append(snap,sw,dl);s.box.append(v,row,img);start()}
+const b64=b=>btoa(String.fromCharCode.apply(null,new Uint8Array(b))),ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function dkey(pin,salt){const k=await crypto.subtle.importKey("raw",new TextEncoder().encode(pin),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:150000,hash:"SHA-256"},k,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+async function enc(pin,obj,salt){const iv=crypto.getRandomValues(new Uint8Array(12));const d=await crypto.subtle.encrypt({name:"AES-GCM",iv},await dkey(pin,salt),new TextEncoder().encode(JSON.stringify(obj)));return{salt:b64(salt),iv:b64(iv),data:b64(d)}}
+async function dec(pin,v){return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:ub(v.iv)},await dkey(pin,ub(v.salt)),ub(v.data))))}
+function vaultTool(){const s=sheet("🔒 Vault");const VK="irfanVault";let v=null;try{v=JSON.parse(LS(VK)||"null")}catch(e){}
+  const pin=mk("input",IN);pin.type="password";pin.placeholder=v?"PIN daaliye":"Naya PIN banaiye (min 4)";const go=mk("button",B,v?"Kholein":"Vault banayein");const info=mk("div","font-size:12px;color:#555","Notes sirf is device par, PIN se encrypt hokar save hote hain. PIN bhool gaye to recover nahi hoga.");s.box.append(pin,go,info);
+  function unlock(p,notes){s.box.replaceChildren(s.box.firstChild);const ta=mk("textarea",IN+"min-height:80px");ta.placeholder="Naya note…";const add=mk("button",B,"Save note"),list=mk("div","display:flex;flex-direction:column;gap:8px");
+    const persist=async()=>{v=await enc(p,notes,ub(v.salt));try{localStorage.setItem(VK,JSON.stringify(v))}catch(e){}};
+    const draw=()=>{list.replaceChildren();notes.forEach((n,i)=>{const r=mk("div","border:1px solid #ddd;border-radius:12px;padding:10px;display:flex;gap:8px;align-items:flex-start");const d=mk("button","background:none;border:0;cursor:pointer;font-size:18px","🗑");d.onclick=async()=>{notes.splice(i,1);await persist();draw()};r.append(mk("div","flex:1;white-space:pre-wrap;overflow-wrap:anywhere",n),d);list.append(r)})};
+    add.onclick=async()=>{const t=ta.value.trim();if(!t)return;notes.unshift(t);ta.value="";await persist();draw()};s.box.append(ta,add,list);draw()}
+  go.onclick=async()=>{const p=pin.value;if(p.length<4){info.textContent="PIN kam se kam 4 akshar ka ho.";return}
+    try{let notes=[];if(v)notes=await dec(p,v);else{v=await enc(p,[],crypto.getRandomValues(new Uint8Array(16)));try{localStorage.setItem(VK,JSON.stringify(v))}catch(e){}}unlock(p,notes)}catch(e){info.textContent="Galat PIN."}}}
+function trTool(){const s=sheet("🌐 Translator");const L=[["en","English"],["hi","Hindi"],["ur","Urdu"],["ar","Arabic"],["bn","Bengali"],["es","Spanish"],["fr","French"]];
+  const sel=d=>{const e=mk("select","padding:10px;border:1px solid #ddd;border-radius:12px;flex:1;font:inherit");L.forEach(l=>{const o=document.createElement("option");o.value=l[0];o.textContent=l[1];e.append(o)});e.value=d;return e};
+  const a=sel("en"),b=sel("hi"),row=mk("div","display:flex;gap:8px");row.append(a,b);const ta=mk("textarea",IN+"min-height:90px");ta.placeholder="Yahan likhiye…";const go=mk("button",B,"Translate"),out=mk("div","padding:10px;border:1px solid #ddd;border-radius:12px;min-height:50px;white-space:pre-wrap;overflow-wrap:anywhere");
+  go.onclick=async()=>{const q=ta.value.trim();if(!q)return;out.textContent="…";try{const r=await fetch("https://api.mymemory.translated.net/get?q="+encodeURIComponent(q.slice(0,450))+"&langpair="+a.value+"|"+b.value);const j=await r.json();out.textContent=(j.responseData&&j.responseData.translatedText)||"Translation nahi mili."}catch(e){out.textContent="Internet check karein."}};s.box.append(row,ta,go,out)}
+window.findByEmail=findByEmail;window.addFriend=addFriend;
+window.__studioTool=n=>{if(window.__closeControlStudio)window.__closeControlStudio();const b=document.querySelector("button[data-control='"+n+"']");if(b)b.classList.remove("is-active");({translator:trTool,camera:camTool,vault:vaultTool})[n]()};
+})();
+</script>
+<script id="irfanDesign">
+(function(){
+const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const RED="ptt-on";
+function pttDown(el){el.classList.add(RED);talkPressActive=true;if(!(voiceSocket&&voiceSocket.connected)&&$("chatStatus")){$("chatStatus").textContent="Voice server connect nahi hai";setTimeout(()=>{if($("chatStatus"))$("chatStatus").textContent=""},2000)}startTalking().catch(()=>{})}
+function pttUp(el){el.classList.remove(RED);stopTalking()}
+function bindHold(el){if(!el)return;el.addEventListener("pointerdown",e=>{e.preventDefault();try{el.setPointerCapture(e.pointerId)}catch(_){}pttDown(el)});
+  ["pointerup","pointercancel","lostpointercapture"].forEach(ev=>el.addEventListener(ev,()=>{if(el.classList.contains(RED))pttUp(el)}));el.addEventListener("contextmenu",e=>e.preventDefault())}
+const hb=$("homeTalkBtn");
+if(hb){hb.addEventListener("pointerdown",()=>hb.classList.add(RED));["pointerup","pointercancel","lostpointercapture"].forEach(ev=>hb.addEventListener(ev,()=>hb.classList.remove(RED)));hb.addEventListener("contextmenu",e=>e.preventDefault())}
+bindHold($("chatTalkBtn"));bindHold($("composeMicBtn"));
+const cs=$("controlStudioBtn");
+if(cs){let t=null,held=false,sx=0,sy=0;
+  cs.addEventListener("pointerdown",e=>{if(cs.classList.contains("is-open"))return;held=false;sx=e.clientX;sy=e.clientY;clearTimeout(t);t=setTimeout(()=>{held=true;window.__csHeld=true;pttDown(cs)},380)});
+  cs.addEventListener("pointermove",e=>{if(!held&&Math.hypot(e.clientX-sx,e.clientY-sy)>8)clearTimeout(t)});
+  const end=()=>{clearTimeout(t);if(held){held=false;pttUp(cs);setTimeout(()=>{window.__csHeld=false},400)}};
+  ["pointerup","pointercancel","lostpointercapture"].forEach(ev=>cs.addEventListener(ev,end));
+  document.addEventListener("click",e=>{if(window.__csHeld&&cs.contains(e.target)){e.stopPropagation();e.preventDefault();window.__csHeld=false}},true)}
+/* search */
+const sb=$("searchToggleBtn");
+if(sb)sb.onclick=()=>{const on=document.body.classList.toggle("show-search");if(on)setTimeout(()=>{if($("userSearch"))$("userSearch").focus()},60);else if($("userSearch")){$("userSearch").value="";renderUsers()}};
+if($("userSearch")){$("userSearch").placeholder="Naam ya email se dhundhiye…";
+  $("userSearch").addEventListener("keydown",async e=>{if(e.key!=="Enter")return;const q=e.target.value.trim();if(!q.includes("@"))return;const st=$("usersStatus");st.textContent="Dhundh raha hoon…";
+    try{const p=await findByEmail(q);if(!p){st.textContent="Yeh email IrfanTalk par registered nahi hai.";return}addFriend(p);st.textContent="";e.target.value="";await loadUsers();openChat(p)}catch(x){st.textContent="Search nahi ho saki: "+x.message}})}
+/* recent channel cards */
+const ago=t=>{const m=Math.max(0,Math.round((Date.now()-t)/60000));return m<1?"now":m<60?m+"m":m<1440?Math.round(m/60)+"h":Math.round(m/1440)+"d"};
+async function renderRecents(){const box=$("recentCards");if(!box||!currentUser)return;box.replaceChildren();
+  for(const u of allUsers.filter(x=>x.last).slice(0,4)){let text="";
+    try{const s=await db.ref(pairPath(u.uid)).limitToLast(1).once("value");s.forEach(c=>{const v=c.val()||{};text=(v.senderUid===currentUser.uid?"You: ":"")+String(v.text||"")})}catch(e){}
+    const card=mk("button","rcard");card.type="button";const av=mk("div","rav");setAvatar(av,u,u.name);
+    const mid=mk("div","rmid");mid.append(mk("strong",null,u.name),mk("span",null,text||"…"));card.append(av,mid,mk("small",null,ago(u.last)));card.onclick=()=>openChat(u);box.append(card)}}
+const _lu=window.loadUsers;window.loadUsers=async function(){await _lu();renderRecents()};
+if($("backBtn"))$("backBtn").addEventListener("click",()=>setTimeout(()=>window.loadUsers(),400));
+})();
+</script>
 </body>
 </html>
