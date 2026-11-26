@@ -465,187 +465,91 @@ select {
   }
 </style>
 
-<style id="irfanCallDesignPatch">
-  #irfanCallDock {
-    position: fixed;
-    right: 16px;
-    bottom: 18px;
-    z-index: 9990;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+<style id="irfanAudioCallStyles">
+  /* ===== Chat header action buttons: black / white / silver ===== */
+  #chatView .call-actions{display:flex;gap:8px;margin-left:auto;align-items:center;flex-shrink:0;}
+  #chatView .chat-action-btn{
+    width:38px;height:38px;flex:none;padding:0;margin:0;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(145deg,#2a2a2a,#000);
+    color:#fff;
+    border:2px solid #c0c0c0;
+    box-shadow:0 4px 12px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);
+    cursor:pointer;
+    transition:transform .12s ease, background .15s ease, color .15s ease;
+    -webkit-tap-highlight-color:transparent;
   }
+  #chatView .chat-action-btn svg{width:18px;height:18px;display:block}
+  #chatView .chat-action-btn:active{transform:scale(.92)}
+  #chatView .chat-action-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  #chatView .chat-action-btn.is-busy{background:linear-gradient(145deg,#ffffff,#d6d6d6);color:#000;border-color:#9aa0a6}
 
-  .irfan-call-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px 14px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1;
-    cursor: pointer;
-    border: 1px solid rgba(17, 24, 39, 0.14);
-    background: #ffffff;
-    color: #111827;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-    transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
+  /* ===== Audio call screen ===== */
+  #itcOverlay{
+    position:fixed;inset:0;z-index:10080;
+    display:none;flex-direction:column;align-items:center;justify-content:space-between;
+    padding:calc(22px + env(safe-area-inset-top)) 20px calc(34px + env(safe-area-inset-bottom));
+    background:radial-gradient(circle at 50% 32%,#2b2b2b 0%,#101010 55%,#000 100%);
+    color:#fff;box-sizing:border-box;
+    font-family:Arial,sans-serif;
+    user-select:none;-webkit-user-select:none;
   }
-
-  .irfan-call-btn:active {
-    transform: scale(0.96);
+  #itcOverlay.is-open{display:flex}
+  .itc-top{width:100%;display:flex;justify-content:center}
+  .itc-badge{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:7px 14px;border-radius:999px;
+    border:1.5px solid #8f959b;background:rgba(255,255,255,.04);
+    color:#d4d8dc;font-size:12px;font-weight:700;letter-spacing:1px;
   }
-
-  .irfan-call-btn svg {
-    width: 17px;
-    height: 17px;
-    flex-shrink: 0;
+  .itc-badge svg{width:14px;height:14px}
+  .itc-center{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin-top:-40px}
+  .itc-avatar-wrap{position:relative;width:132px;height:132px;margin-bottom:18px}
+  .itc-avatar{
+    position:relative;z-index:1;width:132px;height:132px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:50px;font-weight:800;color:#fff;
+    background:linear-gradient(145deg,#2e2e2e,#000);
+    border:3px solid #c0c0c0;
+    box-shadow:0 10px 30px rgba(0,0,0,.6), inset 0 2px 0 rgba(255,255,255,.1);
   }
-
-  body.dark .irfan-call-btn,
-  body[data-theme="dark"] .irfan-call-btn {
-    background: #1f2937;
-    color: #f9fafb;
-    border-color: rgba(255, 255, 255, 0.16);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+  .itc-pulse{
+    position:absolute;inset:0;border-radius:50%;
+    border:2px solid rgba(200,200,200,.55);opacity:0;pointer-events:none;
   }
-
-  .irfan-call-btn--video {
-    border-color: rgba(37, 99, 235, 0.4);
+  #itcOverlay.is-ringing .itc-pulse{animation:itcPulse 2s ease-out infinite}
+  #itcOverlay.is-ringing .itc-pulse.d2{animation-delay:1s}
+  @keyframes itcPulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.65);opacity:0}}
+  #itcName{margin:0;font-size:27px;font-weight:800;color:#fff;max-width:88vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #itcStatus{font-size:14px;font-weight:700;color:#b9bec4;min-height:18px}
+  #itcTimer{font-size:16px;font-weight:700;color:#fff;letter-spacing:1px;font-variant-numeric:tabular-nums}
+  .itc-controls{display:flex;justify-content:center;align-items:flex-start;gap:44px;width:100%}
+  .itc-ctl{display:flex;flex-direction:column;align-items:center;gap:9px}
+  .itc-ctl span{font-size:12px;font-weight:700;color:#cfd3d7;letter-spacing:.5px}
+  .itc-btn{
+    width:68px;height:68px;padding:0;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(145deg,#262626,#000);
+    color:#fff;border:2.5px solid #c0c0c0;
+    box-shadow:0 8px 20px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.12);
+    cursor:pointer;touch-action:manipulation;
+    transition:transform .12s ease, background .15s ease, color .15s ease;
+    -webkit-tap-highlight-color:transparent;
   }
-
-  body.dark .irfan-call-btn--video,
-  body[data-theme="dark"] .irfan-call-btn--video {
-    border-color: rgba(96, 165, 250, 0.45);
+  .itc-btn svg{width:28px;height:28px}
+  .itc-btn:active{transform:scale(.92)}
+  .itc-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  /* White "primary" buttons: Accept, End and active toggles */
+  .itc-btn.is-light,
+  .itc-btn.is-on{
+    background:linear-gradient(145deg,#ffffff,#d4d4d4);
+    color:#000;border-color:#8f959b;
   }
-</style>
-<style id="irfanCallScreenPatch">
-  #irfanCallOverlay {
-    position: fixed;
-    inset: 0;
-    z-index: 10060;
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px 18px 28px;
-    background: #0b1020;
-    color: #f9fafb;
-    box-sizing: border-box;
-  }
-
-  #irfanCallOverlay.is-open {
-    display: flex;
-  }
-
-  .irfan-call-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .irfan-call-title {
-    font-size: 17px;
-    font-weight: 700;
-    margin: 0;
-  }
-
-  .irfan-call-status {
-    font-size: 13px;
-    opacity: 0.8;
-    margin-top: 4px;
-  }
-
-  .irfan-call-stage {
-    position: relative;
-    flex: 1;
-    margin: 18px 0;
-    border-radius: 18px;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #irfanRemoteVideo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-  }
-
-  #irfanLocalVideo {
-    position: absolute;
-    right: 14px;
-    bottom: 14px;
-    width: 112px;
-    height: 152px;
-    object-fit: cover;
-    border-radius: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.25);
-    background: #111827;
-    display: none;
-  }
-
-  .irfan-call-placeholder {
-    text-align: center;
-    padding: 20px;
-  }
-  .irfan-call-avatar {
-    width: 78px;
-    height: 78px;
-    border-radius: 999px;
-    margin: 0 auto 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1;
-    background: rgba(59, 130, 246, 0.22);
-    border: 1px solid rgba(96, 165, 250, 0.45);
-  }
-
-  .irfan-call-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .irfan-ctrl-btn {
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
-    padding: 12px 16px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.1;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-
-  .irfan-ctrl-btn:focus-visible {
-    outline: 2px solid #ffffff;
-    outline-offset: 2px;
-  }
-
-  .irfan-ctrl-btn.is-off {
-    background: #ffffff;
-    color: #111827;
-  }
-
-  .irfan-ctrl-btn.irfan-ctrl-btn--end {
-    background: #dc2626;
-    border-color: #dc2626;
-    color: #ffffff;
-  }
+  .itc-btn--end svg{transform:rotate(135deg)}
+  .itc-btn--decline svg{transform:rotate(135deg)}
+  #itcIncomingControls[hidden],#itcActiveControls[hidden],#itcTimer[hidden]{display:none!important}
+  @media (max-height:600px){.itc-center{margin-top:0}.itc-avatar-wrap,.itc-avatar{width:104px;height:104px}.itc-avatar{font-size:40px}}
 </style>
 </head>
 <body>
@@ -931,15 +835,15 @@ select {
     <small style="font-size:11.5px;color:#9aa5aa;">Private conversation</small>
   </div>
 
-  <div class="call-actions" style="display:flex;gap:8px;margin-left:auto;align-items:center;flex-shrink:0;">
-    <button id="audioCallBtn" class="icon" title="Audio Call" aria-label="Audio Call" type="button" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #aeb4bb;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">
-      <span aria-hidden="true">📞</span>
+  <div class="call-actions">
+    <button id="audioCallBtn" class="chat-action-btn" title="Audio call" aria-label="Audio call" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
     </button>
-    <button id="videoCallBtn" class="icon" title="Video Call" aria-label="Video Call" type="button" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #aeb4bb;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">
-      <span aria-hidden="true">📹</span>
+    <button id="videoCallBtn" class="chat-action-btn" title="Video call" aria-label="Video call" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="13" height="12" rx="2.5"/><path d="M15 10.5l6-3.5v10l-6-3.5z" fill="currentColor"/></svg>
     </button>
-    <button id="moreBtn" class="icon" title="More options" aria-label="More options" type="button" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #aeb4bb;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">
-      <span aria-hidden="true">⋮</span>
+    <button id="moreBtn" class="chat-action-btn" title="More options" aria-label="More options" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
     </button>
   </div>
 </div>
@@ -2802,6 +2706,581 @@ applySavedToggle("liveCaption", "data-live-caption", "live-caption-active", "cap
     </div>
   </div>
 </div>
+
+<!-- IRFANTALK AUDIO CALL SCREEN -->
+<div id="itcOverlay" role="dialog" aria-modal="true" aria-labelledby="itcName" aria-hidden="true">
+  <div class="itc-top">
+    <span class="itc-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      IRFANTALK AUDIO CALL
+    </span>
+  </div>
+
+  <div class="itc-center">
+    <div class="itc-avatar-wrap">
+      <span class="itc-pulse"></span><span class="itc-pulse d2"></span>
+      <div id="itcAvatar" class="itc-avatar" aria-hidden="true">U</div>
+    </div>
+    <h2 id="itcName">User</h2>
+    <div id="itcStatus" role="status" aria-live="polite">Calling…</div>
+    <div id="itcTimer" hidden>00:00</div>
+  </div>
+
+  <div id="itcIncomingControls" class="itc-controls" hidden>
+    <div class="itc-ctl">
+      <button id="itcDeclineBtn" type="button" class="itc-btn itc-btn--decline" aria-label="Decline call">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+      </button>
+      <span>Decline</span>
+    </div>
+    <div class="itc-ctl">
+      <button id="itcAcceptBtn" type="button" class="itc-btn is-light" aria-label="Accept call">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+      </button>
+      <span>Accept</span>
+    </div>
+  </div>
+
+  <div id="itcActiveControls" class="itc-controls">
+    <div class="itc-ctl">
+      <button id="itcMuteBtn" type="button" class="itc-btn" aria-label="Mute microphone" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4M8 22h8"/>
+          <path class="itc-slash" d="M3 3l18 18" style="display:none"/>
+        </svg>
+      </button>
+      <span id="itcMuteLabel">Mute</span>
+    </div>
+    <div class="itc-ctl">
+      <button id="itcEndBtn" type="button" class="itc-btn is-light itc-btn--end" aria-label="End call">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+      </button>
+      <span>End</span>
+    </div>
+  </div>
+
+  <audio id="itcRemoteAudio" autoplay playsinline></audio>
+</div>
+
+<script id="irfanAudioCallScript">
+/* =====================================================================
+   IrfanTalk – 1:1 Audio Call (WebRTC) with Firebase Realtime Database
+   signaling.
+
+   Database layout
+     calls/{callId}                 call document (offer, answer, status)
+     calls/{callId}/callerCandidates/{id}   ICE candidates from caller
+     calls/{callId}/calleeCandidates/{id}   ICE candidates from callee
+     callInbox/{calleeUid}/{callId}         "you have an incoming call" ping
+
+   Status flow: ringing -> accepted -> ended
+                ringing -> declined | missed | busy | cancelled
+   ===================================================================== */
+(function () {
+  "use strict";
+
+  // Add a TURN server here for calls over mobile data / strict networks, e.g.
+  // { urls: "turn:YOUR_TURN_HOST:3478", username: "user", credential: "pass" }
+  const ICE_SERVERS = [
+    { urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"] }
+  ];
+  const RING_TIMEOUT_MS = 45000;      // stop ringing after 45 s
+  const INBOX_MAX_AGE_MS = 120000;    // ignore very old incoming pings
+
+  // Test hooks are optional; normal app uses the global Firebase db / user.
+  const cdb = () => window.__irfanCallDb || db;
+  const me = () => window.__irfanCallUser || currentUser;
+  const el = (id) => document.getElementById(id);
+
+  const PHONE_ICON_HTML = el("audioCallBtn") ? el("audioCallBtn").innerHTML : "";
+
+  let call = null;          // the one active call (or null)
+  let inbox = null;         // { ref, handler }
+
+  /* ---------------------------- UI ---------------------------- */
+
+  function myName() {
+    const u = me();
+    if (!u) return "IrfanTalk user";
+    return (u.displayName || (u.email || "").split("@")[0] || "IrfanTalk user").trim();
+  }
+
+  function showOverlay(peerName, statusText, mode) {
+    const ov = el("itcOverlay");
+    if (!ov) return;
+    const name = peerName || "User";
+    el("itcName").textContent = name;
+    el("itcAvatar").textContent = (name[0] || "U").toUpperCase();
+    setStatus(statusText);
+    setMode(mode);
+    ov.classList.add("is-open");
+    ov.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function hideOverlay() {
+    const ov = el("itcOverlay");
+    if (!ov) return;
+    ov.classList.remove("is-open", "is-ringing");
+    ov.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function setStatus(text) {
+    if (el("itcStatus")) el("itcStatus").textContent = text || "";
+  }
+
+  // mode: "incoming" | "outgoing" | "active" | "ended"
+  function setMode(mode) {
+    const ov = el("itcOverlay");
+    const incoming = mode === "incoming";
+    el("itcIncomingControls").hidden = !incoming;
+    el("itcActiveControls").hidden = incoming || mode === "ended";
+    ov.classList.toggle("is-ringing", mode === "incoming" || mode === "outgoing");
+    if (mode !== "active") el("itcTimer").hidden = true;
+    resetMuteButton();
+  }
+
+  function resetMuteButton() {
+    const b = el("itcMuteBtn");
+    if (!b) return;
+    b.classList.remove("is-on");
+    b.setAttribute("aria-pressed", "false");
+    b.setAttribute("aria-label", "Mute microphone");
+    const slash = b.querySelector(".itc-slash");
+    if (slash) slash.style.display = "none";
+    if (el("itcMuteLabel")) el("itcMuteLabel").textContent = "Mute";
+  }
+
+  function setHeaderBusy(busy) {
+    const b = el("audioCallBtn");
+    if (b) b.classList.toggle("is-busy", busy);
+  }
+
+  function startTimer() {
+    if (!call || call.timerId) return;
+    call.connectedAt = Date.now();
+    const t = el("itcTimer");
+    t.hidden = false;
+    const tick = () => {
+      if (!call) return;
+      const s = Math.floor((Date.now() - call.connectedAt) / 1000);
+      t.textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+    };
+    tick();
+    call.timerId = setInterval(tick, 1000);
+  }
+
+  /* ------------------------- Ring tones ------------------------- */
+
+  let ringTimer = null;
+
+  function audioCtx() {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      if (typeof irfanChatAudio !== "undefined" && irfanChatAudio) return irfanChatAudio;
+      if (!window.__itcAudioCtx) window.__itcAudioCtx = new AC();
+      return window.__itcAudioCtx;
+    } catch { return null; }
+  }
+
+  function beep(ctx, freq, start, dur, vol) {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine";
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, start);
+    g.gain.exponentialRampToValueAtTime(vol, start + 0.02);
+    g.gain.setValueAtTime(vol, start + dur - 0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(start); o.stop(start + dur + 0.02);
+  }
+
+  function startRing(kind) {
+    stopRing();
+    const play = () => {
+      const ctx = audioCtx();
+      if (ctx) {
+        if (ctx.state === "suspended") ctx.resume().catch(() => {});
+        const t = ctx.currentTime + 0.02;
+        if (kind === "incoming") {
+          beep(ctx, 880, t, 0.35, 0.18); beep(ctx, 660, t + 0.4, 0.35, 0.18);
+        } else {
+          beep(ctx, 440, t, 0.9, 0.06);  // soft ring-back for the caller
+        }
+      }
+      if (kind === "incoming" && navigator.vibrate) {
+        try { navigator.vibrate([400, 200, 400]); } catch {}
+      }
+    };
+    play();
+    ringTimer = setInterval(play, kind === "incoming" ? 2000 : 3000);
+  }
+
+  function stopRing() {
+    if (ringTimer) { clearInterval(ringTimer); ringTimer = null; }
+    if (navigator.vibrate) { try { navigator.vibrate(0); } catch {} }
+  }
+
+  /* ----------------------- Firebase helpers ----------------------- */
+
+  function listen(ref, event, handler) {
+    ref.on(event, handler, (err) => {
+      console.error("Call listener error:", err);
+      if (call) finish("Connection error: " + err.message, false);
+    });
+    call.listeners.push([ref, event, handler]);
+  }
+
+  function friendlyError(err) {
+    const msg = (err && err.message) || String(err);
+    if (/permission/i.test(msg)) return "Permission denied. Update Firebase Database Rules for calls.";
+    if (/NotAllowed|Permission denied by system|denied/i.test(msg)) return "Microphone permission required.";
+    if (/NotFound|Requested device not found/i.test(msg)) return "No microphone found.";
+    return msg;
+  }
+
+  /* ----------------------- WebRTC plumbing ----------------------- */
+
+  async function getMic() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error("Calls need HTTPS (or localhost) and a modern browser.");
+    }
+    return navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+      video: false
+    });
+  }
+
+  function createPc(myCandidatesPath) {
+    const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+    call.pc = pc;
+
+    call.stream.getTracks().forEach((t) => pc.addTrack(t, call.stream));
+
+    pc.onicecandidate = (e) => {
+      if (e.candidate && call && call.pc === pc) {
+        cdb().ref(myCandidatesPath).push(e.candidate.toJSON()).catch(() => {});
+      }
+    };
+
+    pc.ontrack = (e) => {
+      const audio = el("itcRemoteAudio");
+      if (!audio) return;
+      audio.srcObject = e.streams[0] || new MediaStream([e.track]);
+      audio.play().catch(() => {});
+    };
+
+    pc.onconnectionstatechange = () => {
+      if (!call || call.pc !== pc) return;
+      const s = pc.connectionState;
+      if (s === "connected") {
+        clearTimeout(call.disconnectTimer);
+        setStatus("Connected");
+        setMode("active");
+        startTimer();
+      } else if (s === "disconnected") {
+        setStatus("Reconnecting…");
+        clearTimeout(call.disconnectTimer);
+        call.disconnectTimer = setTimeout(() => {
+          if (call && call.pc === pc && pc.connectionState !== "connected") finish("Call dropped", true);
+        }, 12000);
+      } else if (s === "failed") {
+        finish("Connection failed. A TURN server may be needed on this network.", true);
+      }
+    };
+    return pc;
+  }
+
+  async function addRemoteCandidate(json) {
+    if (!call || !call.pc || !json) return;
+    if (!call.pc.remoteDescription) { call.pendingCandidates.push(json); return; }
+    try { await call.pc.addIceCandidate(json); } catch (e) { console.warn("ICE add failed", e); }
+  }
+
+  async function flushCandidates() {
+    const list = call ? call.pendingCandidates.splice(0) : [];
+    for (const c of list) {
+      try { await call.pc.addIceCandidate(c); } catch (e) { console.warn("ICE add failed", e); }
+    }
+  }
+
+  function newCallState(role, id, peer) {
+    return {
+      role, id, peer,
+      pc: null, stream: null,
+      listeners: [], pendingCandidates: [],
+      ringTimeout: null, timerId: null, disconnectTimer: null,
+      connectedAt: 0, finished: false
+    };
+  }
+
+  /* ------------------------- Outgoing call ------------------------- */
+
+  async function startCall(peer) {
+    const user = me();
+    if (!user) { alert("Please log in first."); return; }
+    if (!peer || !peer.uid) { alert("Open a chat first."); return; }
+    if (peer.uid === user.uid) { alert("You cannot call yourself."); return; }
+    if (call) { showOverlay(call.peer.name, el("itcStatus").textContent, call.pc && call.pc.connectionState === "connected" ? "active" : (call.role === "caller" ? "outgoing" : "incoming")); return; }
+
+    const ref = cdb().ref("calls").push();
+    call = newCallState("caller", ref.key, { uid: peer.uid, name: peer.name || "User" });
+    setHeaderBusy(true);
+    showOverlay(call.peer.name, "Starting call…", "outgoing");
+
+    try {
+      call.stream = await getMic();
+      if (!call || call.finished) return;
+
+      const base = "calls/" + call.id;
+      const pc = createPc(base + "/callerCandidates");
+      const offer = await pc.createOffer({ offerToReceiveAudio: true });
+      await pc.setLocalDescription(offer);
+
+      await ref.set({
+        callerUid: user.uid,
+        callerName: myName(),
+        calleeUid: call.peer.uid,
+        calleeName: call.peer.name,
+        type: "audio",
+        status: "ringing",
+        createdAt: Date.now(),
+        offer: { type: offer.type, sdp: offer.sdp }
+      });
+      try { cdb().ref(base + "/status").onDisconnect().set("ended"); } catch {}
+
+      await cdb().ref("callInbox/" + call.peer.uid + "/" + call.id).set({
+        callerUid: user.uid,
+        callerName: myName(),
+        type: "audio",
+        createdAt: Date.now()
+      });
+
+      if (!call || call.finished) return;
+      setStatus("Ringing…");
+      startRing("outgoing");
+
+      listen(ref, "value", async (snap) => {
+        if (!call || call.id !== ref.key) return;
+        const d = snap.val();
+        if (!d) { finish("Call ended", false); return; }
+
+        if (d.answer && call.pc && !call.pc.currentRemoteDescription && !call.settingAnswer) {
+          call.settingAnswer = true;
+          try {
+            await call.pc.setRemoteDescription(d.answer);
+            await flushCandidates();
+          } catch (e) { console.error(e); }
+        }
+
+        if (d.status === "accepted") {
+          stopRing();
+          clearTimeout(call.ringTimeout);
+          if (call.pc && call.pc.connectionState !== "connected") setStatus("Connecting…");
+        } else if (d.status === "declined") finish("Call declined", false);
+        else if (d.status === "busy") finish("User is on another call", false);
+        else if (d.status === "ended") finish("Call ended", false);
+      });
+
+      listen(cdb().ref(base + "/calleeCandidates"), "child_added", (snap) => addRemoteCandidate(snap.val()));
+
+      call.ringTimeout = setTimeout(() => {
+        if (call && call.role === "caller" && !(call.pc && call.pc.currentRemoteDescription)) {
+          finish("No answer", "missed");
+        }
+      }, RING_TIMEOUT_MS);
+    } catch (err) {
+      console.error("Start call failed:", err);
+      finish(friendlyError(err), call && call.pc ? "cancelled" : false);
+    }
+  }
+
+  /* ------------------------- Incoming call ------------------------- */
+
+  function startInbox(uid) {
+    stopInbox();
+    if (!uid) return;
+    const ref = cdb().ref("callInbox/" + uid);
+    const handler = async (snap) => {
+      const ping = snap.val() || {};
+      const callId = snap.key;
+      const age = Date.now() - Number(ping.createdAt || 0);
+      if (!ping.createdAt || age > INBOX_MAX_AGE_MS) { snap.ref.remove().catch(() => {}); return; }
+
+      let data = null;
+      try {
+        const s = await cdb().ref("calls/" + callId).once("value");
+        data = s.val();
+      } catch (e) { console.error("Could not read call:", e); }
+      if (!data || data.status !== "ringing" || data.calleeUid !== uid) {
+        snap.ref.remove().catch(() => {});
+        return;
+      }
+      if (call) {
+        // Already on a call: tell the caller we are busy.
+        cdb().ref("calls/" + callId + "/status").set("busy").catch(() => {});
+        snap.ref.remove().catch(() => {});
+        return;
+      }
+      handleIncoming(callId, data);
+    };
+    ref.on("child_added", handler, (err) => console.error("Call inbox error:", err));
+    inbox = { ref, handler };
+  }
+
+  function stopInbox() {
+    if (inbox) { inbox.ref.off("child_added", inbox.handler); inbox = null; }
+  }
+
+  function handleIncoming(callId, data) {
+    call = newCallState("callee", callId, { uid: data.callerUid, name: data.callerName || "User" });
+    call.offer = data.offer;
+    setHeaderBusy(true);
+    showOverlay(call.peer.name, "Incoming audio call…", "incoming");
+    startRing("incoming");
+
+    const ref = cdb().ref("calls/" + callId);
+    listen(ref, "value", (snap) => {
+      if (!call || call.id !== callId) return;
+      const d = snap.val();
+      if (!d) { finish("Call ended", false); return; }
+      if (d.status === "ended" || d.status === "cancelled") finish(call.pc ? "Call ended" : "Missed call", false);
+      else if (d.status === "missed") finish("Missed call", false);
+    });
+
+    const left = Math.max(5000, RING_TIMEOUT_MS - (Date.now() - Number(data.createdAt || Date.now())));
+    call.ringTimeout = setTimeout(() => {
+      if (call && call.role === "callee" && !call.pc) finish("Missed call", "missed");
+    }, left);
+  }
+
+  async function acceptCall() {
+    if (!call || call.role !== "callee" || call.pc) return;
+    stopRing();
+    clearTimeout(call.ringTimeout);
+    setMode("active");
+    setStatus("Connecting…");
+    const base = "calls/" + call.id;
+    try {
+      call.stream = await getMic();
+      if (!call || call.finished) return;
+      const pc = createPc(base + "/calleeCandidates");
+      await pc.setRemoteDescription(call.offer);
+      const answer = await pc.createAnswer();
+      await pc.setLocalDescription(answer);
+      await cdb().ref(base).update({
+        answer: { type: answer.type, sdp: answer.sdp },
+        status: "accepted",
+        acceptedAt: Date.now()
+      });
+      try { cdb().ref(base + "/status").onDisconnect().set("ended"); } catch {}
+      cdb().ref("callInbox/" + me().uid + "/" + call.id).remove().catch(() => {});
+      listen(cdb().ref(base + "/callerCandidates"), "child_added", (snap) => addRemoteCandidate(snap.val()));
+    } catch (err) {
+      console.error("Accept failed:", err);
+      finish(friendlyError(err), "ended");
+    }
+  }
+
+  function declineCall() {
+    if (!call || call.role !== "callee") return;
+    finish("Call declined", "declined");
+  }
+
+  function endCall() {
+    if (!call) return;
+    let status = "ended";
+    if (call.role === "caller" && !(call.pc && call.pc.currentRemoteDescription)) status = "cancelled";
+    if (call.role === "callee" && !call.pc) status = "declined";
+    finish("Call ended", status);
+  }
+
+  /* --------------------------- Cleanup --------------------------- */
+
+  // remoteStatus: status string to write to the database, or false to write nothing
+  function finish(message, remoteStatus) {
+    if (!call || call.finished) return;
+    const c = call;
+    c.finished = true;
+    stopRing();
+    clearTimeout(c.ringTimeout);
+    clearTimeout(c.disconnectTimer);
+    clearInterval(c.timerId);
+
+    c.listeners.forEach(([ref, ev, h]) => { try { ref.off(ev, h); } catch {} });
+    c.listeners = [];
+
+    const base = "calls/" + c.id;
+    if (remoteStatus) {
+      cdb().ref(base + "/status").set(remoteStatus === true ? "ended" : remoteStatus).catch(() => {});
+    }
+    try { cdb().ref(base + "/status").onDisconnect().cancel(); } catch {}
+    const u = me();
+    if (c.role === "callee" && u) cdb().ref("callInbox/" + u.uid + "/" + c.id).remove().catch(() => {});
+    if (c.role === "caller") cdb().ref("callInbox/" + c.peer.uid + "/" + c.id).remove().catch(() => {});
+
+    if (c.pc) { try { c.pc.close(); } catch {} }
+    if (c.stream) c.stream.getTracks().forEach((t) => t.stop());
+    const audio = el("itcRemoteAudio");
+    if (audio) { audio.pause(); audio.srcObject = null; }
+
+    call = null;
+    setHeaderBusy(false);
+    setMode("ended");
+    setStatus(message || "Call ended");
+    setTimeout(() => { if (!call) hideOverlay(); }, 1400);
+  }
+
+  function toggleMute() {
+    if (!call || !call.stream) return;
+    const track = call.stream.getAudioTracks()[0];
+    if (!track) return;
+    track.enabled = !track.enabled;
+    const muted = !track.enabled;
+    const b = el("itcMuteBtn");
+    b.classList.toggle("is-on", muted);
+    b.setAttribute("aria-pressed", String(muted));
+    b.setAttribute("aria-label", muted ? "Unmute microphone" : "Mute microphone");
+    const slash = b.querySelector(".itc-slash");
+    if (slash) slash.style.display = muted ? "" : "none";
+    el("itcMuteLabel").textContent = muted ? "Unmute" : "Mute";
+  }
+
+  /* --------------------------- Wiring --------------------------- */
+
+  function bind() {
+    const audioBtn = el("audioCallBtn");
+    if (audioBtn) audioBtn.onclick = () => startCall(typeof activeUser !== "undefined" ? activeUser : null);
+
+    const videoBtn = el("videoCallBtn");
+    if (videoBtn) videoBtn.onclick = () => {
+      if (el("chatStatus")) el("chatStatus").textContent = "Video call is coming soon. Use the audio call for now.";
+    };
+
+    if (el("itcAcceptBtn")) el("itcAcceptBtn").onclick = acceptCall;
+    if (el("itcDeclineBtn")) el("itcDeclineBtn").onclick = declineCall;
+    if (el("itcEndBtn")) el("itcEndBtn").onclick = endCall;
+    if (el("itcMuteBtn")) el("itcMuteBtn").onclick = toggleMute;
+
+    window.addEventListener("pagehide", () => { if (call) endCall(); });
+  }
+
+  bind();
+
+  if (!window.__irfanCallDb && typeof auth !== "undefined") {
+    auth.onAuthStateChanged((user) => {
+      if (user) startInbox(user.uid);
+      else { if (call) endCall(); stopInbox(); }
+    });
+  }
+
+  // Small API (also used for testing)
+  window.IrfanCall = { startCall, acceptCall, declineCall, endCall, toggleMute, startInbox, stopInbox, get active() { return call; } };
+})();
+</script>
 
 <script id="studioFullScreenScript">
 (function () {
