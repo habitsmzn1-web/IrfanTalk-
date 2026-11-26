@@ -792,50 +792,15 @@ body.show-search #usersView .search{display:flex}
 
 
 <!-- IRFANTALK TOP BAR -->
-<header class="top" style="display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:10px 0 18px;">
-
-
- <!-- Profile and Quiet Mode -->
-<div style="display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-width:0;justify-self:start;">
-  <div id="myAvatar" class="avatar" style="position:relative;">I</div>
-  <span id="myName" class="hidden">Hello!</span>
-
-  <button id="quietModeBtn" type="button" aria-expanded="false" style="background:#eeeeee;border:1px solid #c0c0c0;border-radius:30px;padding:9px 12px;color:#111;font-size:13px;font-weight:700;white-space:nowrap;">
-    🔇 Quiet ▾
-  </button>
-</div>
-
-  <!-- IrfanTalk Brand -->
-  <div style="display:flex;align-items:center;gap:8px;justify-content:center;min-width:0;">
-  <div style="width:44px;height:44px;flex:none;background:#000;border:2px solid #bfc0c2;border-radius:13px;display:grid;place-items:center;">
-    <svg width="29" height="29" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-      <rect x="39" y="17" width="22" height="42" rx="11" fill="white"/>
-      <path d="M27 45v5a23 23 0 0 0 46 0v-5M50 73v10M38 83h24"
-        stroke="white" stroke-width="6" stroke-linecap="round"/>
-    </svg>
-  </div>
-  <div style="text-align:left;white-space:nowrap;line-height:1.15;">
-    <span style="display:block;font-size:19px;font-weight:800;color:#000;">IrfanTalk</span>
-    <span style="display:block;font-size:10px;letter-spacing:1px;color:#333;margin-top:2px;">VOICE CONNECTS</span>
-  </div>
-</div>
-
-
-  <!-- Search, Add Contact and Logout -->
-  <div style="display:flex;align-items:center;justify-content:flex-end;justify-self:end;gap:5px;min-width:0;">
-    <button id="searchToggleBtn" type="button" class="icon" title="Search" aria-label="Search">
-      <span aria-hidden="true">⌕</span>
-    </button>
-    <button id="addContactBtn" type="button" class="icon" title="Add Contact" aria-label="Add Contact">
-      <span aria-hidden="true">♙+</span>
-    </button>
-    <button id="logoutBtn" type="button" class="icon" title="Sign out" aria-label="Sign out">
-      <span aria-hidden="true">↪</span>
-    </button>
-  </div>
-
+<header class="top" id="topBar">
+  <div id="myAvatar" class="avatar hbtn" role="button" aria-label="My profile">I</div>
+  <span id="myName" class="hidden"></span>
+  <div class="hbrand"><strong>IrfanTalk</strong><span>VOICE CONNECTS</span></div>
+  <button id="searchToggleBtn" type="button" class="hbtn" title="Search" aria-label="Search"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.5-4.5"/></svg></button>
+  <button id="addContactBtn" type="button" class="hbtn" title="Friends" aria-label="Friends"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M19 8v6M16 11h6"/></svg><b id="reqBadge" class="hidden"></b></button>
+  <button id="settingsBtn" type="button" class="hbtn" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2.1-1.2L14.2 3h-4.4l-.4 2.7a7 7 0 0 0-2.1 1.2l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2.1 1.2l.4 2.7h4.4l.4-2.7a7 7 0 0 0 2.1-1.2l2.3 1 2-3.4-2-1.5A7 7 0 0 0 19 12z"/></svg></button>
 </header>
-
+<button id="quietModeBtn" type="button" class="hidden">Quiet mode is on • tap to change</button>
 
  <!-- CONTACTS -->
 <section id="usersView" class="card" style="padding:18px 12px;">
@@ -890,6 +855,7 @@ body.show-search #usersView .search{display:flex}
 </button>
  
  
+<button id="callsNavBtn" type="button" aria-label="Call history" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;background:transparent;border:none;border-radius:50%;color:#fff"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h4l2 5-3 2a11 11 0 0 0 6 6l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg></button>
 <!-- MOVABLE CONTROL STUDIO BUTTON -->
 <button id="controlStudioBtn" type="button"
   aria-label="Control Studio"
@@ -949,22 +915,23 @@ body.show-search #usersView .search{display:flex}
 
 <!-- IRFANTALK CONTROL STUDIO -->
 <div id="controlStudioPanel" class="hidden">
+  <div class="studio-head"><strong>Control Studio</strong><button type="button" id="studioCloseBtn" class="hbtn" aria-label="Close">×</button></div>
   <div id="controlStudioRing">
     <div id="unifiedControlRing" class="control-ring">
-      <button type="button" data-control="privacy" title="Privacy Shield" aria-label="Privacy Shield"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M10 10V8a2 2 0 0 1 4 0v2"/></svg></button>
-      <button type="button" data-control="noise" title="Noise Cancellation" aria-label="Noise Cancellation"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12v-1a9 9 0 0 1 18 0v1"/><rect x="2" y="11" width="4" height="7" rx="2"/><rect x="18" y="11" width="4" height="7" rx="2"/></svg></button>
-      <button type="button" data-control="caption" title="Live Caption" aria-label="Live Caption"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="3"/><path d="M8 18l-3 3v-3M7 9h10M7 13h7"/></svg></button>
-      <button type="button" data-control="backup" title="Backup & Restore" aria-label="Backup & Restore"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg></button>
-      <button type="button" data-control="data" title="Data Saver" aria-label="Data Saver"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="M12 7v10m-3-3 3 3 3-3"/></svg></button>
-      <button type="button" data-control="safety" title="Safety Center" aria-label="Safety Center"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="M12 8v5m0 3h.01"/></svg></button>
-      <button type="button" data-control="voice" title="Voice Effects" aria-label="Voice Effects"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1m7 8v4m-4 0h8"/></svg></button>
-      <button type="button" data-control="sound" title="Notification Sound" aria-label="Notification Sound"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button>
-      <button type="button" data-control="contacts" title="Contacts" aria-label="Contacts"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2"/><path d="M19 8v6m-3-3h6"/></svg></button>
-      <button type="button" data-control="translator" title="AI Translator" aria-label="AI Translator"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h12M10 3v2"/><path d="M6 9c2 3 4 5 7 6"/><path d="M14 19l3-8 3 8m-5-3h4"/></svg></button>
-      <button type="button" data-control="camera" title="Camera" aria-label="Camera"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h4l2-3h6l2 3h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></svg></button>
-      <button type="button" data-control="vault" title="Vault" aria-label="Vault"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 9v3l2 2"/></svg></button>
-      <button type="button" data-control="settings" title="App Settings" aria-label="App Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l1.1 1.1-1.8 1.8-1.1-1.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V22h-2.6v-2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-1.1 1.1-1.8-1.8 1.1-1.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H2v-2.6h2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9L4.1 6.1l1.8-1.8 1.1 1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V2h2.6v2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l1.1-1.1 1.8 1.8-1.1 1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1H22V14h-2a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
-      <button type="button" data-control="theme" title="Theme & Appearance" aria-label="Theme & Appearance"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></svg></button>
+      <button type="button" data-control="privacy" title="Privacy Shield" aria-label="Privacy Shield"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M10 10V8a2 2 0 0 1 4 0v2"/></svg></i><span>Privacy Shield</span></button>
+      <button type="button" data-control="noise" title="Noise Cancellation" aria-label="Noise Cancellation"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12v-1a9 9 0 0 1 18 0v1"/><rect x="2" y="11" width="4" height="7" rx="2"/><rect x="18" y="11" width="4" height="7" rx="2"/></svg></i><span>Noise Cancellation</span></button>
+      <button type="button" data-control="caption" title="Live Caption" aria-label="Live Caption"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="3"/><path d="M8 18l-3 3v-3M7 9h10M7 13h7"/></svg></i><span>Live Caption</span></button>
+      <button type="button" data-control="backup" title="Backup & Restore" aria-label="Backup & Restore"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg></i><span>Backup & Restore</span></button>
+      <button type="button" data-control="data" title="Data Saver" aria-label="Data Saver"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="M12 7v10m-3-3 3 3 3-3"/></svg></i><span>Data Saver</span></button>
+      <button type="button" data-control="safety" title="Safety Center" aria-label="Safety Center"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="M12 8v5m0 3h.01"/></svg></i><span>Safety Center</span></button>
+      <button type="button" data-control="voice" title="Voice Effects" aria-label="Voice Effects"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1m7 8v4m-4 0h8"/></svg></i><span>Voice Effects</span></button>
+      <button type="button" data-control="sound" title="Notification Sound" aria-label="Notification Sound"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></i><span>Notification Sound</span></button>
+      <button type="button" data-control="contacts" title="Contacts" aria-label="Contacts"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2"/><path d="M19 8v6m-3-3h6"/></svg></i><span>Contacts</span></button>
+      <button type="button" data-control="translator" title="Translator" aria-label="Translator"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h12M10 3v2"/><path d="M6 9c2 3 4 5 7 6"/><path d="M14 19l3-8 3 8m-5-3h4"/></svg></i><span>Translator</span></button>
+      <button type="button" data-control="camera" title="Camera" aria-label="Camera"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h4l2-3h6l2 3h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></svg></i><span>Camera</span></button>
+      <button type="button" data-control="vault" title="Vault" aria-label="Vault"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 9v3l2 2"/></svg></i><span>Vault</span></button>
+      <button type="button" data-control="settings" title="App Settings" aria-label="App Settings"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l1.1 1.1-1.8 1.8-1.1-1.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V22h-2.6v-2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-1.1 1.1-1.8-1.8 1.1-1.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H2v-2.6h2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9L4.1 6.1l1.8-1.8 1.1 1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V2h2.6v2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l1.1-1.1 1.8 1.8-1.1 1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1H22V14h-2a1.7 1.7 0 0 0-1.5 1z"/></svg></i><span>App Settings</span></button>
+      <button type="button" data-control="theme" title="Theme & Appearance" aria-label="Theme & Appearance"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></svg></i><span>Theme & Appearance</span></button>
     </div>
   </div>
 </div>
@@ -1023,7 +990,7 @@ body.show-search #usersView .search{display:flex}
   <button id="composeMicBtn" type="button" aria-label="Hold to talk"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
   <button class="btn" type="submit" style="padding:10px 16px;border-radius:999px;border:none;background:#000;color:#fff;font-weight:600;font-size:13.5px;cursor:pointer;flex-shrink:0;">Send</button>
 </form>
-<div id="chatTalkDock"><small id="chatTalkLabel">Dabakar boliye</small><button id="chatTalkBtn" class="dial" type="button" aria-label="Hold to talk"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button></div>
+<div id="chatTalkDock"><small id="chatTalkLabel">Hold to talk</small><button id="chatTalkBtn" class="dial" type="button" aria-label="Hold to talk"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button></div>
 </section>
 </main>
 
@@ -1313,7 +1280,7 @@ function bindWelcomeAndAuthHandlers() {
     $("forgotBtn").onclick = () => {
       const statusEl = $("authStatus") || $("status");
       if (statusEl) {
-        statusEl.textContent = "Password reset ke liye apna email enter karein.";
+        statusEl.textContent = "Enter your email to reset your password.";
       }
     };
   }
@@ -1542,7 +1509,7 @@ async function openChat(person) {
   if (!person) return;
   activeUser = person;
 
-  window.voiceRoomName = person.name || "dost";
+  window.voiceRoomName = person.name || "friend";
   if (typeof joinPrivateVoice === "function" && person.uid) {
     try {
       joinPrivateVoice(person.uid);
@@ -1752,7 +1719,7 @@ chatRef.on("value", chatListener, (e) => {
   if ($("usersView")) $("usersView").classList.remove("hidden");
 }
 
-/* ---- Walkie-talkie (aapke /socket.io server ke saath) ---- */
+
 let voicePeers = new Map();
 let localVoiceStream = null;
 let voiceRoomTarget = null;
@@ -1765,7 +1732,7 @@ function setVoiceText(text) {
   ["homeVoiceStatus", "chatTalkLabel"].forEach((id) => { const e = document.getElementById(id); if (e) e.textContent = text; });
 }
 function voiceIdleText() {
-  return voiceRoomTarget ? "Channel: " + (window.voiceRoomName || "dost") + " • dabakar boliye" : "Pehle koi channel (dost) chunein";
+  return voiceRoomTarget ? "Channel: " + (window.voiceRoomName || "friend") + " • hold to talk" : "Select a channel first";
 }
 function closeVoicePeers() {
   for (const pc of voicePeers.values()) { try { pc.close(); } catch {} pc._audioEl?.remove(); }
@@ -1830,7 +1797,7 @@ function bindVoiceEvents(socket) {
       dropVoicePeer(data.from);
       const pc = createVoicePeer(data.from);
       await pc.setRemoteDescription(data.offer);
-      /* FIX: offer se bana transceiver hi use karo */
+      
       pc._tx = pc.getTransceivers().find((t) => t.receiver.track.kind === "audio");
       pc._tx.direction = "sendrecv";
       await pc.setLocalDescription(await pc.createAnswer());
@@ -1854,12 +1821,13 @@ function bindVoiceEvents(socket) {
 
 function joinPrivateVoice(targetUid) {
   if (!targetUid || targetUid === voiceRoomTarget) return;
+  if (window.isBlocked && window.isBlocked(targetUid)) return;
   const switching = Boolean(voiceRoomTarget);
   stopTalking();
   closeVoicePeers();
   voiceRoomTarget = targetUid;
   if (!voiceSocket) return;
-  /* purana room chhodne ke liye reconnect */
+  /* reconnect to leave the previous room */
   if (switching) { voiceSocket.disconnect(); voiceSocket.connect(); }
   else if (voiceSocket.connected) voiceSocket.emit("join-private-voice", targetUid);
 }
@@ -1871,21 +1839,19 @@ function leaveVoice() {
 }
 
 async function startTalking() {
-  if (!voiceRoomTarget) { setVoiceText("Pehle koi channel (dost) chunein"); return; }
-  if (!voiceSocket?.connected) { setVoiceText("Voice server connect nahi hai"); return; }
+  if (!voiceRoomTarget) { setVoiceText("Select a channel first"); return; }
+  if (!voiceSocket?.connected) { setVoiceText("Voice server is not connected"); return; }
   try {
-    const raw = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: true, noiseSuppression: localStorage.getItem("noiseCancellation") === "1" }
-    });
+    const raw = await navigator.mediaDevices.getUserMedia({ audio: window.micConstraints() });
     const stream = window.applyVoiceEffect ? window.applyVoiceEffect(raw) : raw;
     if (!talkPressActive) { stream.stopAll ? stream.stopAll() : stream.getTracks().forEach((t) => t.stop()); return; }
     if (localVoiceStream) stopStream(localVoiceStream);
     localVoiceStream = stream;
     const track = stream.getAudioTracks()[0];
     for (const pc of voicePeers.values()) if (pc._tx) await pc._tx.sender.replaceTrack(track);
-    if (talkPressActive) setVoiceText(voicePeers.size ? "🔴 Boliye…" : "Dost abhi is channel par nahi hai");
+    if (talkPressActive) setVoiceText(voicePeers.size ? "🔴 Talking…" : "Your friend is not on this channel");
   } catch (error) {
-    setVoiceText("Microphone permission dijiye");
+    setVoiceText("Allow microphone access");
     console.error("Microphone error:", error);
   }
 }
@@ -1978,31 +1944,14 @@ auth.onAuthStateChanged(async (user) => {
 
       controlStudioPanel.classList.toggle("hidden", !open);
 
-      if (open) {
-        requestAnimationFrame(() => {
-          const studioRing = $("controlStudioRing");
-          if (!studioRing || !controlStudioBtn) return;
-
-          const buttonRect = controlStudioBtn.getBoundingClientRect();
-          const left = buttonRect.left + buttonRect.width / 2 - studioRing.offsetWidth / 2;
-          const top = buttonRect.top + buttonRect.height / 2 - studioRing.offsetHeight / 2;
-
-          studioRing.style.left = Math.max(8, left) + "px";
-          studioRing.style.top = Math.max(8, top) + "px";
-        });
-      }
-
       controlStudioBtn.classList.toggle("is-open", open);
-      controlStudioBtn.innerHTML = open ? "×" : originalButtonHTML;
-      controlStudioBtn.style.fontSize = open ? "32px" : "";
+      document.body.classList.toggle("studio-open", open);
       controlStudioBtn.setAttribute(
         "aria-label",
         open ? "Close Control Studio" : "Open Control Studio"
       );
 
       document.body.style.overflow = open ? "hidden" : "";
-      // Keep the floating button above the full-screen studio layer so the × can close it
-      controlStudioBtn.style.zIndex = open ? "10070" : "3000";
     }
 
     window.__closeControlStudio = () => setControlStudioOpen(false);
@@ -2111,219 +2060,6 @@ auth.onAuthStateChanged(async (user) => {
 }
 });
 
-(function () {
-  const PANEL_ID = "controlStudioPanel";
-  const RING_ID = "controlStudioRing";
-  const CLOSE_ID = "closeControlStudio";
-  const RADIUS = 108;
-
-  let angleOffset = 0;
-  let dragging = false;
-  let startAngle = 0;
-  let velocity = 0;
-  let inertiaId = null;
-
-  function stopInertia() {
-    if (inertiaId) {
-      cancelAnimationFrame(inertiaId);
-      inertiaId = null;
-    }
-  }
-
-  function startInertia() {
-    stopInertia();
-    function stepInertia() {
-      if (dragging || Math.abs(velocity) < 0.08) {
-        velocity = 0;
-        inertiaId = null;
-        return;
-      }
-      angleOffset += velocity;
-      velocity *= 0.92;
-      drawRing();
-      inertiaId = requestAnimationFrame(stepInertia);
-    }
-    inertiaId = requestAnimationFrame(stepInertia);
-  }
-
-  function getButtons() {
-    const panel = document.getElementById(PANEL_ID);
-    const ring = document.getElementById(RING_ID);
-    const scope = panel || ring;
-    if (!scope) return [];
-
-    const controlled = Array.from(scope.querySelectorAll("button[data-control]"));
-    if (controlled.length) return controlled;
-
-    return Array.from(scope.querySelectorAll("button")).filter(
-      (b) => b.id !== CLOSE_ID && !b.closest(`#${CLOSE_ID}`)
-    );
-  }
-
-  function drawRing() {
-    const panel = document.getElementById(PANEL_ID);
-    if (!panel) return;
-
-    const isHidden =
-      panel.classList.contains("hidden") ||
-      getComputedStyle(panel).display === "none" ||
-      getComputedStyle(panel).visibility === "hidden";
-    if (isHidden) return;
-
-    const btns = getButtons();
-    if (!btns.length) return;
-
-    const ring = document.getElementById(RING_ID);
-    if (ring) {
-      ring.style.overflow = "visible";
-      ring.style.setProperty("--ring-rot", `${angleOffset}deg`);
-    }
-
-      const step = 360 / btns.length;
-  btns.forEach((btn, i) => {
-    const deg = i * step + angleOffset;
-    if (btn.tagName === "BUTTON" && !btn.getAttribute("type")) {
-      btn.type = "button";
-    }
-    btn.classList.remove("hidden");
-    btn.style.position = "absolute";
-    btn.style.left = "50%";
-    btn.style.top = "50%";
-    btn.style.margin = "0";
-    btn.style.display = "flex";
-    btn.style.alignItems = "center";
-    btn.style.justifyContent = "center";
-    btn.style.opacity = "1";
-    btn.style.visibility = "visible";
-    btn.style.pointerEvents = "auto";
-    btn.style.transform = `translate(-50%, -50%) rotate(${deg}deg) translateY(-${RADIUS}px) rotate(${-deg}deg)`;
-
-    btn.querySelectorAll("svg, i, span").forEach((icon) => {
-      icon.style.opacity = "1";
-      icon.style.visibility = "visible";
-      icon.style.transform = "rotate(0deg)";
-    });
-  });
-}
-
-let pressActive = false;
-let pressMoved = false;
-let pressStartX = 0;
-let pressStartY = 0;
-let suppressNextClick = false;
-const DRAG_THRESHOLD = 6;
-
-function ringCenter() {
-  const panel = document.getElementById(PANEL_ID);
-  const ring = document.getElementById(RING_ID);
-  const el = ring && ring.offsetWidth > 0 ? ring : panel;
-  const rect = el.getBoundingClientRect();
-  return { cx: rect.left + rect.width / 2, cy: rect.top + rect.height / 2 };
-}
-
-// Press anywhere on the studio (icons included) to rotate the ring.
-// A short tap on an icon still works as a normal click.
-document.addEventListener("pointerdown", (e) => {
-  if (!(e.target instanceof Element)) return;
-  const panel = document.getElementById(PANEL_ID);
-  if (!panel || panel.classList.contains("hidden")) return;
-
-  const closeBtn = document.getElementById(CLOSE_ID);
-  if (closeBtn && closeBtn.contains(e.target)) return;
-  const studioBtn = document.getElementById("controlStudioBtn");
-  if (studioBtn && studioBtn.contains(e.target)) return;
-  if (!panel.contains(e.target)) return;
-
-  stopInertia();
-  velocity = 0;
-  panel.style.touchAction = "none";
-
-  const { cx, cy } = ringCenter();
-  pressActive = true;
-  pressMoved = false;
-  dragging = false;
-  pressStartX = e.clientX;
-  pressStartY = e.clientY;
-  startAngle = (Math.atan2(e.clientY - cy, e.clientX - cx) * 180) / Math.PI;
-
-  // Do not cancel pointerdown on icons, otherwise taps can stop working.
-  if (!e.target.closest("button[data-control]") && e.cancelable) e.preventDefault();
-}, true);
-
-document.addEventListener("pointermove", (e) => {
-  if (!pressActive) return;
-
-  if (!pressMoved) {
-    const dx = e.clientX - pressStartX;
-    const dy = e.clientY - pressStartY;
-    if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
-    pressMoved = true;
-    dragging = true;
-  }
-
-  if (e.cancelable) e.preventDefault();
-
-  const { cx, cy } = ringCenter();
-  const now = (Math.atan2(e.clientY - cy, e.clientX - cx) * 180) / Math.PI;
-  let diff = now - startAngle;
-  if (diff > 180) diff -= 360;
-  if (diff < -180) diff += 360;
-  velocity = diff * 0.85;
-  angleOffset += diff;
-  startAngle = now;
-  drawRing();
-}, { capture: true, passive: false });
-
-function stop() {
-  if (!pressActive) return;
-  pressActive = false;
-  if (pressMoved) {
-    suppressNextClick = true;
-    setTimeout(() => { suppressNextClick = false; }, 350);
-    dragging = false;
-    startInertia();
-  }
-  pressMoved = false;
-}
-
-// Swallow the click that follows a rotation drag so no icon is triggered by accident.
-document.addEventListener("click", (e) => {
-  if (!suppressNextClick) return;
-  if (e.target instanceof Element && e.target.closest("button[data-control]")) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
-  suppressNextClick = false;
-}, true);
-
-document.addEventListener("pointerup", stop, true);
-document.addEventListener("pointercancel", stop, true);
-  drawRing();
-  const refreshRing = () => {
-    const panel = document.getElementById(PANEL_ID);
-    const ring = document.getElementById(RING_ID);
-    if (ring) {
-      ring.style.zIndex = "9999";
-    }
-    if (panel && !panel.classList.contains("hidden")) {
-      drawRing();
-    }
-  };
-
-  refreshRing();
-  setInterval(refreshRing, 500);
-  
-  const panelEl = document.getElementById(PANEL_ID);
-  if (panelEl) {
-    new MutationObserver(() => {
-      if (!panelEl.classList.contains("hidden")) {
-        drawRing();
-      }
-    }).observe(panelEl, { attributes: true, attributeFilter: ["class"] });
-}
-
-})();
-
 </script>
  
 <script id="irfanFixes">
@@ -2344,101 +2080,107 @@ async function getPerson(uid,fb){const p=(await db.ref("userDirectory/"+uid).onc
 window.loadUsers=async function(){
   if(!currentUser||!currentUser.uid)return;const st=$("usersStatus");if(st)st.textContent="Loading…";
   try{
-    const mine=(await withTimeout(db.ref("userChats/"+currentUser.uid).once("value"),15000,"Loading timed out. Internet aur Firebase Rules check karein.")).val()||{};
+    const mine=(await withTimeout(db.ref("userChats/"+currentUser.uid).once("value"),15000,"Loading timed out. Check your internet and Firebase rules.")).val()||{};
     const ids=new Set(Object.keys(mine).concat(getFriends().map(f=>f.uid)));window.__loadSeq=(window.__loadSeq||0)+1;ids.delete(currentUser.uid);
     const arr=await Promise.all([...ids].map(async uid=>{try{const p=await getPerson(uid);p.last=(mine[uid]&&mine[uid].last)||0;return p}catch(e){return null}}));
-    allUsers=arr.filter(Boolean).sort((a,b)=>b.last-a.last);renderUsers();
-    if(st)st.textContent=allUsers.length?"":"Abhi koi friend nahi hai. Upar ♙+ dabakar dost dhundhiye ya invite karein.";
-  }catch(e){if($("usersList"))$("usersList").innerHTML='<div class="empty">Load nahi hua: '+safe(e.message)+"</div>";if(st)st.textContent="Firebase Rules check karein."}
+    allUsers=arr.filter(p=>p&&!(window.isBlocked&&isBlocked(p.uid))).sort((a,b)=>b.last-a.last);renderUsers();
+    if(st)st.textContent=allUsers.length?"":"No friends yet. Tap the Friends button to find or invite people.";
+  }catch(e){if($("usersList"))$("usersList").innerHTML='<div class="empty">Could not load: '+safe(e.message)+"</div>";if(st)st.textContent="Open Settings → Connection check."}
 };
-function sheet(title){const w=mk("div","position:fixed;inset:0;z-index:10050;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:14px");w.className="irf-sheet";const b=mk("div","background:#fff;color:#111;border:2px solid #bfc0c2;border-radius:22px;padding:16px;width:min(100%,460px);max-height:90dvh;overflow:auto;display:flex;flex-direction:column;gap:10px");const h=mk("div","display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:17px",title);const x=mk("button","background:none;border:2px solid transparent;border-radius:50%;width:40px;height:40px;font-size:26px;cursor:pointer;color:#111","×");x.type="button";h.append(x);b.append(h);w.append(b);document.body.append(w);let done=false;const close=()=>{if(done)return;done=true;w.remove();if(b.onclose)b.onclose()};w.__close=close;x.onclick=close;w.onclick=e=>{if(e.target===w)close()};return{box:b,close}}
+function sheet(title){const w=mk("div");w.className="irf-sheet";const h=mk("div");h.className="page-head";const x=mk("button",null,"←");x.type="button";x.className="hbtn";x.setAttribute("aria-label","Back");h.append(x,mk("strong",null,title));const b=mk("div");b.className="page-body";w.append(h,b);document.body.append(w);let done=false;const close=()=>{if(done)return;done=true;w.remove();if(b.onclose)b.onclose()};w.__close=close;x.onclick=close;return{box:b,close}}
 window.__sheet=sheet;
 async function findByEmail(e){const uid=(await db.ref("emailIndex/"+ek(e)).once("value")).val();if(!uid||uid===currentUser.uid)return null;return getPerson(uid)}
 window.getPerson=getPerson;
 const fi=mk("input");fi.type="file";fi.accept="image/*";fi.style.display="none";document.body.append(fi);
-fi.onchange=()=>{const f=fi.files[0];fi.value="";if(!f||!f.type.startsWith("image/")||!currentUser)return;const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=c.height=256;const m=Math.min(im.width,im.height);c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,256,256);const url=c.toDataURL("image/jpeg",.8);URL.revokeObjectURL(im.src);db.ref("userDirectory/"+currentUser.uid+"/photo").set(url).then(()=>setAvatar($("myAvatar"),{photo:url},myName())).catch(e=>alert("Photo save nahi hui: "+e.message))};im.onerror=()=>alert("Yeh image khul nahi saki.");im.src=URL.createObjectURL(f)};
+fi.onchange=()=>{const f=fi.files[0];fi.value="";if(!f||!f.type.startsWith("image/")||!currentUser)return;const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=c.height=256;const m=Math.min(im.width,im.height);c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,256,256);const url=c.toDataURL("image/jpeg",.8);URL.revokeObjectURL(im.src);db.ref("userDirectory/"+currentUser.uid+"/photo").set(url).then(()=>setAvatar($("myAvatar"),{photo:url},myName())).catch(e=>alert("Photo not saved: "+e.message))};im.onerror=()=>alert("This image could not be opened.");im.src=URL.createObjectURL(f)};
 window.__pickPhoto=()=>fi.click();
 /* ---- Calls (WebRTC + Firebase signaling) ---- */
 let call=null;const ICE={iceServers:[{urls:["stun:stun.l.google.com:19302","stun:stun1.l.google.com:19302"]}].concat(window.IRFAN_TURN||[])};
 const st=t=>{const e=$("icStatus");if(e)e.textContent=t};
+const histSet=(id,o)=>{if(currentUser)db.ref("callHistory/"+currentUser.uid+"/"+id).update(o).catch(()=>{})};
 function buildOv(){if($("irfanCallOverlay"))return;const d=mk("div");d.id="irfanCallOverlay";
   d.innerHTML='<div class="irfan-call-top"><div><div class="irfan-call-title" id="icTitle"></div><div class="irfan-call-status" id="icStatus"></div></div></div><div class="irfan-call-stage"><video id="irfanRemoteVideo" autoplay playsinline></video><video id="irfanLocalVideo" autoplay playsinline muted></video><div class="irfan-call-placeholder" id="icPh"><div class="irfan-call-avatar" id="icAv"></div></div></div><div class="irfan-call-controls"><button type="button" class="irfan-ctrl-btn" id="icAcc">Accept</button><button type="button" class="irfan-ctrl-btn" id="icMute">Mute</button><button type="button" class="irfan-ctrl-btn" id="icCam">Camera</button><button type="button" class="irfan-ctrl-btn" id="icFlip">Flip</button><button type="button" class="irfan-ctrl-btn irfan-ctrl-btn--end" id="icEnd">End</button></div>';
   document.body.append(d);
   const tog=(id,kind,on,off)=>{$(id).onclick=e=>{if(!call||!call.stream)return;const t=(kind==="a"?call.stream.getAudioTracks():call.stream.getVideoTracks())[0];if(t){t.enabled=!t.enabled;e.currentTarget.classList.toggle("is-off",!t.enabled);e.currentTarget.textContent=t.enabled?on:off}}};
   tog("icMute","a","Mute","Unmute");tog("icCam","v","Camera","Camera off");
-  $("icEnd").onclick=()=>{if(call&&!call.caller&&!call.pc){db.ref("calls/"+call.id+"/state").set("declined").catch(()=>{});endCall("",1)}else endCall()};
+  $("icEnd").onclick=()=>{if(call&&!call.caller&&!call.pc){db.ref("calls/"+call.id+"/state").set("declined").catch(()=>{});call.declined=1;endCall("",1)}else endCall()};
   $("icFlip").onclick=async()=>{const c=call;if(!c||!c.pc||c.type!=="video"||c.flipping)return;c.flipping=1;const next=c.face==="environment"?"user":"environment";const old=c.stream.getVideoTracks()[0];
-    try{old.stop();const n=(await navigator.mediaDevices.getUserMedia({video:{facingMode:next}})).getVideoTracks()[0];if(call!==c){n.stop();return}await c.pc.getSenders().find(x=>x.track===old).replaceTrack(n);c.stream.removeTrack(old);c.stream.addTrack(n);$("irfanLocalVideo").srcObject=c.stream;c.face=next}catch(e){st("Camera badal nahi saka")}c.flipping=0};
+    try{old.stop();const n=(await navigator.mediaDevices.getUserMedia({video:{facingMode:next}})).getVideoTracks()[0];if(call!==c){n.stop();return}await c.pc.getSenders().find(x=>x.track===old).replaceTrack(n);c.stream.removeTrack(old);c.stream.addTrack(n);$("irfanLocalVideo").srcObject=c.stream;c.face=next}catch(e){st("Could not switch camera")}c.flipping=0};
   $("icAcc").onclick=acceptCall}
 function showCall(p,type,incoming){buildOv();$("icTitle").textContent=p.name||"IrfanTalk user";setAvatar($("icAv"),p,p.name);$("icPh").style.display="";$("icAcc").style.display=incoming?"":"none";$("icCam").style.display=$("icFlip").style.display=type==="video"?"":"none";$("icCam").classList.remove("is-off");$("icCam").textContent="Camera";const rv=$("irfanRemoteVideo"),lv=$("irfanLocalVideo");rv.style.display=lv.style.display="none";rv.srcObject=lv.srcObject=null;$("icMute").classList.remove("is-off");$("icMute").textContent="Mute";$("irfanCallOverlay").classList.add("is-open")}
 function listen(r,ev,fn){r.on(ev,fn);call.refs.push([r,ev,fn])}
-function media(type){return navigator.mediaDevices.getUserMedia({audio:{noiseSuppression:LS("noiseCancellation")==="1",echoCancellation:true},video:type==="video"?(LS("dataSaver")==="1"?{width:320,height:240,frameRate:15}:{facingMode:"user"}):false})}
-async function prep(){const c=call;if(!(navigator.mediaDevices&&window.RTCPeerConnection))throw new Error("Is browser/page par calling support nahi hai (https chahiye).");
+function media(type){return navigator.mediaDevices.getUserMedia({audio:window.micConstraints(),video:type==="video"?(LS("dataSaver")==="1"?{width:320,height:240,frameRate:15}:{facingMode:"user"}):false})}
+async function prep(){const c=call;if(!(navigator.mediaDevices&&window.RTCPeerConnection))throw new Error("Calling needs a supported browser and https.");
   const raw=await media(c.type);const stream=window.applyVoiceEffect?window.applyVoiceEffect(raw):raw;
-  if(call!==c){stream.stopAll?stream.stopAll():stream.getTracks().forEach(t=>t.stop());throw new Error("Call khatam")}
+  if(call!==c){stream.stopAll?stream.stopAll():stream.getTracks().forEach(t=>t.stop());throw new Error("Call ended")}
   const pc=new RTCPeerConnection(ICE);c.pc=pc;c.stream=stream;stream.getTracks().forEach(t=>pc.addTrack(t,stream));
   if(localStorage.getItem("dataSaver")==="1")pc.getSenders().forEach(x=>{if(x.track&&x.track.kind==="video"){const p=x.getParameters();if(p.encodings&&p.encodings[0]){p.encodings[0].maxBitrate=150000;x.setParameters(p).catch(()=>{})}}});
   const lv=$("irfanLocalVideo");lv.srcObject=c.type==="video"?stream:null;lv.style.display=c.type==="video"?"block":"none";
-  pc.ontrack=e=>{const rv=$("irfanRemoteVideo");rv.srcObject=e.streams[0];if(c.type==="video"){rv.style.display="block";$("icPh").style.display="none"}else{rv.style.display="none"}rv.play().catch(()=>st("Aawaz ke liye screen par tap karein"));rv.parentElement.onclick=()=>rv.play().catch(()=>{})};
+  pc.ontrack=e=>{const rv=$("irfanRemoteVideo");rv.srcObject=e.streams[0];if(c.type==="video"){rv.style.display="block";$("icPh").style.display="none"}else{rv.style.display="none"}rv.play().catch(()=>st("Tap the screen to hear audio"));rv.parentElement.onclick=()=>rv.play().catch(()=>{})};
   pc.onicecandidate=e=>{if(e.candidate)db.ref("calls/"+c.id+(c.caller?"/callerIce":"/calleeIce")).push(e.candidate.toJSON())};
-  pc.onconnectionstatechange=()=>{if(pc.connectionState==="connected"){st("Connected");clearTimeout(c.t)}if(pc.connectionState==="failed")endCall("Connection fail ho gaya")};return pc}
-function endCall(reason,skip){const c=call;if(!c)return;call=null;clearTimeout(c.t);c.refs.forEach(a=>a[0].off(a[1],a[2]));try{c.pc&&c.pc.close()}catch(_){}
+  pc.onconnectionstatechange=()=>{if(pc.connectionState==="connected"){st("Connected");clearTimeout(c.t);if(!c.since){c.since=Date.now();histSet(c.id,{status:"completed"})}}if(pc.connectionState==="failed")endCall("Connection failed")};return pc}
+function endCall(reason,skip){const c=call;if(!c)return;call=null;
+  if(c.since)histSet(c.id,{status:"completed",duration:Math.round((Date.now()-c.since)/1000)});else if(c.declined)histSet(c.id,{status:"declined"});else if(c.caller&&c.logged&&!c.timedOut)histSet(c.id,{status:"cancelled"});clearTimeout(c.t);c.refs.forEach(a=>a[0].off(a[1],a[2]));try{c.pc&&c.pc.close()}catch(_){}
   if(c.stream){c.stream.stopAll?c.stream.stopAll():c.stream.getTracks().forEach(t=>t.stop())}clearInterval(c.ring);if(c.dc)c.dc.cancel().catch(()=>{});if(!skip)db.ref("calls/"+c.id+"/state").set("ended").catch(()=>{});
   const me=currentUser&&currentUser.uid;db.ref("callInbox/"+(c.caller?c.peer.uid:me)+"/"+c.id).remove().catch(()=>{});
   if(c.caller)setTimeout(()=>db.ref("calls/"+c.id).remove().catch(()=>{}),6000);
-  st(reason||"Call khatam");const rv=$("irfanRemoteVideo");if(rv)rv.srcObject=null;setTimeout(()=>{if(!call&&$("irfanCallOverlay"))$("irfanCallOverlay").classList.remove("is-open")},1200)}
+  st(reason||"Call ended");const rv=$("irfanRemoteVideo");if(rv)rv.srcObject=null;setTimeout(()=>{if(!call&&$("irfanCallOverlay"))$("irfanCallOverlay").classList.remove("is-open")},1200)}
 async function startCall(type){
-  const p=activeUser;if(call||!p||!currentUser)return;if(localStorage.getItem("irfConfirm")==="1"&&!confirm(p.name+" ko call karein?"))return;stopTalking();const id=db.ref("calls").push().key;
+  const p=activeUser;if(call||!p||!currentUser)return;if(localStorage.getItem("irfConfirm")==="1"&&!confirm("Call "+p.name+"?"))return;stopTalking();const id=db.ref("calls").push().key;
   call={id,peer:p,type,caller:true,refs:[]};showCall(p,type,false);st("Calling…");const c=call;
   try{const pc=await prep();const o=await pc.createOffer();await pc.setLocalDescription(o);
     await db.ref("calls/"+id).set({callerUid:currentUser.uid,calleeUid:p.uid,type,offer:{type:o.type,sdp:o.sdp},state:"ringing",at:TS()});
     if(call!==c)return;c.dc=db.ref("calls/"+id+"/state").onDisconnect();c.dc.set("ended").catch(()=>{});
+    const h={type,at:TS()};
+    await db.ref("callHistory/"+currentUser.uid+"/"+id).set({...h,peerUid:p.uid,name:String(p.name||"IrfanTalk user").slice(0,100),dir:"out",status:"noanswer"}).catch(()=>{});
+    await db.ref("callHistory/"+p.uid+"/"+id).set({...h,peerUid:currentUser.uid,name:myName().slice(0,100),dir:"in",status:"missed"}).catch(()=>{});
+    c.logged=1;if(call!==c){db.ref("calls/"+id+"/state").set("ended").catch(()=>{});return}
     await db.ref("callInbox/"+p.uid+"/"+id).set({callerUid:currentUser.uid,name:myName(),type,at:TS()});
-    c.t=setTimeout(()=>endCall("Jawab nahi mila"),45000);
+    c.t=setTimeout(()=>{c.timedOut=1;endCall("No answer")},45000);
     listen(db.ref("calls/"+id+"/answer"),"value",async s=>{const a=s.val();if(!a||c.got)return;c.got=1;clearTimeout(c.t);st("Connecting…");await pc.setRemoteDescription(a);listen(db.ref("calls/"+id+"/calleeIce"),"child_added",x=>pc.addIceCandidate(x.val()).catch(()=>{}))});
-    listen(db.ref("calls/"+id+"/state"),"value",s=>{const v=s.val();if(v==="declined")endCall("Call decline hui",1);else if(v==="ended")endCall("Call khatam",1)});
-  }catch(e){endCall(e&&e.name==="NotAllowedError"?"Mic/camera ki permission dijiye":((e&&e.message)||"Call nahi lag saki"))}}
+    listen(db.ref("calls/"+id+"/state"),"value",s=>{const v=s.val();if(v==="declined"){c.declined=1}if(v==="declined")endCall("Call declined",1);else if(v==="ended")endCall("Call ended",1)});
+  }catch(e){endCall(e&&e.name==="NotAllowedError"?"Allow microphone and camera access":((e&&e.message)||"Could not place the call"))}}
 async function acceptCall(){const c=call;if(!c||c.caller||c.pc||c.accepting)return;c.accepting=1;clearInterval(c.ring);stopTalking();$("icAcc").style.display="none";st("Connecting…");
-  try{const cs=(await db.ref("calls/"+c.id).once("value")).val();if(!cs||!cs.offer)throw new Error("Call ab available nahi hai");const pc=await prep();await pc.setRemoteDescription(cs.offer);const a=await pc.createAnswer();await pc.setLocalDescription(a);
+  try{const cs=(await db.ref("calls/"+c.id).once("value")).val();if(!cs||!cs.offer)throw new Error("This call is no longer available");const pc=await prep();await pc.setRemoteDescription(cs.offer);const a=await pc.createAnswer();await pc.setLocalDescription(a);
     await db.ref("calls/"+c.id+"/answer").set({type:a.type,sdp:a.sdp});db.ref("callInbox/"+currentUser.uid+"/"+c.id).remove().catch(()=>{});
     listen(db.ref("calls/"+c.id+"/callerIce"),"child_added",x=>pc.addIceCandidate(x.val()).catch(()=>{}))}
-  catch(e){endCall(e&&e.name==="NotAllowedError"?"Mic/camera ki permission dijiye":((e&&e.message)||"Call connect nahi hui"))}}
+  catch(e){endCall(e&&e.name==="NotAllowedError"?"Allow microphone and camera access":((e&&e.message)||"Could not connect the call"))}}
 function watchIncoming(uid){if(window.__inRef)window.__inRef.off();const r=db.ref("callInbox/"+uid);window.__inRef=r;
   r.on("child_added",async s=>{const v=s.val()||{},cid=s.key;const cs=(await db.ref("calls/"+cid).once("value")).val();
     if(!cs||cs.state!=="ringing"||cs.calleeUid!==uid){s.ref.remove().catch(()=>{});return}
-    if(call||(localStorage.getItem("irfSafe")==="1"&&!(window.isFriend&&isFriend(cs.callerUid)))){db.ref("calls/"+cid+"/state").set("declined").catch(()=>{});s.ref.remove().catch(()=>{});return}
+    if((window.isBlocked&&isBlocked(cs.callerUid))||call||(localStorage.getItem("irfSafe")==="1"&&!(window.isFriend&&isFriend(cs.callerUid)))){db.ref("calls/"+cid+"/state").set("declined").catch(()=>{});s.ref.remove().catch(()=>{});return}
     const p=await getPerson(cs.callerUid,v.name);call={id:cid,peer:p,type:cs.type,caller:false,refs:[]};showCall(p,cs.type,true);st("Incoming "+(cs.type==="video"?"video":"audio")+" call…");
     const mine=call;const buzz=()=>{if(call!==mine||mine.pc)return clearInterval(mine.ring);if(window.isQuiet&&isQuiet())return;if(navigator.vibrate)navigator.vibrate([300,200,300]);playIrfanChatSound()};buzz();mine.ring=setInterval(buzz,2000);
-    listen(db.ref("calls/"+cid+"/state"),"value",x=>{if(x.val()==="ended")endCall("Call miss ho gayi",1)})})}
+    listen(db.ref("calls/"+cid+"/state"),"value",x=>{if(x.val()==="ended")endCall("Missed call",1)})})}
 auth.onAuthStateChanged(async u=>{if(u){watchIncoming(u.uid);try{const ph=(await db.ref("userDirectory/"+u.uid+"/photo").once("value")).val();if(ph)setAvatar($("myAvatar"),{photo:ph},myName())}catch(e){}}else{if(window.__inRef)window.__inRef.off();if(call)endCall("",1)}});
 if($("audioCallBtn"))$("audioCallBtn").onclick=()=>startCall("audio");
 if($("videoCallBtn"))$("videoCallBtn").onclick=()=>startCall("video");
 /* ---- More menu ---- */
 if($("moreBtn"))$("moreBtn").onclick=e=>{e.stopPropagation();let m=$("moreMenu");if(m){m.remove();return}
   m=mk("div","position:absolute;top:52px;right:8px;z-index:2600;background:#000;border:1.5px solid #aeb4bb;border-radius:14px;overflow:hidden;min-width:190px");m.id="moreMenu";
-  [["👤 Friend banayein / Friends",()=>$("addContactBtn").click()],["🗑 Meri messages delete karein",async()=>{if(!activeUser||!confirm("Aapke bheje hue messages delete ho jayenge. Pakka?"))return;try{const q=await db.ref(pairPath(activeUser.uid)).once("value");const u={};q.forEach(c=>{if((c.val()||{}).senderUid===currentUser.uid)u[c.key]=null});if(Object.keys(u).length)await db.ref(pairPath(activeUser.uid)).update(u)}catch(x){alert(x.message)}}],["← Chat band karein",()=>$("backBtn").click()]].forEach(a=>{const b=mk("button","display:block;width:100%;text-align:left;background:none;border:0;color:#fff;padding:13px 14px;font:inherit;font-size:14px;cursor:pointer",a[0]);b.onclick=()=>{m.remove();a[1]()};m.append(b)});$("chatView").append(m)};
+  [["Friends",()=>$("addContactBtn").click()],["Call history",()=>$("callsNavBtn").click()],["Block user",()=>window.__blockActive()],["Delete my messages",async()=>{if(!activeUser||!confirm("Delete all messages you sent in this chat?"))return;try{const q=await db.ref(pairPath(activeUser.uid)).once("value");const u={};q.forEach(c=>{if((c.val()||{}).senderUid===currentUser.uid)u[c.key]=null});if(Object.keys(u).length)await db.ref(pairPath(activeUser.uid)).update(u)}catch(x){alert(x.message)}}],["Close chat",()=>$("backBtn").click()]].forEach(a=>{const b=mk("button","display:block;width:100%;text-align:left;background:none;border:0;color:#fff;padding:13px 14px;font:inherit;font-size:14px;cursor:pointer",a[0]);b.onclick=()=>{m.remove();a[1]()};m.append(b)});$("chatView").append(m)};
 document.addEventListener("click",()=>{const m=$("moreMenu");if(m)m.remove()});
 /* ---- Control Studio tools ---- */
 function camTool(){const s=sheet("Camera");const v=mk("video","width:100%;border-radius:14px;background:#000");v.autoplay=true;v.playsInline=true;v.muted=true;const row=mk("div","display:flex;gap:8px;flex-wrap:wrap");const snap=mk("button",B,"📸 Photo"),sw=mk("button",B,"🔄 Switch"),dl=mk("a",B+"text-decoration:none;display:none","⬇ Save");dl.download="irfantalk-photo.jpg";const img=mk("img","width:100%;border-radius:14px;display:none");let fm="user",ms=null;
-  const start=async()=>{if(ms)ms.getTracks().forEach(t=>t.stop());try{ms=await navigator.mediaDevices.getUserMedia({video:{facingMode:fm},audio:false});v.srcObject=ms}catch(e){s.box.append(mk("div","color:#b00","Camera permission nahi mili."))}};
+  const start=async()=>{if(ms)ms.getTracks().forEach(t=>t.stop());try{ms=await navigator.mediaDevices.getUserMedia({video:{facingMode:fm},audio:false});v.srcObject=ms}catch(e){s.box.append(mk("div","color:#b00","Camera permission was not granted."))}};
   snap.onclick=()=>{if(!v.videoWidth)return;const c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);img.src=dl.href=c.toDataURL("image/jpeg",.9);img.style.display="block";dl.style.display=""};
   sw.onclick=()=>{fm=fm==="user"?"environment":"user";start()};s.box.onclose=()=>{if(ms)ms.getTracks().forEach(t=>t.stop())};row.append(snap,sw,dl);s.box.append(v,row,img);start()}
 const b64=b=>btoa(String.fromCharCode.apply(null,new Uint8Array(b))),ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 async function dkey(pin,salt){const k=await crypto.subtle.importKey("raw",new TextEncoder().encode(pin),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:150000,hash:"SHA-256"},k,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
 async function enc(pin,obj,salt){const iv=crypto.getRandomValues(new Uint8Array(12));const d=await crypto.subtle.encrypt({name:"AES-GCM",iv},await dkey(pin,salt),new TextEncoder().encode(JSON.stringify(obj)));return{salt:b64(salt),iv:b64(iv),data:b64(d)}}
 async function dec(pin,v){return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:ub(v.iv)},await dkey(pin,ub(v.salt)),ub(v.data))))}
-function vaultTool(){const s=sheet("🔒 Vault");const VK="irfanVault";let v=null;try{v=JSON.parse(LS(VK)||"null")}catch(e){}
-  const pin=mk("input",IN);pin.type="password";pin.placeholder=v?"PIN daaliye":"Naya PIN banaiye (min 4)";const go=mk("button",B,v?"Kholein":"Vault banayein");const info=mk("div","font-size:12px;color:#555","Notes sirf is device par, PIN se encrypt hokar save hote hain. PIN bhool gaye to recover nahi hoga.");s.box.append(pin,go,info);
-  function unlock(p,notes){s.box.replaceChildren(s.box.firstChild);const ta=mk("textarea",IN+"min-height:80px");ta.placeholder="Naya note…";const add=mk("button",B,"Save note"),list=mk("div","display:flex;flex-direction:column;gap:8px");
+function vaultTool(){const s=sheet("Vault");const VK="irfanVault";let v=null;try{v=JSON.parse(LS(VK)||"null")}catch(e){}
+  const pin=mk("input",IN);pin.type="password";pin.placeholder=v?"Enter PIN":"Create a PIN (at least 4 characters)";const go=mk("button",B,v?"Open":"Create vault");const info=mk("div","font-size:12px;color:#555","Notes are encrypted with your PIN and saved on this device only. A forgotten PIN cannot be recovered.");s.box.append(pin,go,info);
+  function unlock(p,notes){s.box.replaceChildren(s.box.firstChild);const ta=mk("textarea",IN+"min-height:80px");ta.placeholder="New note…";const add=mk("button",B,"Save note"),list=mk("div","display:flex;flex-direction:column;gap:8px");
     const persist=async()=>{v=await enc(p,notes,ub(v.salt));try{localStorage.setItem(VK,JSON.stringify(v))}catch(e){}};
     const draw=()=>{list.replaceChildren();notes.forEach((n,i)=>{const r=mk("div","border:1px solid #ddd;border-radius:12px;padding:10px;display:flex;gap:8px;align-items:flex-start");const d=mk("button","background:none;border:0;cursor:pointer;font-size:18px","🗑");d.onclick=async()=>{notes.splice(i,1);await persist();draw()};r.append(mk("div","flex:1;white-space:pre-wrap;overflow-wrap:anywhere",n),d);list.append(r)})};
     add.onclick=async()=>{const t=ta.value.trim();if(!t)return;notes.unshift(t);ta.value="";await persist();draw()};s.box.append(ta,add,list);draw()}
-  go.onclick=async()=>{const p=pin.value;if(p.length<4){info.textContent="PIN kam se kam 4 akshar ka ho.";return}
-    try{let notes=[];if(v)notes=await dec(p,v);else{v=await enc(p,[],crypto.getRandomValues(new Uint8Array(16)));try{localStorage.setItem(VK,JSON.stringify(v))}catch(e){}}unlock(p,notes)}catch(e){info.textContent="Galat PIN."}}}
-function trTool(){const s=sheet("🌐 Translator");const L=[["en","English"],["hi","Hindi"],["ur","Urdu"],["ar","Arabic"],["bn","Bengali"],["es","Spanish"],["fr","French"]];
+  go.onclick=async()=>{const p=pin.value;if(p.length<4){info.textContent="PIN must be at least 4 characters.";return}
+    try{let notes=[];if(v)notes=await dec(p,v);else{v=await enc(p,[],crypto.getRandomValues(new Uint8Array(16)));try{localStorage.setItem(VK,JSON.stringify(v))}catch(e){}}unlock(p,notes)}catch(e){info.textContent="Wrong PIN."}}}
+function trTool(){const s=sheet("Translator");const L=[["en","English"],["hi","Hindi"],["ur","Urdu"],["ar","Arabic"],["bn","Bengali"],["es","Spanish"],["fr","French"]];
   const sel=d=>{const e=mk("select","padding:10px;border:1px solid #ddd;border-radius:12px;flex:1;font:inherit");L.forEach(l=>{const o=document.createElement("option");o.value=l[0];o.textContent=l[1];e.append(o)});e.value=d;return e};
-  const a=sel("en"),b=sel("hi"),row=mk("div","display:flex;gap:8px");row.append(a,b);const ta=mk("textarea",IN+"min-height:90px");ta.placeholder="Yahan likhiye…";const go=mk("button",B,"Translate"),out=mk("div","padding:10px;border:1px solid #ddd;border-radius:12px;min-height:50px;white-space:pre-wrap;overflow-wrap:anywhere");
-  go.onclick=async()=>{const q=ta.value.trim();if(!q)return;out.textContent="…";try{const r=await fetch("https://api.mymemory.translated.net/get?q="+encodeURIComponent(q.slice(0,450))+"&langpair="+a.value+"|"+b.value);const j=await r.json();out.textContent=(j.responseData&&j.responseData.translatedText)||"Translation nahi mili."}catch(e){out.textContent="Internet check karein."}};s.box.append(row,ta,go,out)}
+  const a=sel("en"),b=sel("hi"),row=mk("div","display:flex;gap:8px");row.append(a,b);const ta=mk("textarea",IN+"min-height:90px");ta.placeholder="Type here…";const go=mk("button",B,"Translate"),out=mk("div","padding:10px;border:1px solid #ddd;border-radius:12px;min-height:50px;white-space:pre-wrap;overflow-wrap:anywhere");
+  go.onclick=async()=>{const q=ta.value.trim();if(!q)return;out.textContent="…";try{const r=await fetch("https://api.mymemory.translated.net/get?q="+encodeURIComponent(q.slice(0,450))+"&langpair="+a.value+"|"+b.value);const j=await r.json();out.textContent=(j.responseData&&j.responseData.translatedText)||"No translation found."}catch(e){out.textContent="Check your internet connection."}};s.box.append(row,ta,go,out)}
 window.findByEmail=findByEmail;
 window.__studioTool=n=>{if(window.__closeControlStudio)window.__closeControlStudio();const b=document.querySelector("button[data-control='"+n+"']");({translator:trTool,camera:camTool,vault:vaultTool})[n]()};
 })();
@@ -2465,7 +2207,7 @@ if(cs){let t=null,held=false,sx=0,sy=0;
 /* search */
 const sb=$("searchToggleBtn");
 if(sb)sb.onclick=()=>{const on=document.body.classList.toggle("show-search");if(on)setTimeout(()=>{if($("userSearch"))$("userSearch").focus()},60);else if($("userSearch")){$("userSearch").value="";renderUsers()}};
-if($("userSearch")){$("userSearch").placeholder="Apni list mein dhundhein (naye dost: ♙+)";}
+if($("userSearch")){$("userSearch").placeholder="Filter your friends and chats";}
 /* recent channel cards */
 const ago=t=>{const m=Math.max(0,Math.round((Date.now()-t)/60000));return m<1?"now":m<60?m+"m":m<1440?Math.round(m/60)+"h":Math.round(m/1440)+"d"};
 async function renderRecents(){const box=$("recentCards");if(!box||!currentUser)return;box.replaceChildren();
@@ -2478,10 +2220,10 @@ if($("backBtn"))$("backBtn").addEventListener("click",()=>setTimeout(()=>window.
 })();
 </script>
 <style id="irfanV3css">
-/* mic ke bahar ki line ring hatayi */
+
 #homeTalkBtn::before,.dial::before{display:none!important;content:none!important}
 #homeTalkBtn{border:5px solid #aeb4bb!important}
-/* har button: tap/hold par bahari circle red */
+
 .rg,.rg.ptt-on{border-color:#ff2b2b!important;box-shadow:0 0 0 3px #ff2b2b,0 0 16px 3px #ff2b2b99!important}
 .ptt-on{border-color:#ff2b2b!important;box-shadow:0 0 0 4px #ff2b2b,0 0 26px #ff2b2baa!important}
 button,[role=button]{-webkit-tap-highlight-color:transparent}
@@ -2507,7 +2249,6 @@ button,[role=button]{-webkit-tap-highlight-color:transparent}
 .sh input,.sh textarea,.sh select{color:#111;background:#fff}
 #irfCaption{position:fixed;left:10px;right:10px;top:70px;z-index:10080;background:#000d;color:#fff;border:1px solid #aeb4bb;border-radius:12px;padding:10px;pointer-events:none}
 /* privacy shield */
-body.privacy-on #messages .bubble:not(:active),body.privacy-on .rcard .rmid span{filter:blur(6px)}
 body.privacy-away #appShell{filter:blur(18px)}
 /* compact */
 body.compact #homeTalkBtn{width:130px!important;height:130px!important}
@@ -2529,7 +2270,7 @@ body:has(#chatView:not(.hidden)) #controlStudioBtn{display:none!important}
 @media(max-width:420px){#appShell header.top>div:nth-child(2)>div:first-child{display:none!important}}
 </style>
 <script>
-/* ================= Friends, invite, groups, buttons, settings ================= */
+
 (function(){
 const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.style.cssText=c;if(x!=null)e.textContent=x;return e};
 const B="background:#000;color:#fff;border:2px solid #aeb4bb;border-radius:22px;padding:9px 15px;font:inherit;font-weight:700;cursor:pointer;";
@@ -2541,17 +2282,17 @@ const btn=(t,fn,css)=>{const b=el("button",B+(css||""),t);b.type="button";b.oncl
 const note=t=>el("div","color:#555;font-size:13px",t);
 const val=async p=>(await db.ref(p).once("value")).val();
 const myName=()=>window.myProfileName||currentUser.displayName||(currentUser.email||currentUser.phoneNumber||"IrfanTalk user").split("@")[0];
-const fail=e=>alert(/permission/i.test(e.message)?"Permission denied: nayi database.rules.json Firebase mein Publish karein.":e.message);
+const fail=e=>alert(/permission/i.test(e.message)?"Permission denied. Publish the new database.rules.json in Firebase. If this person blocked you, the action is not allowed.":e.message);
 function sheet(title){const s=window.__sheet(title);s.box.classList.add("sh");return s}
 function personRow(p,...actions){const r=el("div",ROW);const a=el("div","width:42px;height:42px;border-radius:50%;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none");setAvatar(a,p,p.name);r.append(a,el("div","flex:1;min-width:0;overflow-wrap:anywhere",p.name),...actions);return r}
 
 /* ---- friends state ---- */
-let friends={},requests={},refs=[];
-const watch=(path,fn)=>{const r=db.ref(path);r.on("value",s=>fn(s.val()||{}),e=>{console.error(path,e.message);if($("usersStatus"))$("usersStatus").textContent="Permission denied: nayi rules Publish karein."});refs.push(r)};
+let friends={},requests={},blocked={},refs=[];
+const watch=(path,fn)=>{const r=db.ref(path);r.on("value",s=>fn(s.val()||{}),e=>{console.error(path,e.message);if($("usersStatus"))$("usersStatus").textContent="Permission denied. Open Settings → Connection check."});refs.push(r)};
 window.isFriend=uid=>Boolean(friends[uid]);
 window.getFriends=()=>Object.keys(friends).map(uid=>({uid}));
 async function sendRequest(p){
-  if(friends[p.uid])return alert(p.name+" pehle se friend hai.");
+  if(friends[p.uid])return alert(p.name+" is already your friend.");
   if(requests[p.uid])return accept(p.uid);
   await db.ref("friendRequests/"+p.uid+"/"+currentUser.uid).set({name:myName().slice(0,100),at:firebase.database.ServerValue.TIMESTAMP});
 }
@@ -2559,33 +2300,46 @@ async function accept(uid){const me=currentUser.uid,u={};u["friends/"+me+"/"+uid
 async function unfriend(uid){const me=currentUser.uid,u={};u["friends/"+me+"/"+uid]=null;u["friends/"+uid+"/"+me]=null;await db.ref().update(u)}
 const inviteLink=()=>location.origin+location.pathname+"?invite="+encodeURIComponent(currentUser.uid);
 async function shareInvite(out){
-  if(location.protocol==="file:"){out.textContent="Invite link ke liye app ko server/website URL se kholein.";return}
-  const url=inviteLink(),text="IrfanTalk par mujhse judiye";
-  try{if(navigator.share){await navigator.share({title:"IrfanTalk",text,url});return}await navigator.clipboard.writeText(url);out.textContent="Link copy ho gaya."}
+  if(location.protocol==="file:"){out.textContent="Open the app from your website address to share an invite link.";return}
+  const url=inviteLink(),text="Join me on IrfanTalk";
+  try{if(navigator.share){await navigator.share({title:"IrfanTalk",text,url});return}await navigator.clipboard.writeText(url);out.textContent="Link copied."}
   catch(e){if(e.name!=="AbortError")out.textContent=url}
 }
-async function searchPeople(q){
-  q=q.trim().toLowerCase();if(!q)return[];
-  if(q.includes("@")){const p=await findByEmail(q);return p?[p]:[]}
-  const s=await db.ref("userDirectory").orderByChild("nameLower").startAt(q).endAt(q+"").limitToFirst(20).once("value");
-  const a=[];s.forEach(c=>{if(c.key!==currentUser.uid){const v=c.val()||{};a.push({uid:c.key,name:v.name||"IrfanTalk user",photo:v.photo||""})}});return a;
+async function allPeople(){
+  const s=await db.ref("userDirectory").once("value");const a=[];
+  s.forEach(c=>{const v=c.val()||{};if(c.key!==currentUser.uid&&!blocked[c.key])a.push({uid:c.key,name:v.name||v.username||"IrfanTalk user",username:v.username||"",photo:v.photo||"",hidden:v.hidden===true})});
+  return a.sort((x,y)=>x.name.localeCompare(y.name));
 }
-async function friendsSheet(){
-  const s=sheet("Friends");const inp=el("input",IN);inp.placeholder="Naam (shuru ke akshar) ya poora email";
-  const out=el("div","display:flex;flex-direction:column;gap:8px"),msg=el("div","font-size:13px;overflow-wrap:anywhere");
-  const reqBox=el("div","display:flex;flex-direction:column;gap:8px"),mine=el("div","display:flex;flex-direction:column;gap:8px");
-  const run=async()=>{out.replaceChildren(note("Dhundh raha hoon…"));try{const a=await searchPeople(inp.value);out.replaceChildren();if(!a.length)out.append(note("Koi nahi mila. Dost ko Invite bhejiye."));
-    a.forEach(p=>{const b=btn(friends[p.uid]?"Chat":requests[p.uid]?"Accept":"Add",async()=>{try{if(friends[p.uid]){s.close();openChat(p)}else{const had=requests[p.uid];await sendRequest(p);b.textContent=had?"Friends ✓":"Request bheji ✓";b.disabled=true;if(had)draw()}}catch(e){fail(e)}});out.append(personRow(p,b))})}catch(e){out.replaceChildren();fail(e)}};
-  inp.onkeydown=e=>{if(e.key==="Enter")run()};
-  async function draw(){const ra=await Promise.all(Object.keys(requests).map(u=>getPerson(u,requests[u].name)));const fa=await Promise.all(Object.keys(friends).map(u=>getPerson(u)));
-    reqBox.replaceChildren(el("b","",ra.length?"Friend requests":""));ra.forEach(p=>reqBox.append(personRow(p,btn("Accept",()=>accept(p.uid).then(draw).catch(fail)),btn("✕",()=>db.ref("friendRequests/"+currentUser.uid+"/"+p.uid).remove().then(draw).catch(fail)))));
-    mine.replaceChildren(el("b","","Mere friends ("+fa.length+")"));fa.forEach(p=>mine.append(personRow(p,btn("Chat",()=>{s.close();openChat(p)}),btn("Hatayein",()=>{if(confirm(p.name+" ko friends se hatayein?"))unfriend(p.uid).then(draw).catch(fail)}))))}
-  s.box.append(inp,btn("Search",run),btn("📨 Friend ko invite karein",()=>shareInvite(msg)),msg,out,reqBox,mine);draw().catch(fail);
+function friendsSheet(start){
+  const s=sheet("Friends");const tabs=el("div","display:flex;gap:6px"),body=el("div","display:flex;flex-direction:column;gap:10px"),msg=el("div","font-size:13px;overflow-wrap:anywhere");
+  let tab="",seq=0,people=null;
+  const names={find:"All members",mine:"My friends",req:"Requests"};const tb={};
+  Object.keys(names).forEach(k=>{tb[k]=btn(names[k],()=>show(k),"flex:1;padding:8px 4px;font-size:13px");tabs.append(tb[k])});
+  const addBtn=p=>{const b=btn(friends[p.uid]?"Chat":requests[p.uid]?"Accept":"Add",async()=>{try{if(friends[p.uid]){s.close();openChat(p);return}const had=requests[p.uid];await sendRequest(p);b.textContent=had?"Friends ✓":"Sent ✓";b.disabled=true}catch(e){fail(e)}});return b};
+  async function show(k){
+    tab=k;const my=++seq;Object.keys(tb).forEach(x=>tb[x].style.background=x===k?"#444":"#000");body.replaceChildren(note("Loading…"));
+    try{
+      if(k==="find"){
+        const inp=el("input",IN);inp.placeholder="Search by name or full email";const list=el("div","display:flex;flex-direction:column;gap:10px");
+        if(!people)people=await allPeople();if(my!==seq)return;
+        const draw=()=>{const q=inp.value.trim().toLowerCase();const a=people.filter(p=>!p.hidden&&(!q||(p.name+" "+p.username).toLowerCase().includes(q)));list.replaceChildren(note(a.length+" registered member(s)"));a.slice(0,100).forEach(p=>list.append(personRow(p,addBtn(p))));if(!a.length)list.append(note(q.includes("@")?"Press the Search button to look up this email.":"No members found. Invite your friend, or run Settings → Connection check."))};
+        const byEmail=async()=>{const q=inp.value.trim().toLowerCase();if(!q.includes("@"))return draw();try{const p=await findByEmail(q);list.replaceChildren(p&&!blocked[p.uid]?personRow(p,addBtn(p)):note("This email is not registered."))}catch(e){fail(e)}};
+        inp.oninput=draw;inp.onkeydown=e=>{if(e.key==="Enter")byEmail()};body.replaceChildren(inp,btn("Search",byEmail),list);draw();
+      }else{
+        const src=k==="mine"?friends:requests;const a=await Promise.all(Object.keys(src).map(u=>getPerson(u,src[u].name)));if(my!==seq)return;body.replaceChildren();
+        if(!a.length)body.append(note(k==="mine"?"You have no friends yet.":"No pending requests."));
+        a.forEach(p=>body.append(k==="mine"?personRow(p,btn("Chat",()=>{s.close();openChat(p)}),btn("Remove",()=>{if(confirm("Remove "+p.name+" from friends?"))unfriend(p.uid).then(()=>setTimeout(()=>show(k),300)).catch(fail)}))
+          :personRow(p,btn("Accept",()=>accept(p.uid).then(()=>setTimeout(()=>show(k),300)).catch(fail)),btn("✕",()=>db.ref("friendRequests/"+currentUser.uid+"/"+p.uid).remove().then(()=>setTimeout(()=>show(k),300)).catch(fail)))));
+      }
+    }catch(e){if(my===seq)body.replaceChildren(note("Could not load: "+e.message+". Open Settings → Connection check."))}
+  }
+  s.box.append(tabs,body,btn("Invite a friend",()=>shareInvite(msg)),msg);
+  show(typeof start==="string"?start:Object.keys(requests).length?"req":"find");
 }
 async function handleInvite(){
   const uid=sessionStorage.getItem("irfInvite");if(!uid)return;sessionStorage.removeItem("irfInvite");
   if(uid===currentUser.uid||/[.#$\[\]\/]/.test(uid))return;
-  try{const p=await getPerson(uid);const s=sheet("Invite");s.box.append(personRow(p),note("Friend request bhejein?"),btn("Add friend",async()=>{try{await sendRequest(p);s.close();alert("Ho gaya.")}catch(e){fail(e)}}))}catch(e){fail(e)}
+  try{const p=await getPerson(uid);const s=sheet("Invite");s.box.append(personRow(p),note("Send a friend request?"),btn("Add friend",async()=>{try{await sendRequest(p);s.close();alert("Request sent.")}catch(e){fail(e)}}))}catch(e){fail(e)}
 }
 const inv=new URLSearchParams(location.search).get("invite");
 if(inv){sessionStorage.setItem("irfInvite",inv);history.replaceState(null,"",location.pathname)}
@@ -2593,15 +2347,15 @@ if(inv){sessionStorage.setItem("irfInvite",inv);history.replaceState(null,"",loc
 /* ---- Groups ---- */
 async function groupsSheet(){
   const s=sheet("Groups");const list=el("div","display:flex;flex-direction:column;gap:8px");
-  s.box.append(btn("＋ Naya group",()=>{s.close();newGroup()}),list);
-  try{const ids=Object.keys(await val("userGroups/"+currentUser.uid)||{});if(!ids.length)list.append(note("Abhi koi group nahi hai."));
-    for(const id of ids){try{const g=await val("groups/"+id);if(g)list.append(personRow({name:g.name},btn("Kholein",()=>{s.close();groupRoom(id,g)})))}catch(e){}}}catch(e){fail(e)}
+  s.box.append(btn("＋ New group",()=>{s.close();newGroup()}),list);
+  try{const ids=Object.keys(await val("userGroups/"+currentUser.uid)||{});if(!ids.length)list.append(note("No groups yet."));
+    for(const id of ids){try{const g=await val("groups/"+id);if(g)list.append(personRow({name:g.name},btn("Open",()=>{s.close();groupRoom(id,g)})))}catch(e){}}}catch(e){fail(e)}
 }
 async function newGroup(){
-  const s=sheet("Naya group");const n=el("input",IN);n.placeholder="Group ka naam";n.maxLength=60;s.box.append(n);const picks=[];
-  const fa=await Promise.all(Object.keys(friends).map(u=>getPerson(u)));if(!fa.length)s.box.append(note("Pehle friends add karein."));
+  const s=sheet("New group");const n=el("input",IN);n.placeholder="Group name";n.maxLength=60;s.box.append(n);const picks=[];
+  const fa=await Promise.all(Object.keys(friends).map(u=>getPerson(u)));if(!fa.length)s.box.append(note("Add friends first."));
   fa.forEach(p=>{const c=el("input","width:22px;height:22px");c.type="checkbox";picks.push([c,p.uid]);s.box.append(personRow(p,c))});
-  s.box.append(btn("Group banayein",async()=>{const name=n.value.trim(),sel=picks.filter(x=>x[0].checked).map(x=>x[1]);if(!name||!sel.length)return alert("Naam likhein aur kam se kam 1 friend chunein.");
+  s.box.append(btn("Create group",async()=>{const name=n.value.trim(),sel=picks.filter(x=>x[0].checked).map(x=>x[1]);if(!name||!sel.length)return alert("Enter a name and select at least one friend.");
     try{const me=currentUser.uid,id=db.ref("groups").push().key,members={[me]:true};sel.forEach(u=>members[u]=true);await db.ref("groups/"+id).set({name,owner:me,members});const u={};Object.keys(members).forEach(m=>u["userGroups/"+m+"/"+id]=true);await db.ref().update(u);s.close();groupRoom(id,{name,owner:me,members})}catch(e){fail(e)}}));
 }
 function groupRoom(id,g){
@@ -2611,48 +2365,74 @@ function groupRoom(id,g){
   const fn=r.on("value",q=>{box.replaceChildren();q.forEach(c=>{const m=c.val()||{},me=m.senderUid===currentUser.uid;const b=el("div","flex-shrink:0;max-width:80%;padding:8px 11px;border-radius:14px;overflow-wrap:anywhere;white-space:pre-wrap;"+(me?"align-self:flex-end;background:#e6e8ea;color:#000":"align-self:flex-start;background:#1b1b1c;color:#fff"));if(!me)b.append(el("div","font-size:10px;color:#aeb4bb",m.name||""));b.append(document.createTextNode(m.text||""));box.append(b)});box.scrollTop=box.scrollHeight},fail);
   const send=async()=>{const t=i.value.trim();if(!t)return;i.value="";try{await db.ref("groupMessages/"+id).push({senderUid:currentUser.uid,name:myName().slice(0,100),text:t,createdAt:firebase.database.ServerValue.TIMESTAMP})}catch(e){i.value=t;fail(e)}};
   i.onkeydown=e=>{if(e.key==="Enter")send()};s.box.onclose=()=>r.off("value",fn);
-  s.box.append(box,i,btn("Send",send),note("Group mein abhi sirf text message hai."));
+  s.box.append(box,i,btn("Send",send),note("Groups support text messages only."));
 }
 
 /* ---- Messages / Profile ---- */
 function messagesSheet(){
-  const s=sheet("Messages");if(!allUsers.length)s.box.append(note("Abhi koi chat ya friend nahi hai."));
+  const s=sheet("Messages");if(!allUsers.length)s.box.append(note("No chats or friends yet."));
   allUsers.forEach(p=>s.box.append(personRow(p,btn("Chat",()=>{s.close();openChat(p)}))));
-  s.box.append(btn("Friends dhundhein",()=>{s.close();friendsSheet()}));
+  s.box.append(btn("Find friends",()=>{s.close();friendsSheet()}));
 }
 function profileSheet(){
-  const s=sheet("Meri Profile");const n=el("input",IN);n.value=myName();n.maxLength=100;const msg=el("div","font-size:13px;overflow-wrap:anywhere");
+  const s=sheet("My profile");const n=el("input",IN);n.value=myName();n.maxLength=100;const msg=el("div","font-size:13px;overflow-wrap:anywhere");
   s.box.append(note(currentUser.email||currentUser.phoneNumber||""),n,
-    btn("Naam save karein",async()=>{const v=n.value.trim();if(!v)return;try{await currentUser.updateProfile({displayName:v});await db.ref("userDirectory/"+currentUser.uid).update({name:v,nameLower:v.toLowerCase()});window.myProfileName=v;msg.textContent="Save ho gaya."}catch(e){fail(e)}}),
-    btn("📷 Photo badlein",()=>window.__pickPhoto()),btn("📨 Invite link",()=>shareInvite(msg)),btn("Sign out",()=>$("logoutBtn").click()),msg);
+    btn("Save name",async()=>{const v=n.value.trim();if(!v)return;try{await currentUser.updateProfile({displayName:v});await db.ref("userDirectory/"+currentUser.uid).update({name:v,nameLower:v.toLowerCase()});window.myProfileName=v;msg.textContent="Saved."}catch(e){fail(e)}}),
+    btn("Change photo",()=>window.__pickPhoto()),btn("Invite link",()=>shareInvite(msg)),btn("Sign out",()=>signOutAsk()),msg);
 }
 
 /* ---- Quiet mode ---- */
 window.isQuiet=()=>Number(get("irfQuietUntil")||0)>Date.now();
-function paintQuiet(){const q=isQuiet();if($("quietModeBtn"))$("quietModeBtn").textContent=q?"🔇 Quiet ON":"🔔 Quiet";document.querySelectorAll("audio[data-voice]").forEach(a=>a.muted=q)}
-function quietSheet(){const s=sheet("Quiet mode");s.box.append(note("Message sound, call vibration aur walkie-talkie aawaz band rahegi."));
-  [["Band (Off)",0],["15 minute",9e5],["1 ghanta",36e5],["8 ghante",288e5],["Jab tak main band na karun",1e13]].forEach(o=>s.box.append(btn(o[0],()=>{put("irfQuietUntil",o[1]?Date.now()+o[1]:0);paintQuiet();s.close()})))}
+function paintQuiet(){const q=isQuiet();if($("quietModeBtn"))$("quietModeBtn").classList.toggle("hidden",!q);document.querySelectorAll("audio[data-voice]").forEach(a=>a.muted=q)}
+function quietSheet(){const s=sheet("Quiet mode");s.box.append(note("Mutes message sounds, call ringing and walkie-talkie audio."));
+  const cur=get("irfQuietPick")||"Off";[["Off",0],["15 minutes",9e5],["1 hour",36e5],["8 hours",288e5],["Until I turn it off",1e13]].forEach(o=>s.box.append(menuRow(o[0],(isQuiet()?cur:"Off")===o[0]?"✓":"",()=>{put("irfQuietUntil",o[1]?Date.now()+o[1]:0);put("irfQuietPick",o[0]);paintQuiet();s.close()})))}
 setInterval(paintQuiet,15000);
 
-/* ---- Voice effects (walkie-talkie aur call ki aawaz) ---- */
+/* ---- Noise reduction + voice effects (walkie-talkie and calls) ---- */
+const noiseMode=()=>get("irfNoise")||"standard";
+window.micConstraints=()=>{const on=noiseMode()!=="off";return{echoCancellation:true,noiseSuppression:on,autoGainControl:on,channelCount:1}};
 window.applyVoiceEffect=function(raw){
-  const kind=get("irfEffect")||"off";const AC=window.AudioContext||window.webkitAudioContext;if(kind==="off"||!AC)return raw;
-  const c=new AC();c.resume().catch(()=>{});const src=c.createMediaStreamSource(raw),dst=c.createMediaStreamDestination();
-  if(kind==="radio"||kind==="mega"){const f=c.createBiquadFilter();f.type="bandpass";f.frequency.value=kind==="radio"?1600:2200;f.Q.value=kind==="radio"?1:2;const g=c.createGain();g.gain.value=kind==="radio"?1.6:2.5;src.connect(f);f.connect(g);g.connect(dst)}
-  else{const d=c.createDelay();d.delayTime.value=.18;const g=c.createGain();g.gain.value=.4;src.connect(dst);src.connect(d);d.connect(g);g.connect(d);g.connect(dst)}
+  const kind=get("irfEffect")||"off",strong=noiseMode()==="high";if(kind==="off"&&!strong)return raw;
+  const c=irfanChatAudio;if(!c||c.state!=="running"){c&&c.resume().catch(()=>{});return raw}
+  const nodes=[],add=n=>(nodes.push(n),n);let timer=null;
+  const src=add(c.createMediaStreamSource(raw)),dst=add(c.createMediaStreamDestination());let tail=src;
+  const chain=n=>{tail.connect(n);tail=add(n)};
+  const filter=(type,freq,q)=>{const x=c.createBiquadFilter();x.type=type;x.frequency.value=freq;if(q)x.Q.value=q;return x};
+  if(strong){
+    chain(filter("highpass",110));chain(filter("lowpass",7000));
+    const an=add(c.createAnalyser());an.fftSize=1024;tail.connect(an);const gate=c.createGain();chain(gate);const buf=new Float32Array(an.fftSize);let hold=0;
+    timer=setInterval(()=>{an.getFloatTimeDomainData(buf);let t=0;for(const v of buf)t+=v*v;if(Math.sqrt(t/buf.length)>0.015)hold=Date.now()+300;gate.gain.setTargetAtTime(Date.now()<hold?1:0.06,c.currentTime,0.03)},30);
+    chain(c.createDynamicsCompressor());
+  }
+  if(kind==="radio"||kind==="mega"){chain(filter("bandpass",kind==="radio"?1600:2200,kind==="radio"?1:2));const g=c.createGain();g.gain.value=kind==="radio"?1.6:2.5;chain(g)}
+  tail.connect(dst);
+  if(kind==="echo"){const d=add(c.createDelay()),g=add(c.createGain());d.delayTime.value=.18;g.gain.value=.4;tail.connect(d);d.connect(g);g.connect(d);g.connect(dst)}
   const out=new MediaStream(dst.stream.getAudioTracks());raw.getVideoTracks().forEach(t=>out.addTrack(t));
-  out.stopAll=()=>{out.getTracks().forEach(t=>t.stop());raw.getTracks().forEach(t=>t.stop());c.close().catch(()=>{})};return out;
+  out.stopAll=()=>{clearInterval(timer);out.getTracks().forEach(t=>t.stop());raw.getTracks().forEach(t=>t.stop());nodes.forEach(n=>{try{n.disconnect()}catch(e){}})};return out;
 };
+function noisePage(){
+  const s=sheet("Noise cancellation");const list=el("div","display:flex;flex-direction:column;gap:8px"),msg=note(""),meter=el("meter","width:100%;height:22px"),player=el("audio","width:100%;display:none");meter.max=0.3;player.controls=true;
+  const draw=()=>list.replaceChildren(...[["off","Off","Raw microphone sound"],["standard","Standard","Phone's built-in noise and echo reduction"],["high","High","Also cuts rumble and mutes background noise between words"]].map(o=>menuRow(o[1],noiseMode()===o[0]?"✓":"",()=>{put("irfNoise",o[0]);draw()},o[2])));
+  let stream=null,t=null,r=null,src=null,closed=false;
+  const stop=()=>{clearInterval(t);t=null;if(r&&r.state!=="inactive")r.stop();r=null;if(stream){stream.stopAll?stream.stopAll():stream.getTracks().forEach(x=>x.stop());stream=null}if(src){src.disconnect();src=null}meter.value=0};
+  const test=btn("Test microphone (4 seconds)",async()=>{test.disabled=true;player.style.display="none";try{
+      const raw=await navigator.mediaDevices.getUserMedia({audio:micConstraints()});stream=applyVoiceEffect(raw);if(closed)return stop();
+      const c=irfanChatAudio,an=c.createAnalyser(),buf=new Float32Array(an.fftSize);src=c.createMediaStreamSource(stream);src.connect(an);t=setInterval(()=>{an.getFloatTimeDomainData(buf);meter.value=Math.max(...buf.map(Math.abs))},80);
+      const chunks=[];r=new MediaRecorder(stream);r.ondataavailable=e=>chunks.push(e.data);r.onstop=()=>{if(closed)return;player.src=URL.createObjectURL(new Blob(chunks,{type:chunks[0]?.type}));player.style.display="block";msg.textContent="Play the recording to hear how you sound.";test.disabled=false};
+      r.start();msg.textContent="Recording… speak now.";setTimeout(stop,4000);
+    }catch(e){msg.textContent="Microphone test failed: "+e.message;test.disabled=false;stop()}});
+  s.box.onclose=()=>{closed=true;stop()};s.box.append(list,test,meter,msg,player,note("Applies from your next walkie-talkie press or call. Results depend on your phone and browser."));draw();
+}
 
 /* ---- Live caption (apni aawaz) ---- */
 let rec=null;
 function caption(on){
   const old=$("irfCaption");if(old)old.remove();if(rec){const r=rec;rec=null;r.stop()}
   if(!on)return true;const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return false;
-  const box=el("div","","Live caption: boliye…");box.id="irfCaption";document.body.append(box);
-  const r=rec=new SR();r.continuous=true;r.interimResults=true;r.lang=get("irfCapLang")||"hi-IN";
+  const box=el("div","","Live caption: speak now…");box.id="irfCaption";document.body.append(box);
+  const r=rec=new SR();r.continuous=true;r.interimResults=true;r.lang=get("irfCapLang")||"en-IN";
   r.onresult=e=>{box.textContent=Array.from(e.results).slice(-2).map(x=>x[0].transcript).join(" ")};
-  r.onerror=e=>{if(["not-allowed","service-not-allowed","audio-capture"].includes(e.error)){box.textContent="Caption ke liye mic nahi mila.";rec=null}};
+  r.onerror=e=>{if(["not-allowed","service-not-allowed","audio-capture"].includes(e.error)){box.textContent="Captions could not use the microphone.";rec=null}};
   r.onend=()=>{if(rec===r)setTimeout(()=>{if(rec===r)try{r.start()}catch(e){}},500)};
   try{r.start()}catch(e){}return true;
 }
@@ -2660,39 +2440,112 @@ function caption(on){
 /* ---- Settings state ---- */
 const on=k=>get(k)==="1";
 function applySettings(){
-  const dark=get("appTheme")==="dark";document.body.classList.toggle("theme-dark",dark);
-  document.body.classList.toggle("privacy-on",on("privacyShield"));document.body.classList.toggle("compact",on("irfCompact"));
-  const state={privacy:on("privacyShield"),noise:on("noiseCancellation"),caption:Boolean(rec),data:on("dataSaver"),safety:on("irfSafe")||on("irfConfirm"),voice:(get("irfEffect")||"off")!=="off",sound:get("irfSound")!=="0",theme:dark};
-  Object.keys(state).forEach(k=>{const b=document.querySelector("button[data-control='"+k+"']");if(b){b.classList.toggle("is-active",state[k]);b.setAttribute("aria-pressed",state[k])}});
+  const c=document.body.classList;c.toggle("theme-dark",get("appTheme")==="dark");c.toggle("blur-chat",on("irfBlurChat"));c.toggle("hide-preview",on("irfHidePreview"));c.toggle("compact",on("irfCompact"));
 }
-document.addEventListener("visibilitychange",()=>document.body.classList.toggle("privacy-away",document.hidden&&on("privacyShield")));
+document.addEventListener("visibilitychange",()=>{document.body.classList.toggle("privacy-away",document.hidden&&on("irfCover"));if(document.hidden)hiddenAt=Date.now();else if(currentUser&&hiddenAt&&Date.now()-hiddenAt>30000)showLock()});
+let hiddenAt=0;
 function toast(t){const d=el("div","position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:10090;background:#000;color:#fff;border:2px solid #aeb4bb;border-radius:20px;padding:10px 16px;font-size:13px;width:max-content;max-width:90vw",t);document.body.append(d);setTimeout(()=>d.remove(),2600)}
-const flip=(k,label)=>{put(k,on(k)?"0":"1");applySettings();toast(label+(on(k)?" ON":" OFF"))};
-const toggleRow=(label,checked,fn)=>{const l=el("label",ROW+";justify-content:space-between");const c=el("input","width:22px;height:22px");c.type="checkbox";c.checked=checked;c.onchange=()=>{fn(c.checked);applySettings()};l.append(el("span","",label),c);return l};
-const SYNC=["appTheme","privacyShield","noiseCancellation","dataSaver","irfSafe","irfConfirm","irfEffect","irfSound","irfCompact","irfAutoHide","irfCapLang"];
-const controls={
-  privacy:()=>flip("privacyShield","Privacy Shield (message dabakar padhein)"),
-  noise:()=>flip("noiseCancellation","Noise Cancellation"),
-  data:()=>flip("dataSaver","Data Saver (agli call se)"),
-  caption:()=>{const want=!rec;if(!caption(want))toast("Is browser mein Live Caption support nahi hai");applySettings()},
-  theme:()=>{put("appTheme",get("appTheme")==="dark"?"light":"dark");applySettings()},
-  sound:()=>{put("irfSound",get("irfSound")==="0"?"1":"0");applySettings();toast("Notification sound "+(get("irfSound")==="0"?"OFF":"ON"))},
-  voice:()=>{const s=sheet("Voice Effects");[["off","Normal"],["radio","Walkie radio"],["mega","Megaphone"],["echo","Echo"]].forEach(o=>s.box.append(btn(((get("irfEffect")||"off")===o[0]?"✓ ":"")+o[1],()=>{put("irfEffect",o[0]);applySettings();s.close()})))},
-  safety:()=>{const s=sheet("Safety Center");s.box.append(toggleRow("Safe Mode: sirf friends ki call aaye",on("irfSafe"),v=>put("irfSafe",v?"1":"0")),toggleRow("Call aur delete se pehle poochho",on("irfConfirm"),v=>put("irfConfirm",v?"1":"0")))},
-  settings:()=>{const s=sheet("App Settings");const lang=el("select",IN);[["hi-IN","Caption: Hindi"],["ur-IN","Caption: Urdu"],["en-IN","Caption: English"]].forEach(o=>{const x=el("option","",o[1]);x.value=o[0];lang.append(x)});lang.value=get("irfCapLang")||"hi-IN";lang.onchange=()=>{put("irfCapLang",lang.value);if(rec)caption(true)};
-    s.box.append(toggleRow("Sound Alerts",get("irfSound")!=="0",v=>put("irfSound",v?"1":"0")),toggleRow("Auto-Hide Ring (8 sec)",on("irfAutoHide"),v=>put("irfAutoHide",v?"1":"0")),toggleRow("Compact Mode",on("irfCompact"),v=>put("irfCompact",v?"1":"0")),lang)},
-  backup:()=>{const s=sheet("Backup & Restore");const ta=el("textarea",IN+"min-height:130px;font-size:12px");const msg=note("Sirf app settings aur encrypted Vault ka backup. Chats Firebase mein rehti hain.");
-    const snap=()=>{const o={};SYNC.concat("irfanVault").forEach(k=>{if(get(k)!==null)o[k]=get(k)});return JSON.stringify(o,null,2)};ta.value=snap();
-    s.box.append(ta,btn("Export file",()=>{const u=URL.createObjectURL(new Blob([snap()],{type:"application/json"}));const a=el("a");a.href=u;a.download="irfantalk-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}),
-      btn("Restore",()=>{try{const o=JSON.parse(ta.value);if(o.irfanVault&&get("irfanVault")&&o.irfanVault!==get("irfanVault")&&!confirm("Maujooda Vault badal jayega. Theek hai?"))return;SYNC.concat("irfanVault").forEach(k=>{if(typeof o[k]==="string")put(k,o[k])});applySettings();msg.textContent="Restore ho gaya."}catch(e){msg.textContent="JSON galat hai."}}),msg)},
-  contacts:friendsSheet,
-  translator:()=>window.__studioTool("translator"),camera:()=>window.__studioTool("camera"),vault:()=>window.__studioTool("vault")
-};
-document.addEventListener("click",e=>{const b=e.target instanceof Element&&e.target.closest("button[data-control]");if(!b)return;if(window.__closeControlStudio)window.__closeControlStudio();controls[b.dataset.control]?.()});
-let hideT;const arm=()=>{clearTimeout(hideT);const p=$("controlStudioPanel");if(on("irfAutoHide")&&!p.classList.contains("hidden"))hideT=setTimeout(()=>window.__closeControlStudio?.(),8000)};
-["pointerup","click"].forEach(v=>document.addEventListener(v,()=>setTimeout(arm,0),true));
+function menuRow(label,value,fn,sub){const b=el("button");b.type="button";b.className="menu-row";const m=el("span","flex:1;text-align:left;display:flex;flex-direction:column");m.append(el("span","",label));if(sub)m.append(el("small","",sub));b.append(m,el("span","",value));b.onclick=fn;return b}
+const heading=t=>el("div","font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#777;margin-top:8px",t);
+function toggleRow(label,checked,fn,sub){const l=el("label");l.className="menu-row";const m=el("span","flex:1;display:flex;flex-direction:column");m.append(el("span","",label));if(sub)m.append(el("small","",sub));const c=el("input","width:22px;height:22px;accent-color:#000");c.type="checkbox";c.checked=checked;c.onchange=async()=>{try{await fn(c.checked);applySettings()}catch(e){c.checked=!c.checked;fail(e)}};l.append(m,c);return l}
+const pref=(label,key,sub)=>toggleRow(label,on(key),v=>put(key,v?"1":"0"),sub);
 
-/* ---- Red highlight: har button tap/hold ---- */
+/* ---- App lock (this device only) ---- */
+const lockKey=()=>"irfLock:"+currentUser.uid;
+async function pinHash(pin,salt){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(salt+":"+pin));return Array.from(new Uint8Array(d),x=>x.toString(16).padStart(2,"0")).join("")}
+function showLock(){
+  if(!currentUser||!get(lockKey())||$("irfLockScreen"))return;const saved=JSON.parse(get(lockKey()));
+  const w=el("div","position:fixed;inset:0;z-index:10100;background:#000;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px");w.id="irfLockScreen";
+  const i=el("input",IN+"max-width:260px;text-align:center;color:#111;background:#fff");i.type="password";i.inputMode="numeric";i.placeholder="Enter app PIN";const m=el("div","font-size:13px;min-height:18px");
+  const open=async()=>{if(await pinHash(i.value,saved.salt)===saved.hash)w.remove();else{m.textContent="Wrong PIN";i.value=""}};i.onkeydown=e=>{if(e.key==="Enter")open()};
+  w.append(el("b","font-size:22px","IrfanTalk is locked"),i,btn("Unlock",open),m,btn("Forgot PIN? Sign out",async()=>{const k=lockKey();await auth.signOut();try{localStorage.removeItem(k)}catch(e){}w.remove()}));document.body.append(w);i.focus();
+}
+function lockPage(){
+  const s=sheet("App lock");const has=Boolean(get(lockKey()));
+  if(has){s.box.append(note("App lock is on."),btn("Turn off app lock",async()=>{const p=prompt("Enter current PIN");if(p===null)return;const v=JSON.parse(get(lockKey()));if(await pinHash(p,v.salt)!==v.hash)return alert("Wrong PIN");localStorage.removeItem(lockKey());s.close()}));return}
+  const a=el("input",IN),b=el("input",IN);[a,b].forEach(x=>{x.type="password";x.inputMode="numeric"});a.placeholder="New PIN (at least 4 digits)";b.placeholder="Repeat PIN";
+  s.box.append(a,b,btn("Turn on app lock",async()=>{if(!/^\d{4,}$/.test(a.value)||a.value!==b.value)return alert("PINs must match and have at least 4 digits.");const salt=String(crypto.getRandomValues(new Uint32Array(2)).join("-"));put(lockKey(),JSON.stringify({salt,hash:await pinHash(a.value,salt)}));s.close();toast("App lock is on")}),note("Asked when the app opens, or after 30 seconds in the background. It protects this screen only; it does not encrypt your data."));
+}
+
+/* ---- Blocking ---- */
+window.isBlocked=uid=>Boolean(blocked[uid]);
+async function blockUser(p){
+  if(!confirm("Block "+p.name+"? They will not be able to message you, call you or send requests."))return;
+  await db.ref("blocks/"+currentUser.uid+"/"+p.uid).set(true);blocked[p.uid]=true;
+  await unfriend(p.uid).catch(()=>{});await db.ref("friendRequests/"+currentUser.uid+"/"+p.uid).remove().catch(()=>{});
+  if(voiceRoomTarget===p.uid){const k=currentUser;leaveVoice();connectVoiceSocket(k)}closeChat();loadUsers();toast(p.name+" blocked");
+}
+window.__blockActive=()=>{if(activeUser)blockUser(activeUser).catch(fail)};
+function blockedPage(){
+  const s=sheet("Blocked users");const ids=Object.keys(blocked);if(!ids.length)s.box.append(note("You have not blocked anyone."));
+  ids.forEach(async u=>{try{const p=await getPerson(u);const r=personRow(p,btn("Unblock",()=>db.ref("blocks/"+currentUser.uid+"/"+u).remove().then(()=>{r.remove();loadUsers()}).catch(fail)));s.box.append(r)}catch(e){fail(e)}});
+}
+async function privacyPage(){
+  const s=sheet("Privacy");let hidden=false;try{hidden=(await val("userDirectory/"+currentUser.uid+"/hidden"))===true}catch(e){}
+  s.box.append(heading("Who can reach me"),
+    toggleRow("Show me in the member list",!hidden,v=>db.ref("userDirectory/"+currentUser.uid+"/hidden").set(!v),"Hides you from the list in this app. Someone with your email can still find you."),
+    pref("Only friends can call me","irfSafe","Applies on this device"),
+    menuRow("Blocked users",String(Object.keys(blocked).length),blockedPage),
+    heading("On this phone"),
+    menuRow("App lock (PIN)",get(lockKey())?"On":"Off",lockPage),
+    pref("Hide message previews","irfHidePreview","Home screen will not show last messages"),
+    pref("Hide screen in background","irfCover","Covers the app when you switch away"),
+    pref("Blur chat messages","irfBlurChat","Press and hold a message to read it"));
+}
+
+/* ---- Call history ---- */
+const STATUS={completed:"Answered",missed:"Missed",noanswer:"No answer",declined:"Declined",cancelled:"Cancelled"};
+async function historyPage(){
+  const s=sheet("Call history");const tabs=el("div","display:flex;gap:6px"),list=el("div","display:flex;flex-direction:column;gap:10px");let only=false,data=[];
+  const draw=()=>{list.replaceChildren();const a=data.filter(x=>!only||x.status==="missed");if(!a.length)list.append(note(only?"No missed calls.":"No calls yet."));
+    a.forEach(x=>{const d=x.duration||0;const info=el("div","flex:1;min-width:0");info.append(el("div",x.status==="missed"?"color:#d00":"",x.name),el("small","display:block;font-size:11px;color:#666",(x.dir==="out"?"↗ Outgoing":"↙ Incoming")+" "+x.type+" • "+(STATUS[x.status]||x.status)+(d?" "+Math.floor(d/60)+":"+String(d%60).padStart(2,"0"):"")+" • "+new Date(x.at).toLocaleString()));
+      const r=el("div",ROW);r.append(info,btn("Call",async()=>{try{const p=await getPerson(x.peerUid,x.name);s.close();await openChat(p);$(x.type==="video"?"videoCallBtn":"audioCallBtn").click()}catch(e){fail(e)}}),btn("✕",()=>db.ref("callHistory/"+currentUser.uid+"/"+x.id).remove().then(()=>{data=data.filter(y=>y!==x);draw()}).catch(fail)));list.append(r)})};
+  const t1=btn("All",()=>{only=false;t1.style.background="#444";t2.style.background="#000";draw()},"flex:1;background:#444"),t2=btn("Missed",()=>{only=true;t2.style.background="#444";t1.style.background="#000";draw()},"flex:1");tabs.append(t1,t2);
+  s.box.append(tabs,list,btn("Clear all history",()=>{if(confirm("Clear all call history?"))db.ref("callHistory/"+currentUser.uid).remove().then(()=>{data=[];draw()}).catch(fail)}));list.append(note("Loading…"));
+  try{const v=await val("callHistory/"+currentUser.uid)||{};data=Object.keys(v).map(id=>({id,...v[id]})).sort((a,b)=>b.at-a.at);draw()}catch(e){list.replaceChildren(note("Could not load: "+e.message))}
+}
+
+/* ---- Connection check ---- */
+function checkPage(){
+  const s=sheet("Connection check");const list=el("div","display:flex;flex-direction:column;gap:8px");const me=currentUser.uid;
+  const run=async()=>{list.replaceChildren();const test=async(label,fn)=>{const row=menuRow(label,"…",()=>{});list.append(row);try{const info=await withTimeout(fn(),10000,"Timed out");row.lastChild.textContent="✅";if(info)row.firstChild.append(el("small","",String(info)))}catch(e){row.lastChild.textContent="❌";row.firstChild.append(el("small","color:#b00",e.message))}};
+    await test("Save my profile",()=>db.ref("userDirectory/"+me+"/updatedAt").set(firebase.database.ServerValue.TIMESTAMP));
+    await test("Member list",async()=>(await allPeople()).length+" other member profile(s) found");
+    await test("Email search",async()=>{const m=(currentUser.email||"").toLowerCase();if(!m)return"Skipped (no email on this account)";if(await val("emailIndex/"+ek(m))!==me)throw new Error("Your email is not indexed. Sign out and sign in again.")});
+    for(const [label,p] of [["Friends","friends/"],["Friend requests","friendRequests/"],["Chat list","userChats/"],["Call history","callHistory/"],["Blocked list","blocks/"],["Groups","userGroups/"]])await test(label,async()=>{await val(p+me)});
+    await test("Voice server (walkie-talkie)",async()=>{if(!voiceSocket||!voiceSocket.connected)throw new Error("Not connected. Open the app from your Node server URL.")});
+    await test("Microphone",async()=>{(await navigator.mediaDevices.getUserMedia({audio:true})).getTracks().forEach(t=>t.stop())});};
+  s.box.append(list,btn("Run again",run),note("If database items show ❌, publish the included database.rules.json in Firebase. A person appears in the member list only after signing in once with this version."));run();
+}
+
+/* ---- Other pages ---- */
+function themePage(){const s=sheet("Theme & appearance");const draw=()=>{const cur=get("appTheme")==="dark"?"dark":"light";box.replaceChildren(...["light","dark"].map(t=>menuRow(t==="dark"?"Dark":"Light",cur===t?"✓":"",()=>{put("appTheme",t);applySettings();draw()})),pref("Compact mode","irfCompact","Smaller mic buttons and messages"))};const box=el("div","display:flex;flex-direction:column;gap:8px");s.box.append(box);draw()}
+function soundPage(){const s=sheet("Notifications & sound");s.box.append(toggleRow("Message sound",get("irfSound")!=="0",v=>put("irfSound",v?"1":"0")),menuRow("Quiet mode",isQuiet()?"On":"Off",quietSheet),btn("Play test sound",()=>playIrfanChatSound()))}
+function effectPage(){const s=sheet("Voice effects");const box=el("div","display:flex;flex-direction:column;gap:8px");const draw=()=>box.replaceChildren(...[["off","Normal"],["radio","Walkie radio"],["mega","Megaphone"],["echo","Echo"]].map(o=>menuRow(o[1],(get("irfEffect")||"off")===o[0]?"✓":"",()=>{put("irfEffect",o[0]);draw()})));s.box.append(box,note("Others hear this effect on your next walkie-talkie press or call."));draw()}
+function dataPage(){const s=sheet("Data saver");s.box.append(pref("Use less data on video calls","dataSaver","Lower video quality from your next call"))}
+function captionPage(){const s=sheet("Live caption");const lang=el("select",IN);[["en-IN","English"],["hi-IN","Hindi"],["ur-IN","Urdu"]].forEach(o=>{const x=el("option","",o[1]);x.value=o[0];lang.append(x)});lang.value=get("irfCapLang")||"en-IN";lang.onchange=()=>{put("irfCapLang",lang.value);if(rec)caption(true)};
+  s.box.append(toggleRow("Show captions",Boolean(rec),v=>{if(!caption(v))throw new Error("Live caption is not supported in this browser.")},"Captions your own voice only"),heading("Spoken language"),lang)}
+function safetyPage(){const s=sheet("Safety center");s.box.append(pref("Only friends can call me","irfSafe"),pref("Ask before calling","irfConfirm"),menuRow("Blocked users",String(Object.keys(blocked).length),blockedPage),menuRow("Privacy settings","›",privacyPage))}
+function backupPage(){const s=sheet("Backup & restore");const ta=el("textarea",IN+"min-height:160px;font-size:12px");const msg=note("Backs up app settings and your encrypted Vault. Chats stay in Firebase.");
+  const snap=()=>{const o={};SYNC.concat("irfanVault").forEach(k=>{if(get(k)!==null)o[k]=get(k)});return JSON.stringify(o,null,2)};ta.value=snap();
+  s.box.append(ta,btn("Export file",()=>{const u=URL.createObjectURL(new Blob([snap()],{type:"application/json"}));const a=el("a");a.href=u;a.download="irfantalk-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}),
+    btn("Restore",()=>{try{const o=JSON.parse(ta.value);if(o.irfanVault&&get("irfanVault")&&o.irfanVault!==get("irfanVault")&&!confirm("This will replace your current Vault. Continue?"))return;SYNC.concat("irfanVault").forEach(k=>{if(typeof o[k]==="string")put(k,o[k])});applySettings();msg.textContent="Restored."}catch(e){msg.textContent="Invalid backup text."}}),msg)}
+function settingsPage(){const s=sheet("Settings");const msg=note("");
+  s.box.append(heading("Account"),menuRow("My profile","›",profileSheet),menuRow("Invite a friend","›",()=>shareInvite(msg)),msg,
+    heading("Privacy & safety"),menuRow("Privacy","›",privacyPage),menuRow("Safety center","›",safetyPage),
+    heading("Notifications"),menuRow("Notifications & sound","›",soundPage),
+    heading("Calls & voice"),menuRow("Call history","›",historyPage),menuRow("Noise cancellation","›",noisePage),menuRow("Voice effects","›",effectPage),menuRow("Live caption","›",captionPage),menuRow("Data saver","›",dataPage),
+    heading("Appearance"),menuRow("Theme & appearance","›",themePage),
+    heading("Data"),menuRow("Backup & restore","›",backupPage),
+    heading("Help"),menuRow("Connection check","›",checkPage),
+    btn("Sign out",()=>signOutAsk()))}
+const signOutAsk=()=>{if(confirm("Sign out?"))auth.signOut()};
+const SYNC=["appTheme","dataSaver","irfSafe","irfConfirm","irfEffect","irfNoise","irfSound","irfCompact","irfCapLang","irfBlurChat","irfHidePreview","irfCover"];
+const controls={privacy:privacyPage,noise:noisePage,caption:captionPage,backup:backupPage,data:dataPage,safety:safetyPage,voice:effectPage,sound:soundPage,contacts:()=>friendsSheet("mine"),settings:settingsPage,theme:themePage,
+  translator:()=>window.__studioTool("translator"),camera:()=>window.__studioTool("camera"),vault:()=>window.__studioTool("vault")};
+document.addEventListener("click",e=>{const b=e.target instanceof Element&&e.target.closest("button[data-control]");if(!b)return;window.__closeControlStudio?.();controls[b.dataset.control]?.()});
+
+
 const lit=new Map();
 document.addEventListener("pointerdown",e=>{const b=e.target instanceof Element&&e.target.closest("button,[role=button],a.link,.link");if(!b)return;b.classList.add("rg");lit.set(e.pointerId,[b,Date.now()])},true);
 const unlit=e=>{const x=lit.get(e.pointerId);if(!x)return;lit.delete(e.pointerId);setTimeout(()=>x[0].classList.remove("rg"),Math.max(0,350-(Date.now()-x[1])))};
@@ -2700,27 +2553,61 @@ const unlit=e=>{const x=lit.get(e.pointerId);if(!x)return;lit.delete(e.pointerId
 
 /* ---- Buttons ---- */
 const bind=(id,fn)=>{if($(id))$(id).onclick=fn};
-bind("addContactBtn",friendsSheet);bind("quietModeBtn",quietSheet);bind("groupsNavBtn",groupsSheet);bind("chatNavBtn",messagesSheet);
-bind("profileNavBtn",profileSheet);bind("myAvatar",profileSheet);
+bind("addContactBtn",()=>friendsSheet());bind("quietModeBtn",quietSheet);bind("settingsBtn",settingsPage);bind("groupsNavBtn",groupsSheet);bind("chatNavBtn",messagesSheet);bind("callsNavBtn",historyPage);
+bind("profileNavBtn",profileSheet);bind("myAvatar",profileSheet);bind("studioCloseBtn",()=>window.__closeControlStudio?.());
 bind("homeNavBtn",()=>{closeChat();document.body.classList.remove("show-search");$("userSearch").value="";window.scrollTo({top:0,behavior:"smooth"});loadUsers()});
-bind("logoutBtn",()=>{if(confirm("Sign out karein?"))auth.signOut()});
 bind("refreshBtn",()=>loadUsers());
 
 /* ---- Phone login ---- */
 const pb=$("welcomePhoneBtn");
-if(pb){pb.disabled=false;let verifier;pb.onclick=()=>{const s=sheet("Phone se login");const p=el("input",IN);p.type="tel";p.value="+91";const code=el("input",IN);code.placeholder="6-digit OTP";code.inputMode="numeric";code.style.display="none";const rc=el("div"),msg=note("");let conf=null;
-  const go=btn("OTP bhejein",async()=>{go.disabled=true;try{if(!conf){verifier=new firebase.auth.RecaptchaVerifier(rc,{size:"invisible"});conf=await auth.signInWithPhoneNumber(p.value.replace(/\s/g,""),verifier);code.style.display="";go.textContent="Verify";msg.textContent="OTP bhej diya."}else{await conf.confirm(code.value.trim());s.close()}}catch(e){msg.textContent=e.code==="auth/operation-not-allowed"?"Firebase Console → Authentication mein Phone enable karein.":e.message;if(!conf&&verifier){verifier.clear();verifier=null}}go.disabled=false});
+if(pb){pb.disabled=false;let verifier;pb.onclick=()=>{const s=sheet("Sign in with phone");const p=el("input",IN);p.type="tel";p.value="+91";const code=el("input",IN);code.placeholder="6-digit OTP";code.inputMode="numeric";code.style.display="none";const rc=el("div"),msg=note("");let conf=null;
+  const go=btn("Send OTP",async()=>{go.disabled=true;try{if(!conf){verifier=new firebase.auth.RecaptchaVerifier(rc,{size:"invisible"});conf=await auth.signInWithPhoneNumber(p.value.replace(/\s/g,""),verifier);code.style.display="";go.textContent="Verify";msg.textContent="OTP sent."}else{await conf.confirm(code.value.trim());s.close()}}catch(e){msg.textContent=e.code==="auth/operation-not-allowed"?"Enable Phone sign-in in Firebase Console → Authentication.":e.message;if(!conf&&verifier){verifier.clear();verifier=null}}go.disabled=false});
   s.box.append(p,code,go,rc,msg)}}
 
 auth.onAuthStateChanged(u=>{
-  refs.forEach(r=>r.off());refs=[];friends={};requests={};
+  refs.forEach(r=>r.off());refs=[];friends={};requests={};blocked={};
   if(!u){caption(false);document.querySelectorAll(".irf-sheet").forEach(x=>x.__close());return}
+  watch("blocks/"+u.uid,v=>{blocked=v;loadUsers()});
+  setTimeout(showLock,300);
   watch("friends/"+u.uid,v=>{friends=v;loadUsers()});
-  let seen=0;watch("friendRequests/"+u.uid,v=>{requests=v;const n=Object.keys(v).length;const b=$("addContactBtn");if(b){b.querySelector("span").textContent=n?"♙"+n:"♙+";b.style.background=n?"#ff2b2b":""}if(n>seen)toast("Nayi friend request! Upar ♙ dabayein");seen=n});
+  let seen=0;watch("friendRequests/"+u.uid,v=>{requests=v;const n=Object.keys(v).length;const b=$("reqBadge");if(b){b.textContent=n||"";b.classList.toggle("hidden",!n)}if(n>seen)toast("New friend request. Tap the Friends button.");seen=n});
   handleInvite();paintQuiet();setTimeout(()=>{const a=$("myAvatar");if(a&&!a.style.backgroundImage)a.textContent=(myName()[0]||"U").toUpperCase()},1500);
 });
 applySettings();paintQuiet();
 })();
 </script>
+<style id="irfanV4css">
+#appShell #topBar{display:grid!important;grid-template-columns:42px minmax(0,1fr) 42px 42px 42px;align-items:center;gap:8px;margin:0 0 10px;padding:calc(8px + env(safe-area-inset-top,0px)) 0 8px}
+.hbtn{width:42px!important;height:42px!important;min-height:42px!important;border-radius:50%!important;background:#000!important;color:#fff!important;border:2px solid #aeb4bb!important;display:flex;align-items:center;justify-content:center;padding:0!important;flex:none;position:relative;font-size:22px;cursor:pointer}
+#myAvatar.hbtn{font-size:17px;background-size:cover!important}
+.hbrand{min-width:0;display:flex;flex-direction:column;line-height:1.15;white-space:nowrap}
+.hbrand strong{font-size:19px;color:var(--ink)}.hbrand span{font-size:9px;letter-spacing:1.5px;color:var(--muted)}
+#reqBadge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;border-radius:9px;background:#ff2b2b;font-size:11px;line-height:18px}
+#quietModeBtn{width:100%;margin:0 0 8px;padding:8px;border-radius:20px;background:#000;color:#fff;border:2px solid #aeb4bb;font-size:12px}
+#bottomToolbar{padding:12px 8px!important}
+/* full-screen pages */
+.irf-sheet{position:fixed;inset:0;z-index:10050;background:var(--bg);color:var(--ink);display:flex;flex-direction:column}
+.page-head{display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;border-bottom:1px solid #aeb4bb;background:var(--panel);font-size:18px;flex:none}
+.page-body{flex:1;overflow-y:auto;padding:14px 14px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;width:100%;max-width:640px;margin:auto}
+.page-body>*{flex-shrink:0}
+.page-body button{min-height:40px}
+.page-body input,.page-body textarea,.page-body select{color:#111;background:#fff}
+.page-body .menu-row{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;font:inherit;cursor:pointer}
+.page-body .menu-row small{font-size:11.5px;font-weight:400;margin-top:3px}
+.page-body div,.page-body b{max-width:100%}
+body.theme-dark .page-body div[style*="color:#555"]{color:#aaa!important}
+/* full-screen control studio, one default style for every button */
+#controlStudioPanel:not(.hidden){display:flex!important;flex-direction:column;background:#000!important;color:#fff;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 24px!important}
+.studio-head{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:520px;margin:0 auto 18px;font-size:20px}
+#controlStudioPanel #controlStudioRing{position:static!important;width:100%!important;height:auto!important;max-width:520px;margin:auto;pointer-events:auto}
+#controlStudioPanel #unifiedControlRing{position:static;display:grid;grid-template-columns:repeat(3,1fr);gap:18px 8px;pointer-events:auto}
+#controlStudioPanel .control-ring button{position:static!important;transform:none!important;width:100%!important;height:auto!important;background:transparent!important;border:0!important;border-radius:14px!important;box-shadow:none!important;color:#fff!important;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:11.5px;line-height:1.25;padding:2px}
+.control-ring button i{width:58px;height:58px;border-radius:50%;border:2px solid #aeb4bb;background:linear-gradient(145deg,#222,#000);display:flex;align-items:center;justify-content:center}
+.control-ring button i svg{width:25px;height:25px}
+#controlStudioPanel .control-ring button.rg i{border-color:#ff2b2b;box-shadow:0 0 0 3px #ff2b2b,0 0 16px #ff2b2b99}
+body.studio-open #controlStudioBtn{display:none!important}
+body.blur-chat #messages .bubble:not(:active){filter:blur(6px)}
+body.hide-preview .rcard .rmid span{display:none}
+</style>
 </body>
 </html>
