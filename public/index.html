@@ -998,7 +998,7 @@ body.show-search #usersView .search{display:flex}
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
-
+const firebaseConfig={apiKey:"AIzaSyAs-r9cPPBpxjswAcAel5WvFQnlU-07XiE",authDomain:"irfantalk.firebaseapp.com",databaseURL:"https://irfantalk-default-rtdb.firebaseio.com",projectId:"irfantalk",storageBucket:"irfantalk.firebasestorage.app",messagingSenderId:"218169866517",appId:"1:218169866517:web:447670dc6a565e1e7b511c"};
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth(), db=firebase.database();
 let currentUser = null, authMode = "login", otpSentFor = "", activeUser = null, chatRef = null, chatListener = null, allUsers = [];
